@@ -1,3 +1,8 @@
+/Antares.iml
+/target/
+/.idea/
+/.gitignore
+
 # Compiled class file
 *.class
 
