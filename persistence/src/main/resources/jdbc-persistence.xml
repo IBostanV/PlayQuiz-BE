@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="saveUserSql" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+                    INSERT INTO V_USER VALUES(?, ?, ?)
+                ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="userSequenceNextVal" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+                     SELECT USER_SEQUENCE.nextval FROM DUAL
+                ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="findUserByEmailSql" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+                     SELECT id, email, password FROM V_USER
+                ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
+</beans>
