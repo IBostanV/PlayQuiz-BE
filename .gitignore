@@ -1,10 +1,11 @@
-/Antares.iml
 /target/
 /.idea/
 /.gitignore
 
 # Compiled class file
 *.class
+
+*.iml
 
 # Log file
 *.log

@@ -14,20 +14,28 @@
 --    limitations under the License.
 --
 
--- // create_user_table
-CREATE TABLE Q_USER (
-                      ID NUMERIC(20,0) NOT NULL,
-                      EMAIL VARCHAR(100) NOT NULL,
-                      PASSWORD VARCHAR(100) NOT NULL,
-                      BIRTHDAY DATE
+-- // create_question_table
+CREATE TABLE Q_QUESTION (
+    ID NUMERIC(20,0) NOT NULL,
+    CONTENT VARCHAR(1000) NOT NULL,
+    PRIORITY NUMERIC(20,0),
+    DIFFICULTY NUMERIC(20,0),
+    TOPIC VARCHAR(200),
+    CATEGORY VARCHAR(200)
 )/execute/
 
-ALTER TABLE Q_USER
-    ADD CONSTRAINT PK_Q_USER
+ALTER TABLE Q_QUESTION
+    ADD CONSTRAINT PK_Q_QUESTION
         PRIMARY KEY (id)/execute/
 
--- //@UNDO
-DROP TABLE Q_USER/execute/
+CREATE SEQUENCE question_sequence
+    START WITH     1
+    INCREMENT BY   1
+    NOCACHE
+    NOCYCLE/execute/
 
+-- //@UNDO
+DROP TABLE Q_QUESTION/execute/
+DROP SEQUENCE question_sequence/execute/
 
 

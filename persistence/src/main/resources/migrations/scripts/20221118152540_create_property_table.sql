@@ -14,20 +14,25 @@
 --    limitations under the License.
 --
 
--- // create_user_table
-CREATE TABLE Q_USER (
-                      ID NUMERIC(20,0) NOT NULL,
-                      EMAIL VARCHAR(100) NOT NULL,
-                      PASSWORD VARCHAR(100) NOT NULL,
-                      BIRTHDAY DATE
+-- // create_property_table
+CREATE TABLE Q_PROPERTY (
+    ID NUMERIC(20,0) NOT NULL,
+    NAME VARCHAR(1000) NOT NULL,
+    VALUE VARCHAR(800) NOT NULL,
+    OLD_VALUE VARCHAR(800)
 )/execute/
 
-ALTER TABLE Q_USER
-    ADD CONSTRAINT PK_Q_USER
+ALTER TABLE Q_PROPERTY
+    ADD CONSTRAINT PK_Q_PROPERTY
         PRIMARY KEY (id)/execute/
 
+CREATE SEQUENCE property_sequence
+    START WITH     1
+    INCREMENT BY   1
+    NOCACHE
+    NOCYCLE/execute/
+
 -- //@UNDO
-DROP TABLE Q_USER/execute/
-
-
+DROP TABLE Q_PROPERTY/execute/
+DROP SEQUENCE property_sequence/execute/
 
