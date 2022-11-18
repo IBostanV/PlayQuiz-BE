@@ -29,6 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findUserByEmail(final User userInfo) {
-        return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(findUserByEmailSql, Collections.singletonMap("email", userInfo.getEmail()), User.class));
+        return namedParameterJdbcTemplate.query(findUserByEmailSql, Collections.singletonMap("email",
+                userInfo.getEmail()), resultSet -> resultSet.next() ? Optional.of(resultSet.getObject(1, User.class)) : Optional.empty());
     }
 }

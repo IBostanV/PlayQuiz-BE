@@ -1,12 +1,9 @@
 package com.ibos.controller;
 
-import com.ibos.enums.MessageActions;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -77,23 +74,23 @@ public class ChatController {
     @MessageMapping("/public")
     @SendToUser("/topic/private")
     public Map<String, String> post(@Payload Map<String, String> message, Principal principal, @Header("simpSessionId") String sessionId) throws InterruptedException {
-        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
-        headerAccessor.setSessionId(sessionId);
-        headerAccessor.setLeaveMutable(true);
+//        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+//        headerAccessor.setSessionId(sessionId);
+//        headerAccessor.setLeaveMutable(true);
+//
+//        if (message.get("action").equals(MessageActions.PRINT.name())) {
+//            return Map.of("message", "Message PRINT received from server ", "action", MessageActions.PRINT.name());
+//        }
+//
+//        for (int i = 0; i < 3; i++) {
+//            simpMessagingTemplate.convertAndSendToUser(
+//                    sessionId,
+//                    "/topic/private",
+//                    Map.of("message", principal.getName() + i, "action", MessageActions.PROCESS.name()),
+//                    headerAccessor.getMessageHeaders());
+//            Thread.sleep(5000);
+//        }
 
-        if (message.get("action").equals(MessageActions.PRINT.name())) {
-            return Map.of("message", "Message PRINT received from server ", "action", MessageActions.PRINT.name());
-        }
-
-        for (int i = 0; i < 3; i++) {
-            simpMessagingTemplate.convertAndSendToUser(
-                    sessionId,
-                    "/topic/private",
-                    Map.of("message", principal.getName() + i, "action", MessageActions.PROCESS.name()),
-                    headerAccessor.getMessageHeaders());
-            Thread.sleep(5000);
-        }
-
-        return Map.of("message", "Request successfully done", "action", MessageActions.PROCESS.name());
+        return Map.of("message", "Request successfully done", "action", "Action");
     }
 }
