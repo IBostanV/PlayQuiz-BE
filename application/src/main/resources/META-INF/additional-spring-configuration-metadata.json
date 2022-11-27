@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "jwt.secret",
+      "type": "java.lang.String",
+      "description": "Used by Jwts for signing key."
+    },
+    {
+      "name": "jwt.token.prefix",
+      "type": "java.lang.String",
+      "description": "Used in case the token came with a prefix (ex. Bearer token)."
+    }
+  ] }

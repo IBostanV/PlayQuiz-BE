@@ -1,4 +1,6 @@
 /target/
+/application/target/
+/persistence/target/
 /.idea/
 /.gitignore
 
