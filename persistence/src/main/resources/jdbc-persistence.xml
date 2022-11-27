@@ -7,7 +7,7 @@
         <constructor-arg>
             <value>
                 <![CDATA[
-                    INSERT INTO Q_USER VALUES(?, ?, ?)
+                    INSERT INTO Q_USER(ID, EMAIL, PASSWORD) VALUES(?, ?, ?)
                 ]]>
             </value>
         </constructor-arg>
@@ -27,7 +27,7 @@
         <constructor-arg>
             <value>
                 <![CDATA[
-                     SELECT id, email, password FROM Q_USER
+                     SELECT id, email, password FROM Q_USER WHERE email = :email
                 ]]>
             </value>
         </constructor-arg>
