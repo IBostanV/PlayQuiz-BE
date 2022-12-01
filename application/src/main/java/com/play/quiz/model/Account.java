@@ -6,7 +6,7 @@ import lombok.Value;
 @Value
 @Builder
 public class Account {
-    Integer id;
+    Long id;
     String name;
     String email;
     String password;

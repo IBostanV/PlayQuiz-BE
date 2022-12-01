@@ -3,13 +3,18 @@ package com.play.quiz.mapper.impl;
 import com.play.quiz.dto.AccountDto;
 import com.play.quiz.mapper.AccountMapper;
 import com.play.quiz.model.Account;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component
+@RequiredArgsConstructor
 public class AccountMapperImpl implements AccountMapper {
+    private final PasswordEncoder passwordEncoder;
+
     public AccountDto toDto(final Account account) {
         return AccountDto.builder()
                 .id(account.getId())
@@ -23,15 +28,7 @@ public class AccountMapperImpl implements AccountMapper {
                 .id(accountDto.getId())
                 .email(accountDto.getEmail())
                 .name(accountDto.getName())
-                .password(accountDto.getPassword())
-                .build();
-    }
-
-    public Account fromResultSet(final ResultSet resultSet) throws SQLException {
-        return Account.builder()
-                .id(resultSet.getObject(1, Integer.class))
-                .email(resultSet.getObject(2, String.class))
-                .password(resultSet.getObject(3, String.class))
+                .password(passwordEncoder.encode(accountDto.getPassword()))
                 .build();
     }
 }
