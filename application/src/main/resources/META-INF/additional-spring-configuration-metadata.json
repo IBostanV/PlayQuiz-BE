@@ -9,5 +9,15 @@
       "name": "jwt.token.prefix",
       "type": "java.lang.String",
       "description": "Used in case the token came with a prefix (ex. Bearer token)."
+    },
+    {
+      "name": "application.security.allowed-origins",
+      "type": "java.lang.String",
+      "description": "Allowed origins for CORS."
+    },
+    {
+      "name": "application.security.exposed-headers",
+      "type": "java.lang.String",
+      "description": "Exposed headers for CORS filter."
     }
   ] }

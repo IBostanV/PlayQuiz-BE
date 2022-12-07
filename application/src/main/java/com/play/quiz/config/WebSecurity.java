@@ -2,8 +2,8 @@ package com.play.quiz.config;
 
 import com.play.quiz.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -20,19 +20,25 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurity {
-    private UserDetailsService userDetailsService;
-    private final JwtAuthenticationFilter authenticationFilter;
+    @Value("#{'${application.security.allowed-origins}'.split(',')}")
+    private final List<String> allowedOrigins;
+    @Value("#{'${application.security.exposed-headers}'.split(',')}")
+    private final List<String> exposedHeaders;
 
-    @Autowired
-    public void setUserDetailsService(@Qualifier("quizUserDetailsService") UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+    @Qualifier("quizUserDetailsService")
+    private final UserDetailsService userDetailsService;
+    private final JwtAuthenticationFilter authenticationFilter;
 
     @Bean
     @Order(1)
@@ -44,6 +50,19 @@ public class WebSecurity {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setExposedHeaders(exposedHeaders);
+        corsConfiguration.setAllowedOrigins(allowedOrigins);
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
     }
 
     @Bean
