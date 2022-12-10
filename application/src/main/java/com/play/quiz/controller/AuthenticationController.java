@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
@@ -20,7 +22,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountDto> login(@RequestBody final AccountDto accountDto) {
+    public ResponseEntity<AccountDto> login(@Valid @RequestBody final AccountDto accountDto) {
         final AccountInfo accountInfo = authenticationService.login(accountDto);
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, accountInfo.getToken().getValue())
@@ -28,7 +30,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountDto> register(@RequestBody final AccountDto accountDto) {
+    public ResponseEntity<AccountDto> register(@Valid @RequestBody final AccountDto accountDto) {
         final AccountInfo accountInfo = authenticationService.register(accountDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.AUTHORIZATION, accountInfo.getToken().getValue())
