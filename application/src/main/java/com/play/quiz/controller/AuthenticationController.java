@@ -1,11 +1,8 @@
 package com.play.quiz.controller;
 
 import com.play.quiz.dto.AccountDto;
-import com.play.quiz.mapper.impl.AccountMapperImpl;
-import com.play.quiz.model.Account;
-import com.play.quiz.security.Token;
+import com.play.quiz.model.helpers.AccountInfo;
 import com.play.quiz.service.AuthenticationService;
-import com.play.quiz.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,25 +17,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @AllArgsConstructor
 public class AuthenticationController {
-    private final UserService userService;
-    private final AccountMapperImpl userMapper;
     private final AuthenticationService authenticationService;
 
-    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountDto> login(@RequestBody final AccountDto accountDto) {
-        final Token token = authenticationService.login(accountDto);
-        final Account account = userService.findByEmail(accountDto.getEmail());
+        final AccountInfo accountInfo = authenticationService.login(accountDto);
         return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, token.getValue())
-                .body(userMapper.toDto(account));
+                .header(HttpHeaders.AUTHORIZATION, accountInfo.getToken().getValue())
+                .body(accountInfo.getAccount());
     }
 
-    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> register(@RequestBody final AccountDto accountDto) {
-        final Long userId = userService.save(accountDto);
-        final Token token = authenticationService.login(accountDto.setId(userId));
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccountDto> register(@RequestBody final AccountDto accountDto) {
+        final AccountInfo accountInfo = authenticationService.register(accountDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header(HttpHeaders.AUTHORIZATION, token.getValue())
-                .body(userId);
+                .header(HttpHeaders.AUTHORIZATION, accountInfo.getToken().getValue())
+                .body(accountInfo.getAccount());
     }
 }

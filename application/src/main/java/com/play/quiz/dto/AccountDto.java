@@ -14,9 +14,4 @@ public class AccountDto {
     String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
-
-    public AccountDto setId(final Long userId) {
-        this.id = userId;
-        return this;
-    }
 }

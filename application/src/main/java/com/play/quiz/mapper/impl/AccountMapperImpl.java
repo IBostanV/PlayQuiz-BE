@@ -7,9 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 @Component
 @RequiredArgsConstructor
 public class AccountMapperImpl implements AccountMapper {
@@ -18,6 +15,14 @@ public class AccountMapperImpl implements AccountMapper {
     public AccountDto toDto(final Account account) {
         return AccountDto.builder()
                 .id(account.getId())
+                .email(account.getEmail())
+                .name(account.getName())
+                .build();
+    }
+
+    public AccountDto toDtoWithId(final Account account, final Long id) {
+        return AccountDto.builder()
+                .id(id)
                 .email(account.getEmail())
                 .name(account.getName())
                 .build();
