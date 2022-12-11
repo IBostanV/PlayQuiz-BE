@@ -15,16 +15,16 @@
 --
 
 -- // create_property_table
-CREATE TABLE Q_PROPERTY (
-    ID NUMERIC(20,0) NOT NULL,
+CREATE TABLE Q_PROPERTIES (
+    PROPERTY_ID NUMERIC(20,0) NOT NULL,
     NAME VARCHAR(1000) NOT NULL,
     VALUE VARCHAR(800) NOT NULL,
     OLD_VALUE VARCHAR(800)
 )/execute/
 
-ALTER TABLE Q_PROPERTY
+ALTER TABLE Q_PROPERTIES
     ADD CONSTRAINT PK_Q_PROPERTY
-        PRIMARY KEY (id)/execute/
+        PRIMARY KEY (PROPERTY_ID)/execute/
 
 CREATE SEQUENCE property_sequence
     START WITH     1
@@ -33,6 +33,6 @@ CREATE SEQUENCE property_sequence
     NOCYCLE/execute/
 
 -- //@UNDO
-DROP TABLE Q_PROPERTY/execute/
+DROP TABLE Q_PROPERTIES/execute/
 DROP SEQUENCE property_sequence/execute/
 

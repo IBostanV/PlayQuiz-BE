@@ -1,12 +1,12 @@
 {
   "properties": [
     {
-      "name": "jwt.secret",
+      "name": "application.security.jwt.secret",
       "type": "java.lang.String",
       "description": "Used by Jwts for signing key."
     },
     {
-      "name": "jwt.token.prefix",
+      "name": "application.security.jwt.token.prefix",
       "type": "java.lang.String",
       "description": "Used in case the token came with a prefix (ex. Bearer token)."
     },
@@ -19,5 +19,15 @@
       "name": "application.security.exposed-headers",
       "type": "java.lang.String",
       "description": "Exposed headers for CORS filter."
+    },
+    {
+      "name": "application.email.sending-address",
+      "type": "java.lang.String",
+      "description": "Default value for the sender of the email inside the system."
+    },
+    {
+      "name": "application.email.token.validity.period",
+      "type": "java.lang.String",
+      "description": "Validity period of the email activation token."
     }
   ] }

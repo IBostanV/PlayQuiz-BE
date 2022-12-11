@@ -1,12 +1,11 @@
 package com.play.quiz.service.impl;
 
 import com.play.quiz.dto.AccountDto;
-import com.play.quiz.exception.DuplicateUserException;
 import com.play.quiz.model.helpers.AccountInfo;
 import com.play.quiz.security.JwtProvider;
-import com.play.quiz.security.Token;
 import com.play.quiz.service.AuthenticationService;
 import com.play.quiz.service.UserService;
+import com.play.quiz.util.SystemAssert;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,30 +22,34 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AccountInfo register(final AccountDto accountDto) {
-        if (userService.userExists(accountDto)) {
-            throw new DuplicateUserException("User already registered in the system");
-        }
+        SystemAssert.isAccountUnique(userService.userExists(accountDto), accountDto.getEmail());
 
         final AccountDto persistedAccount = userService.save(accountDto);
-        return AccountInfo.builder()
-                .account(persistedAccount)
-                .token(createToken(accountDto))
-                .build();
+        final Authentication authentication = authenticateUser(accountDto);
+
+        userService.sendAccountVerificationEmail(persistedAccount);
+
+        return buildAccountInfo(persistedAccount, authentication);
     }
 
     @Override
     public AccountInfo login(final AccountDto accountDto) {
         final AccountDto existingAccount = userService.findByEmail(accountDto.getEmail());
-        return AccountInfo.builder()
-                .account(existingAccount)
-                .token(createToken(accountDto))
-                .build();
+        SystemAssert.isAccountEnabled(accountDto.isEnabled(), accountDto.getEmail());
+        final Authentication authentication = authenticateUser(accountDto);
+
+        return buildAccountInfo(existingAccount, authentication);
     }
 
-    private Token createToken(final AccountDto accountDto) {
-        Authentication authentication = authenticationManager.authenticate(
+    private AccountInfo buildAccountInfo(final AccountDto accountDto, final Authentication authentication) {
+        return new AccountInfo(jwtProvider.generate(authentication), accountDto);
+    }
+
+    private Authentication authenticateUser(final AccountDto accountDto) {
+        final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(accountDto.getEmail(), accountDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtProvider.generate(authentication);
+
+        return authentication;
     }
 }

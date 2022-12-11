@@ -16,7 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Q_PROPERTY")
+@Table(name = "Q_PROPERTIES")
 @Getter
 @Builder
 @ToString
@@ -27,7 +27,7 @@ public class ApplicationProperties {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prop_generator")
     @SequenceGenerator(name = "prop_generator", sequenceName = "prop_sequence", allocationSize = 1)
-    private Integer id;
+    private Long propertyId;
     private String name;
     private String value;
     @Column(name = "OLD_VALUE")

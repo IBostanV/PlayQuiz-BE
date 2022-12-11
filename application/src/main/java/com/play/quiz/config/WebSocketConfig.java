@@ -11,6 +11,7 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 import java.util.List;
 
@@ -19,31 +20,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private final ObjectMapper objectMapper;
-    private final HandshakeHandler handshakeHandler;
+    private final DefaultHandshakeHandler defaultHandshakeHandler;
 
     @Override
-    public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.setUserDestinationPrefix("/user");
-        config.setApplicationDestinationPrefixes("/antares");
-        config.enableSimpleBroker( "/topic");
+    public void configureMessageBroker(final MessageBrokerRegistry messageBrokerRegistry) {
+        messageBrokerRegistry.setApplicationDestinationPrefixes("/play-quiz");
+        messageBrokerRegistry.enableSimpleBroker("/topic");
     }
 
     @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry
+    public void registerStompEndpoints(final StompEndpointRegistry stompEndpointRegistry) {
+        stompEndpointRegistry
                 .addEndpoint("/ws")
-                .setHandshakeHandler(handshakeHandler)
+                .setHandshakeHandler(defaultHandshakeHandler)
                 .withSockJS();
     }
 
     @Override
-    public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
-        DefaultContentTypeResolver resolver = new DefaultContentTypeResolver();
+    public boolean configureMessageConverters(final List<MessageConverter> messageConverters) {
+        final DefaultContentTypeResolver resolver = new DefaultContentTypeResolver();
         resolver.setDefaultMimeType(MimeTypeUtils.APPLICATION_JSON);
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+
+        final MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
         converter.setObjectMapper(objectMapper);
         converter.setContentTypeResolver(resolver);
         messageConverters.add(converter);
+
         return false;
     }
 }

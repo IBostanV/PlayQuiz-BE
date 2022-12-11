@@ -1,13 +1,14 @@
 package com.play.quiz.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -19,20 +20,11 @@ import java.util.stream.Stream;
 import static java.util.concurrent.CompletableFuture.runAsync;
 
 @RestController
+@RequestMapping(RestEndpoint.CONTEXT_PATH + "/chat")
+@RequiredArgsConstructor
 public class ChatController {
-
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    public ChatController(SimpMessagingTemplate simpMessagingTemplate) {
-        this.simpMessagingTemplate = simpMessagingTemplate;
-    }
-
-    @GetMapping("/get-user-list")
-    public void getUserList() {
-        System.out.println("We are here");
-    }
-
-    @CrossOrigin
     @GetMapping("/sse")
     public SseEmitter getSSeEvents() {
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);

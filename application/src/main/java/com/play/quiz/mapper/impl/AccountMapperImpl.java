@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 @RequiredArgsConstructor
 public class AccountMapperImpl implements AccountMapper {
@@ -14,26 +16,35 @@ public class AccountMapperImpl implements AccountMapper {
 
     public AccountDto toDto(final Account account) {
         return AccountDto.builder()
-                .id(account.getId())
-                .email(account.getEmail())
                 .name(account.getName())
+                .email(account.getEmail())
+                .id(account.getAccountId())
+                .isEnabled(account.isEnabled())
                 .build();
     }
 
     public AccountDto toDtoWithId(final Account account, final Long id) {
         return AccountDto.builder()
                 .id(id)
-                .email(account.getEmail())
                 .name(account.getName())
+                .email(account.getEmail())
+                .isEnabled(account.isEnabled())
                 .build();
     }
 
     public Account toEntity(final AccountDto accountDto) {
         return Account.builder()
-                .id(accountDto.getId())
-                .email(accountDto.getEmail())
                 .name(accountDto.getName())
-                .password(passwordEncoder.encode(accountDto.getPassword()))
+                .email(accountDto.getEmail())
+                .accountId(accountDto.getId())
+                .isEnabled(accountDto.isEnabled())
+                .password(handlePassword(accountDto))
                 .build();
+    }
+
+    private String handlePassword(final AccountDto accountDto) {
+        return Objects.isNull(accountDto.getPassword())
+                ? accountDto.getPassword()
+                : passwordEncoder.encode(accountDto.getPassword());
     }
 }

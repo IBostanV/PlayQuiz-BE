@@ -1,6 +1,7 @@
 package com.play.quiz.security;
 
 import com.play.quiz.controller.RestEndpoint;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,40 +16,44 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Objects;
+import java.io.IOException;
 import java.util.Optional;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    @Value("${jwt.token.prefix:\"Bearer \"}")
-    private static String JWT_TOKEN_PREFIX;
+    @Value("${application.security.jwt.token.prefix:Bearer}")
+    private String JWT_TOKEN_PREFIX;
 
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        return !Objects.equals(request.getRequestURI(), RestEndpoint.CONTEXT_PATH);
+    protected boolean shouldNotFilter(final HttpServletRequest request) {
+        final String activateAccountPath = "/activate-account";
+        return !request.getRequestURI().startsWith(RestEndpoint.CONTEXT_PATH)
+                || request.getRequestURI().endsWith(activateAccountPath);
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
-        final String token = parseRequest(request);
-        final String email = jwtProvider.getEmail(token);
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws ServletException, IOException {
+        final @NonNull String token = parseRequest(request);
+        final @NonNull String email = jwtProvider.getEmail(token);
+        final @NonNull UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
         SecurityContextHolder.getContext().setAuthentication(createAuthentication(request, userDetails));
+        filterChain.doFilter(request, response);
     }
 
     private Authentication createAuthentication(final HttpServletRequest request, final UserDetails userDetails) {
-        final UsernamePasswordAuthenticationToken token =
+        final UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-        return token;
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        return authenticationToken;
     }
 
     private String parseRequest(final HttpServletRequest request) {

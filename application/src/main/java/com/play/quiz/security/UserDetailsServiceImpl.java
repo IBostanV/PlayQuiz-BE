@@ -1,10 +1,9 @@
-package com.play.quiz.service.impl;
+package com.play.quiz.security;
 
-import com.play.quiz.exception.NoSuchUserException;
+import com.play.quiz.exception.UserNotFoundException;
 import com.play.quiz.model.Account;
 import com.play.quiz.repository.UserRepository;
-import com.play.quiz.service.UserDetailsService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -16,14 +15,15 @@ import java.util.Collections;
 import java.util.List;
 
 @Service("quizUserDetailsService")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadByEmail(final String userEmail) {
-        Account account = userRepository.findUserByEmail(userEmail)
-                .orElseThrow(() -> new NoSuchUserException("No user found"));
+        final Account account = userRepository.findUserByEmail(userEmail)
+                .orElseThrow(() -> new UserNotFoundException("No user found with email: " + userEmail));
         return User.builder()
                 .username(userEmail)
                 .password(account.getPassword())
@@ -32,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private static List<? extends GrantedAuthority> getUserAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("USER"));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
     @Override

@@ -22,10 +22,11 @@ public class UserRepositoryImpl implements UserRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public Long save(final Account account) {
+    public Account save(final Account account) {
         final Long nextUserId = jdbcTemplate.queryForObject(userSequenceNextVal, Long.class);
         jdbcTemplate.update(saveUserSql, nextUserId, account.getEmail(), account.getPassword());
-        return nextUserId;
+
+        return ((Account)account.clone()).withId(nextUserId);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     private Account mapResultSet(final ResultSet resultSet) throws SQLException {
         return Account.builder()
-                .id(resultSet.getObject(1, Long.class))
+                .accountId(resultSet.getObject(1, Long.class))
                 .email(resultSet.getObject(2, String.class))
                 .password(resultSet.getObject(3, String.class))
                 .build();

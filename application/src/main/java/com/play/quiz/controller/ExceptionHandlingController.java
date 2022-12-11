@@ -1,8 +1,10 @@
 package com.play.quiz.controller;
 
-import com.play.quiz.exception.NoSuchUserException;
+import com.play.quiz.exception.RecordNotFoundException;
+import com.play.quiz.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,12 +19,36 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ExceptionHandlingController {
 
-    @ExceptionHandler(NoSuchUserException.class)
-    public ResponseEntity<Void> userNotFound(final NoSuchUserException userNotFound) {
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> userNotFound(final UserNotFoundException userNotFound) {
         log.info(userNotFound.getMessage());
         return ResponseEntity
-                .status(userNotFound.getCode())
-                .build();
+                .status(HttpStatus.NOT_FOUND)
+                .body(userNotFound.getMessage());
+    }
+
+    @ExceptionHandler(RecordNotFoundException.class)
+    public ResponseEntity<String> recordNotFound(final RecordNotFoundException recordNotFoundException) {
+        log.info(recordNotFoundException.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(recordNotFoundException.getMessage());
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> runtimeException(final RuntimeException runtimeException) {
+        log.info(runtimeException.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(runtimeException.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> runtimeException(final Exception exception) {
+        log.info(exception.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(exception.getMessage());
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})

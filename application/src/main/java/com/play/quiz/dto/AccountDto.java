@@ -15,4 +15,5 @@ public class AccountDto {
     String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
+    boolean isEnabled;
 }
