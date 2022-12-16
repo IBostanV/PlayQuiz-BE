@@ -7,16 +7,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
-    @Value("${jwt.secret}")
+    @Value("${application.security.jwt.secret}")
     private String jwtSecret;
 
     public String getEmail(final String token) {
+        Assert.hasText(token, "Authentication token can not be empty.");
         return Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
@@ -29,7 +31,7 @@ public class JwtProvider {
     }
 
     private String generateToken(final Authentication authentication) {
-        User principal = (User)authentication.getPrincipal();
+        final User principal = (User)authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(principal.getUsername())
                 .setIssuedAt(new Date())

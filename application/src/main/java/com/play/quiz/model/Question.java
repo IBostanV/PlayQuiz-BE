@@ -31,8 +31,8 @@ import java.util.List;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "qstn_generator")
-    @SequenceGenerator(name = "qstn_generator", sequenceName = "qstn_sequence", allocationSize = 1)
-    private Integer id;
+    @SequenceGenerator(name = "qstn_generator", sequenceName = "question_sequence", allocationSize = 1)
+    private Integer questionId;
     private String content;
     private int priority;
     @Column(name = "DIFFICULTY")

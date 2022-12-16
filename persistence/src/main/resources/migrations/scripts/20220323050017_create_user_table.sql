@@ -16,15 +16,17 @@
 
 -- // create_user_table
 CREATE TABLE Q_USER (
-                      ID NUMERIC(20,0) NOT NULL,
+                      ACCOUNT_ID NUMERIC(20,0) NOT NULL,
+                      NAME VARCHAR(100),
                       EMAIL VARCHAR(100) NOT NULL,
                       PASSWORD VARCHAR(100) NOT NULL,
-                      BIRTHDAY DATE
+                      BIRTHDAY DATE,
+                      IS_ENABLED NUMBER(1,0) DEFAULT 0 NOT NULL
 )/execute/
 
 ALTER TABLE Q_USER
     ADD CONSTRAINT PK_Q_USER
-        PRIMARY KEY (id)/execute/
+        PRIMARY KEY (ACCOUNT_ID)/execute/
 
 -- //@UNDO
 DROP TABLE Q_USER/execute/

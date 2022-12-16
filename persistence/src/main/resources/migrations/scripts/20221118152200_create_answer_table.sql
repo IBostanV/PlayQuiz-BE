@@ -16,13 +16,13 @@
 
 -- // create_answer_table
 CREATE TABLE Q_ANSWER (
-    ID NUMERIC(20,0) NOT NULL,
+    ANSWER_ID NUMERIC(20,0) NOT NULL,
     CONTENT VARCHAR(1000) NOT NULL
 )/execute/
 
 ALTER TABLE Q_ANSWER
     ADD CONSTRAINT PK_Q_ANSWER
-        PRIMARY KEY (id)/execute/
+        PRIMARY KEY (ANSWER_ID)/execute/
 
 CREATE SEQUENCE answer_sequence
     START WITH     1

@@ -13,7 +13,7 @@ public class QuestionMapperImpl implements QuestionMapper {
     @Override
     public QuestionDto mapToDto(final Question question) {
         return QuestionDto.builder()
-                .id(question.getId())
+                .id(question.getQuestionId())
                 .category(question.getCategory())
                 .content(question.getContent())
                 .difficulty(question.getDifficulty())
@@ -32,7 +32,7 @@ public class QuestionMapperImpl implements QuestionMapper {
     @Override
     public Question mapToEntity(final QuestionDto questionDto) {
         return Question.builder()
-                .id(questionDto.getId())
+                .questionId(questionDto.getId())
                 .category(questionDto.getCategory())
                 .content(questionDto.getContent())
                 .difficulty(questionDto.getDifficulty())
