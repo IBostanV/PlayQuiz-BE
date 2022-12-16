@@ -9,8 +9,12 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Repository
 @AllArgsConstructor
@@ -23,18 +27,39 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Account save(final Account account) {
-        final Long nextUserId = jdbcTemplate.queryForObject(userSequenceNextVal, Long.class);
-        jdbcTemplate.update(saveUserSql, nextUserId, account.getEmail(), account.getPassword());
+        return Objects.nonNull(account.getAccountId()) ? handleUpdate(account) : handleInsert(account);
+    }
 
-        return ((Account)account.clone()).withId(nextUserId);
+    private Account handleInsert(final Account account) {
+        final Long nextUserId = jdbcTemplate.queryForObject(userSequenceNextVal, Long.class);
+        return executeSave(nextUserId, account);
+    }
+
+    private Account handleUpdate(final Account account) {
+        return executeSave(account.getAccountId(), account);
+    }
+
+    private Account executeSave(final Long accountId, final Account account) {
+        namedParameterJdbcTemplate.update(saveUserSql, getProperties(accountId, account));
+        return ((Account) account.clone()).withId(accountId);
+    }
+
+    private Map<String, Object> getProperties(final Long accountId, final Account account) {
+        final Function<Object, Object> fillNull = (input) -> Objects.nonNull(input) ? input : "";
+
+        return Map.of(
+                "accountId", accountId,
+                "email", account.getEmail(),
+                "isEnabled", account.isEnabled(),
+                "password", account.getPassword(),
+                "name", fillNull.apply(account.getName()),
+                "birthday", fillNull.apply(account.getBirthday()));
     }
 
     @Override
     public Optional<Account> findUserByEmail(final String email) {
         return namedParameterJdbcTemplate.query(findUserByEmailSql, Collections.singletonMap("email", email),
-                resultSet -> resultSet.next()
-                        ? Optional.of(mapResultSet(resultSet))
-                        : Optional.empty());
+                resultSet -> resultSet.next() ? Optional.of(mapResultSet(resultSet)) : Optional.empty());
     }
 
     private Account mapResultSet(final ResultSet resultSet) throws SQLException {
@@ -42,6 +67,9 @@ public class UserRepositoryImpl implements UserRepository {
                 .accountId(resultSet.getObject(1, Long.class))
                 .email(resultSet.getObject(2, String.class))
                 .password(resultSet.getObject(3, String.class))
+                .isEnabled(resultSet.getObject(4, Boolean.class))
+                .birthday(resultSet.getObject(5, LocalDate.class))
+                .name(resultSet.getObject(6, String.class))
                 .build();
     }
 }

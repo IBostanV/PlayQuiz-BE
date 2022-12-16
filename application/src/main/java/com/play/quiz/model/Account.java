@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "Q_USER")
@@ -28,6 +29,7 @@ public class Account implements Cloneable{
     private String name;
     private String email;
     private String password;
+    private LocalDate birthday;
     @Column(name = "IS_ENABLED")
     private boolean isEnabled;
 

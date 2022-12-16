@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Value;
 
 import javax.validation.constraints.Email;
+import java.time.LocalDate;
 
 @Value
 @Builder
@@ -15,5 +16,6 @@ public class AccountDto {
     String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
+    LocalDate birthday;
     boolean isEnabled;
 }

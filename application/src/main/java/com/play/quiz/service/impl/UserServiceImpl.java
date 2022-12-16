@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService {
         log.info("Find user by email: " + userEmail);
         final Account account = userRepository.findUserByEmail(userEmail)
                 .orElseThrow(() -> new UserNotFoundException("No user found with email: " + userEmail));
+
         return accountMapper.toDto(account);
     }
 

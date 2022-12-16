@@ -17,7 +17,7 @@ import java.util.UUID;
 public class VerificationTokenServiceImpl implements VerificationTokenService {
     private final VerificationTokenRepository verificationTokenRepository;
 
-    @Value("#{${application.email.token.validity.period}}:1440")
+    @Value("#{${application.email.token.validity.period}}")
     private Integer verificationTokenValidityPeriod;
 
     @Override

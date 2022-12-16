@@ -35,7 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AccountInfo login(final AccountDto accountDto) {
         final AccountDto existingAccount = userService.findByEmail(accountDto.getEmail());
-        SystemAssert.isAccountEnabled(accountDto.isEnabled(), accountDto.getEmail());
+        SystemAssert.isAccountEnabled(existingAccount.isEnabled(), accountDto.getEmail());
         final Authentication authentication = authenticateUser(accountDto);
 
         return buildAccountInfo(existingAccount, authentication);
