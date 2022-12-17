@@ -20,6 +20,7 @@ public class AccountMapperImpl implements AccountMapper {
                 .email(account.getEmail())
                 .id(account.getAccountId())
                 .isEnabled(account.isEnabled())
+                .birthday(account.getBirthday())
                 .build();
     }
 
@@ -29,6 +30,7 @@ public class AccountMapperImpl implements AccountMapper {
                 .name(account.getName())
                 .email(account.getEmail())
                 .isEnabled(account.isEnabled())
+                .birthday(account.getBirthday())
                 .build();
     }
 
@@ -38,6 +40,7 @@ public class AccountMapperImpl implements AccountMapper {
                 .email(accountDto.getEmail())
                 .accountId(accountDto.getId())
                 .isEnabled(accountDto.isEnabled())
+                .birthday(accountDto.getBirthday())
                 .password(handlePassword(accountDto))
                 .build();
     }

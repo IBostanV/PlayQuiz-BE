@@ -17,7 +17,7 @@
 -- // create_user_table
 CREATE TABLE Q_USER (
                       ACCOUNT_ID NUMERIC(20,0) NOT NULL,
-                      NAME VARCHAR(100),
+                      NAME VARCHAR(100) DEFAULT '',
                       EMAIL VARCHAR(100) NOT NULL,
                       PASSWORD VARCHAR(100) NOT NULL,
                       BIRTHDAY DATE,
