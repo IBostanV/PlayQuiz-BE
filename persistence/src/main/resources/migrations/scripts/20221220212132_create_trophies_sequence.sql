@@ -14,21 +14,15 @@
 --    limitations under the License.
 --
 
--- // create_property_table
-CREATE TABLE Q_PROPERTIES (
-    PROPERTY_ID NUMERIC(20,0) NOT NULL,
-    NAME VARCHAR(1000) NOT NULL,
-    VALUE VARCHAR(800) NOT NULL,
-    OLD_VALUE VARCHAR(800)
-)
-/execute/
+-- // create_trophies_sequence
+CREATE SEQUENCE trophies_seq
+    START WITH     1
+    INCREMENT BY   1
+    NOCACHE
+    NOCYCLE/execute/
 
-ALTER TABLE Q_PROPERTIES
-    ADD CONSTRAINT Q_PROPERTY_PK
-        PRIMARY KEY (PROPERTY_ID)
-/execute/
 
 -- //@UNDO
-DROP TABLE Q_PROPERTIES
-/execute/
+DROP SEQUENCE trophies_seq/execute/
+
 

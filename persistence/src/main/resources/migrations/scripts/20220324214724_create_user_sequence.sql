@@ -15,14 +15,16 @@
 --
 
 -- // create_user_sequence
-CREATE SEQUENCE user_sequence
+CREATE SEQUENCE users_seq
     START WITH     1
     INCREMENT BY   1
     NOCACHE
-    NOCYCLE/execute/
+    NOCYCLE
+/execute/
 
 
 -- //@UNDO
-DROP SEQUENCE user_sequence/execute/
+DROP SEQUENCE users_seq
+/execute/
 
 
