@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Q_USER")
+@Table(name = "Q_USERS")
 @Builder(toBuilder = true)
 @Getter
 @NoArgsConstructor
@@ -24,7 +24,7 @@ import java.time.LocalDate;
 public class Account implements Cloneable{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
-    @SequenceGenerator(name = "user_generator", sequenceName = "user_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "user_generator", sequenceName = "users_seq", allocationSize = 1)
     private Long accountId;
     private String name;
     private String email;

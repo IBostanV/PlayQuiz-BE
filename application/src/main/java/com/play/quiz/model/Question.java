@@ -21,7 +21,7 @@ import javax.persistence.Transient;
 import java.util.List;
 
 @Entity
-@Table(name = "Q_QUESTION")
+@Table(name = "Q_QUESTIONS")
 @Getter
 @Builder
 @ToString
@@ -31,7 +31,7 @@ import java.util.List;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "qstn_generator")
-    @SequenceGenerator(name = "qstn_generator", sequenceName = "question_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "qstn_generator", sequenceName = "questions_seq", allocationSize = 1)
     private Integer questionId;
     private String content;
     private int priority;

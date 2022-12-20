@@ -14,21 +14,25 @@
 --    limitations under the License.
 --
 
--- // create_property_table
-CREATE TABLE Q_PROPERTIES (
-    PROPERTY_ID NUMERIC(20,0) NOT NULL,
-    NAME VARCHAR(1000) NOT NULL,
-    VALUE VARCHAR(800) NOT NULL,
-    OLD_VALUE VARCHAR(800)
+-- // create_users_history_table
+CREATE TABLE Q_USER_HISTORIES (
+                        HISTORY_ID NUMERIC(20,0) NOT NULL,
+                        ACCOUNT_ID NUMERIC(20,0),
+                        QUIZ_ID NUMERIC(20,0) NOT NULL,
+                        ANSWERS_JSON CLOB,
+                        COMPLETED_DATE DATE,
+                        SPENT_TIME NUMERIC(20,0) DEFAULT 0,
+                        EARNED_TROPHIES NUMERIC(20,0),
+                        CONSTRAINT ENFORCE_HISTORY_JSON CHECK (ANSWERS_JSON IS JSON)
 )
 /execute/
 
-ALTER TABLE Q_PROPERTIES
-    ADD CONSTRAINT Q_PROPERTY_PK
-        PRIMARY KEY (PROPERTY_ID)
+ALTER TABLE Q_USER_HISTORIES
+    ADD CONSTRAINT Q_USER_HISTORIES_PK
+        PRIMARY KEY (HISTORY_ID)
 /execute/
 
 -- //@UNDO
-DROP TABLE Q_PROPERTIES
+-- SQL to undo the change goes here.
+DROP TABLE Q_USER_HISTORIES
 /execute/
-

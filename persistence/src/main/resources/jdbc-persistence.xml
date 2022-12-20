@@ -6,7 +6,7 @@
     <bean id="saveUserSql" class="java.lang.String">
         <constructor-arg>
             <value>
-                MERGE INTO Q_USER
+                MERGE INTO Q_USERS
                 USING DUAL ON (ACCOUNT_ID = :accountId)
                 WHEN MATCHED THEN
                     UPDATE SET NAME = :name,
@@ -24,7 +24,7 @@
         <constructor-arg>
             <value>
                 <![CDATA[
-                     SELECT USER_SEQUENCE.nextval FROM DUAL
+                     SELECT USERS_SEQ.nextval FROM DUAL
                 ]]>
             </value>
         </constructor-arg>
@@ -34,7 +34,7 @@
         <constructor-arg>
             <value>
                 <![CDATA[
-                     SELECT account_id, email, password, is_enabled, name, birthday FROM Q_USER WHERE email = :email
+                     SELECT account_id, email, password, is_enabled, name, birthday FROM Q_USERS WHERE email = :email
                 ]]>
             </value>
         </constructor-arg>

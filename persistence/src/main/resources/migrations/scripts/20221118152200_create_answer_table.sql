@@ -15,23 +15,20 @@
 --
 
 -- // create_answer_table
-CREATE TABLE Q_ANSWER (
-    ANSWER_ID NUMERIC(20,0) NOT NULL,
+CREATE TABLE Q_ANSWERS (
+    ANS_ID NUMERIC(20,0) NOT NULL,
+    QUESTION_ID NUMERIC(20,0) NOT NULL,
     CONTENT VARCHAR(1000) NOT NULL
-)/execute/
+)
+/execute/
 
-ALTER TABLE Q_ANSWER
-    ADD CONSTRAINT PK_Q_ANSWER
-        PRIMARY KEY (ANSWER_ID)/execute/
-
-CREATE SEQUENCE answer_sequence
-    START WITH     1
-    INCREMENT BY   1
-    NOCACHE
-    NOCYCLE/execute/
+ALTER TABLE Q_ANSWERS
+    ADD CONSTRAINT Q_ANSWERS_PK
+        PRIMARY KEY (ANS_ID)
+/execute/
 
 -- //@UNDO
-DROP TABLE Q_ANSWER/execute/
-DROP SEQUENCE answer_sequence/execute/
+DROP TABLE Q_ANSWERS
+/execute/
 
 
