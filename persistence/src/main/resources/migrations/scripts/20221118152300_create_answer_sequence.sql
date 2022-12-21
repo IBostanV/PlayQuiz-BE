@@ -15,7 +15,7 @@
 --
 
 -- // create_answer_sequence
-CREATE SEQUENCE answer_seq
+CREATE SEQUENCE answers_seq
     START WITH     1
     INCREMENT BY   1
     NOCACHE
@@ -23,7 +23,7 @@ CREATE SEQUENCE answer_seq
 /execute/
 
 -- //@UNDO
-DROP SEQUENCE answer_seq
+DROP SEQUENCE answers_seq
 /execute/
 
 

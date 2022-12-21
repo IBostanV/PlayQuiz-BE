@@ -1,8 +1,8 @@
 package com.play.quiz.service.impl;
 
 import com.play.quiz.dto.QuestionDto;
-import com.play.quiz.enums.QuestionCategory;
 import com.play.quiz.mapper.QuestionMapper;
+import com.play.quiz.model.Category;
 import com.play.quiz.repository.QuizQuestionRepository;
 import com.play.quiz.service.QuizQuestionService;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class QuizQuestionServiceImpl implements QuizQuestionService {
     }
 
     @Override
-    public List<QuestionDto> getCategoryQuestions(QuestionCategory category) {
+    public List<QuestionDto> getCategoryQuestions(final Category category) {
         return questionMapper.mapToDtoList(quizQuestionRepository.findByCategory(category));
     }
 }

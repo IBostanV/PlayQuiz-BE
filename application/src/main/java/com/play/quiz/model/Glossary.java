@@ -7,43 +7,50 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Q_ANSWER")
+@Table(name = "Q_GLOSSARIES")
 @Getter
 @Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Answer {
+public class Glossary {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answer_generator")
-    @SequenceGenerator(name = "answer_generator", sequenceName = "answers_seq", allocationSize = 1)
-    private Long answerId;
-    @ManyToOne(targetEntity = Question.class)
-    @JoinColumn(name = "QUESTION_ID")
-    private Question question;
-    private String content;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "glossary_generator")
+    @SequenceGenerator(name = "glossary_generator", sequenceName = "glossaries_seq", allocationSize = 1)
+    private Long termId;
+    private String key;
+    private String value;
+    @OneToOne(targetEntity = Category.class)
+    @JoinColumn(name = "CAT_ID")
+    private Category category;
+    @Lob
+    private byte[] attachment;
+    private String options;
     @OneToOne(targetEntity = Glossary.class)
-    @JoinColumn(name = "TERM_ID")
-    private Glossary glossary;
+    @JoinColumn(name = "PARENT_ID")
+    private Glossary parent;
+    @Column(name = "IS_ACTIVE")
+    private boolean isActive;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Answer answer = (Answer) o;
-        return answerId != null && Objects.equals(answerId, answer.answerId);
+        Glossary glossary = (Glossary) o;
+        return termId != null && Objects.equals(termId, glossary.termId);
     }
 
     @Override

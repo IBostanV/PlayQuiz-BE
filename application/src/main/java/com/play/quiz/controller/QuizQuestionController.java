@@ -1,7 +1,7 @@
 package com.play.quiz.controller;
 
 import com.play.quiz.dto.QuestionDto;
-import com.play.quiz.enums.QuestionCategory;
+import com.play.quiz.model.Category;
 import com.play.quiz.service.QuizQuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -27,7 +27,7 @@ public class QuizQuestionController {
     }
 
     @GetMapping(value = "/get-category-questions")
-    public ResponseEntity<List<QuestionDto>> getCategoryQuestions(@RequestParam QuestionCategory category) {
+    public ResponseEntity<List<QuestionDto>> getCategoryQuestions(@RequestParam final Category category) {
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(quizQuestionService.getCategoryQuestions(category));

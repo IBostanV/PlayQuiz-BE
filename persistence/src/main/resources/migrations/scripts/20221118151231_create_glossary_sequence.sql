@@ -15,7 +15,7 @@
 --
 
 -- // create_glossary_sequence
-CREATE SEQUENCE glossary_seq
+CREATE SEQUENCE glossaries_seq
     START WITH     1
     INCREMENT BY   1
     NOCACHE
@@ -24,7 +24,7 @@ CREATE SEQUENCE glossary_seq
 
 
 -- //@UNDO
-DROP SEQUENCE glossary_seq
+DROP SEQUENCE glossaries_seq
 /execute/
 
 

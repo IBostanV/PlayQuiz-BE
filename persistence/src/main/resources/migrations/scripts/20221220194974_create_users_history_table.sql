@@ -22,7 +22,6 @@ CREATE TABLE Q_USER_HISTORIES (
                         ANSWERS_JSON CLOB,
                         COMPLETED_DATE DATE,
                         SPENT_TIME NUMERIC(20,0) DEFAULT 0,
-                        EARNED_TROPHIES NUMERIC(20,0),
                         CONSTRAINT ENFORCE_HISTORY_JSON CHECK (ANSWERS_JSON IS JSON)
 )
 /execute/

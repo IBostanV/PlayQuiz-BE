@@ -11,39 +11,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Q_ANSWER")
+@Table(name = "Q_TROPHIES")
 @Getter
 @Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Answer {
+public class Trophy {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answer_generator")
-    @SequenceGenerator(name = "answer_generator", sequenceName = "answers_seq", allocationSize = 1)
-    private Long answerId;
-    @ManyToOne(targetEntity = Question.class)
-    @JoinColumn(name = "QUESTION_ID")
-    private Question question;
-    private String content;
-    @OneToOne(targetEntity = Glossary.class)
-    @JoinColumn(name = "TERM_ID")
-    private Glossary glossary;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trophy_generator")
+    @SequenceGenerator(name = "trophy_generator", sequenceName = "trophies_seq", allocationSize = 1)
+    private Long trophyId;
+    private String name;
+    @Lob
+    private byte[] attachment;
+    private String options;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Answer answer = (Answer) o;
-        return answerId != null && Objects.equals(answerId, answer.answerId);
+        Trophy trophy = (Trophy) o;
+        return trophyId != null && Objects.equals(trophyId, trophy.trophyId);
     }
 
     @Override
