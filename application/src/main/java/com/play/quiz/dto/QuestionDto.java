@@ -1,17 +1,30 @@
 package com.play.quiz.dto;
 
-import com.play.quiz.enums.QuestionCategory;
-import com.play.quiz.enums.QuestionTopic;
+import com.play.quiz.model.Account;
+import com.play.quiz.model.Answer;
+import com.play.quiz.model.Category;
 import lombok.Builder;
 import lombok.Value;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Value
 @Builder
 public class QuestionDto {
-    Integer id;
+    Long questionId;
+    Account account;
+    String type;
+    Object tipId;
+    Category category;
+    boolean isActive;
+    int complexityLevel;
     String content;
+    LocalDateTime createdDate;
+    LocalDateTime updatedDate;
+    Account updatedAccount;
+    String topic;
     int priority;
-    int difficulty;
-    QuestionTopic topic;
-    QuestionCategory category;
+    String attributes;
+    List<Answer> answers;
 }

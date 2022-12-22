@@ -12,38 +12,34 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Q_ANSWER")
+@Table(name = "Q_CATEGORIES")
 @Getter
 @Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Answer {
+public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answer_generator")
-    @SequenceGenerator(name = "answer_generator", sequenceName = "answers_seq", allocationSize = 1)
-    private Long answerId;
-    @ManyToOne(targetEntity = Question.class)
-    @JoinColumn(name = "QUESTION_ID")
-    private Question question;
-    private String content;
-    @OneToOne(targetEntity = Glossary.class)
-    @JoinColumn(name = "TERM_ID")
-    private Glossary glossary;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
+    @SequenceGenerator(name = "category_generator", sequenceName = "categories_seq", allocationSize = 1)
+    private Long categoryId;
+    private String name;
+    @OneToOne(targetEntity = Category.class)
+    @JoinColumn(name = "SUBCATEGORY_ID")
+    private Category parent;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Answer answer = (Answer) o;
-        return answerId != null && Objects.equals(answerId, answer.answerId);
+        Category category = (Category) o;
+        return categoryId != null && Objects.equals(categoryId, category.categoryId);
     }
 
     @Override

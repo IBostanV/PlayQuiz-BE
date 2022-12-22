@@ -13,12 +13,21 @@ public class QuestionMapperImpl implements QuestionMapper {
     @Override
     public QuestionDto mapToDto(final Question question) {
         return QuestionDto.builder()
-                .id(question.getQuestionId())
-                .category(question.getCategory())
-                .content(question.getContent())
-                .difficulty(question.getDifficulty())
-                .priority(question.getPriority())
+                .type(question.getType())
                 .topic(question.getTopic())
+                .tipId(question.getTipId())
+                .isActive(question.isActive())
+                .answers(question.getAnswers())
+                .account(question.getAccount())
+                .content(question.getContent())
+                .category(question.getCategory())
+                .priority(question.getPriority())
+                .attributes(question.getAttributes())
+                .questionId(question.getQuestionId())
+                .createdDate(question.getCreatedDate())
+                .updatedDate(question.getUpdatedDate())
+                .updatedAccount(question.getUpdatedAccount())
+                .complexityLevel(question.getComplexityLevel())
                 .build();
     }
 
@@ -32,12 +41,21 @@ public class QuestionMapperImpl implements QuestionMapper {
     @Override
     public Question mapToEntity(final QuestionDto questionDto) {
         return Question.builder()
-                .questionId(questionDto.getId())
-                .category(questionDto.getCategory())
-                .content(questionDto.getContent())
-                .difficulty(questionDto.getDifficulty())
-                .priority(questionDto.getPriority())
+                .type(questionDto.getType())
                 .topic(questionDto.getTopic())
+                .tipId(questionDto.getTipId())
+                .isActive(questionDto.isActive())
+                .answers(questionDto.getAnswers())
+                .account(questionDto.getAccount())
+                .content(questionDto.getContent())
+                .category(questionDto.getCategory())
+                .priority(questionDto.getPriority())
+                .attributes(questionDto.getAttributes())
+                .questionId(questionDto.getQuestionId())
+                .createdDate(questionDto.getCreatedDate())
+                .updatedDate(questionDto.getUpdatedDate())
+                .updatedAccount(questionDto.getUpdatedAccount())
+                .complexityLevel(questionDto.getComplexityLevel())
                 .build();
     }
 }
