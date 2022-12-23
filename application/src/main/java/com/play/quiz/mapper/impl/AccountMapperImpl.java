@@ -46,8 +46,8 @@ public class AccountMapperImpl implements AccountMapper {
     }
 
     private String handlePassword(final AccountDto accountDto) {
-        return Objects.isNull(accountDto.getPassword())
-                ? accountDto.getPassword()
-                : passwordEncoder.encode(accountDto.getPassword());
+        if (Objects.isNull(accountDto.getPassword())) return null;
+
+        return passwordEncoder.encode(accountDto.getPassword());
     }
 }

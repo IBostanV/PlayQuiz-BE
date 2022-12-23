@@ -31,7 +31,7 @@ import java.util.Objects;
 public class VerificationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "verification_tokens_generator")
-    @SequenceGenerator(name = "verification_tokens_generator", sequenceName = "verification_tokens_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "verification_tokens_generator", sequenceName = "verification_tokens_seq", allocationSize = 1)
     private Long tokenId;
     private String token;
     @Column(name = "ISSUED_DATE")

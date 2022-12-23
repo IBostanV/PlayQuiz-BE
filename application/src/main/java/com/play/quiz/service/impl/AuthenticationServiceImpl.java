@@ -23,20 +23,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AccountInfo register(final AccountDto accountDto) {
         SystemAssert.isAccountUnique(userService.userExists(accountDto), accountDto.getEmail());
-
-        final AccountDto persistedAccount = userService.save(accountDto);
-        final Authentication authentication = authenticateUser(accountDto);
-
+        AccountDto persistedAccount = userService.save(accountDto);
         userService.sendAccountVerificationEmail(persistedAccount);
 
-        return buildAccountInfo(persistedAccount, authentication);
+        return buildAccountInfo(persistedAccount, authenticate(accountDto));
     }
 
     @Override
     public AccountInfo login(final AccountDto accountDto) {
-        final AccountDto existingAccount = userService.findByEmail(accountDto.getEmail());
+        AccountDto existingAccount = userService.findByEmail(accountDto.getEmail());
         SystemAssert.isAccountEnabled(existingAccount.isEnabled(), accountDto.getEmail());
-        final Authentication authentication = authenticateUser(accountDto);
+        Authentication authentication = authenticate(accountDto);
 
         return buildAccountInfo(existingAccount, authentication);
     }
@@ -45,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return new AccountInfo(jwtProvider.generate(authentication), accountDto);
     }
 
-    private Authentication authenticateUser(final AccountDto accountDto) {
+    private Authentication authenticate(final AccountDto accountDto) {
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(accountDto.getEmail(), accountDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
