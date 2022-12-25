@@ -9,13 +9,13 @@
                 MERGE INTO Q_USERS
                 USING DUAL ON (ACCOUNT_ID = :accountId)
                 WHEN MATCHED THEN
-                    UPDATE SET NAME = :name,
-                        EMAIL = :email,
-                        PASSWORD = :password,
-                        IS_ENABLED = :isEnabled
+                UPDATE SET NAME = :name,
+                EMAIL = :email,
+                PASSWORD = :password,
+                IS_ENABLED = :isEnabled
                 WHEN NOT MATCHED THEN
-                    INSERT (ACCOUNT_ID, NAME, EMAIL, PASSWORD, BIRTHDAY, IS_ENABLED)
-                     VALUES (:accountId, :name, :email, :password, :birthday, :isEnabled)
+                INSERT (ACCOUNT_ID, NAME, EMAIL, PASSWORD, BIRTHDAY, IS_ENABLED)
+                VALUES (:accountId, :name, :email, :password, :birthday, :isEnabled)
             </value>
         </constructor-arg>
     </bean>
@@ -34,7 +34,19 @@
         <constructor-arg>
             <value>
                 <![CDATA[
-                     SELECT account_id, email, password, is_enabled, name, birthday FROM Q_USERS WHERE email = :email
+                     SELECT
+                         u.account_id,
+                         u.email,
+                         u.password,
+                         u.is_enabled,
+                         u.birthday,
+                         u.name,
+                         r.role_id,
+                         r.name
+                     FROM Q_USERS u
+                     LEFT JOIN Q_USERS_ROLES ur ON u.account_id = ur.account_id
+                     LEFT JOIN Q_ROLES r ON ur.role_id = r.role_id
+                     WHERE u.email = :email
                 ]]>
             </value>
         </constructor-arg>
