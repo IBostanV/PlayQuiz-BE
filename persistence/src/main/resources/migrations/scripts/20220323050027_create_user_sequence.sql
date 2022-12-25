@@ -14,23 +14,15 @@
 --    limitations under the License.
 --
 
--- // create_categories_sequence
-ALTER TABLE Q_CATEGORIES
-    ADD CONSTRAINT SUBCATEGORIES_CATEGORIES_FK
-        FOREIGN KEY (SUBCATEGORY_ID)
-            REFERENCES Q_CATEGORIES(CAT_ID)
-            ON DELETE CASCADE
-/execute/
-
-ALTER TABLE Q_CATEGORIES
-    ADD CONSTRAINT NAME_UNIQUE
-        UNIQUE (NAME)
+-- // create_user_sequence
+CREATE SEQUENCE USERS_SEQ
+    START WITH     1
+    INCREMENT BY   1
+    NOCACHE
+    NOCYCLE
 /execute/
 
 
 -- //@UNDO
--- SQL to undo the change goes here.
-ALTER TABLE Q_CATEGORIES DROP CONSTRAINT SUBCATEGORIES_CATEGORIES_FK
-/execute/
-ALTER TABLE Q_CATEGORIES DROP CONSTRAINT NAME_UNIQUE
-/execute/
+DROP SEQUENCE USERS_SEQ
+    /execute/

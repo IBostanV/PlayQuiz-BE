@@ -33,8 +33,7 @@ public class Account implements Cloneable{
     @Column(name = "IS_ENABLED")
     private boolean isEnabled;
 
-    @SneakyThrows
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 

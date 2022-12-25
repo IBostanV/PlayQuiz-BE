@@ -10,12 +10,18 @@ import java.time.LocalDate;
 @Value
 @Builder
 public class AccountDto {
+
     Long id;
+
     String name;
+
     @Email(regexp = ".+@.+\\..+", message="Please provide a valid email address")
     String email;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
+
     LocalDate birthday;
+
     boolean isEnabled;
 }

@@ -41,7 +41,12 @@ public class UserRepositoryImpl implements UserRepository {
 
     private Account executeSave(final Long accountId, final Account account) {
         namedParameterJdbcTemplate.update(saveUserSql, getProperties(accountId, account));
-        return ((Account) account.clone()).withId(accountId);
+
+        try {
+            return ((Account) account.clone()).withId(accountId);
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Map<String, Object> getProperties(final Long accountId, final Account account) {

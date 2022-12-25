@@ -28,8 +28,9 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
     @SequenceGenerator(name = "category_generator", sequenceName = "categories_seq", allocationSize = 1)
-    private Long categoryId;
+    private Long catId;
     private String name;
+    private String naturalId;
     @OneToOne(targetEntity = Category.class)
     @JoinColumn(name = "SUBCATEGORY_ID")
     private Category parent;
@@ -39,7 +40,7 @@ public class Category {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Category category = (Category) o;
-        return categoryId != null && Objects.equals(categoryId, category.categoryId);
+        return catId != null && Objects.equals(catId, category.catId);
     }
 
     @Override

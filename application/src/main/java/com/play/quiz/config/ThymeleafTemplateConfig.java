@@ -21,7 +21,7 @@ public class ThymeleafTemplateConfig {
         return springTemplateEngine;
     }
 
-    public ClassLoaderTemplateResolver emailTemplateResolver() {
+    private ClassLoaderTemplateResolver emailTemplateResolver() {
         final ClassLoaderTemplateResolver emailTemplateResolver = new ClassLoaderTemplateResolver();
         emailTemplateResolver.setPrefix(templatePrefix);
         emailTemplateResolver.setSuffix(templateSuffix);

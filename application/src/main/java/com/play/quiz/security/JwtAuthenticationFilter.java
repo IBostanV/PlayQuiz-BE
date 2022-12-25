@@ -60,6 +60,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
                 .filter(header -> header.startsWith(JWT_TOKEN_PREFIX))
                 .map(header -> header.replace(JWT_TOKEN_PREFIX, ""))
-                .orElse("");
+                .orElse(null);
     }
 }
