@@ -9,4 +9,6 @@
 - mvn migration:down -Dmigration.down.steps=Number_of_migrations_to_rollback
 - mvn migration:status
 
+- git rm -r --cached . -> remove git cached files
+
 - git rm -r --cached . -> remove cached files from cache

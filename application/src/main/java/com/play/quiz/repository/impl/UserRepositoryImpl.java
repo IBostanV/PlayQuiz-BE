@@ -1,6 +1,7 @@
 package com.play.quiz.repository.impl;
 
 import com.play.quiz.model.Account;
+import com.play.quiz.model.Role;
 import com.play.quiz.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -75,6 +78,20 @@ public class UserRepositoryImpl implements UserRepository {
                 .isEnabled(resultSet.getObject(4, Boolean.class))
                 .birthday(resultSet.getObject(5, LocalDate.class))
                 .name(resultSet.getObject(6, String.class))
+                .roles(getRoles(resultSet))
                 .build();
+    }
+
+    private static List<Role> getRoles(ResultSet resultSet) throws SQLException {
+        List<Role> roles = new ArrayList<>();
+
+        do {
+            Long roleId = resultSet.getObject(7, Long.class);
+            String roleName = resultSet.getObject(8, String.class);
+
+            roles.add(new Role(roleId, roleName));
+        } while (resultSet.next());
+
+        return roles;
     }
 }
