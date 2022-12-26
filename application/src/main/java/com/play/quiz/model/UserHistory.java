@@ -36,19 +36,25 @@ public class UserHistory {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "history_generator")
     @SequenceGenerator(name = "history_generator", sequenceName = "user_history_seq", allocationSize = 1)
     private Long historyId;
+
     @OneToOne(targetEntity = Account.class)
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
+
     @ManyToOne(targetEntity = Quiz.class)
     @JoinColumn(name = "QUIZ_ID")
     private Quiz quiz;
+
     @Lob
     @Column(name = "ANSWERS_JSON")
     private String answersJson;
+
     @Column(name = "COMPLETED_DATE")
     private LocalDateTime completedDate;
+
     @Column(name = "SPENT_TIME")
     private Double spentTime;
+
     @ManyToMany
     @JoinTable(name = "Q_HISTORY_TROPHY",
             joinColumns = @JoinColumn(name = "HISTORY_ID"),

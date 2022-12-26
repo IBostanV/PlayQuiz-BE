@@ -28,9 +28,12 @@ public class Trophy {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trophy_generator")
     @SequenceGenerator(name = "trophy_generator", sequenceName = "trophies_seq", allocationSize = 1)
     private Long trophyId;
+
     private String name;
+
     @Lob
     private byte[] attachment;
+
     private String options;
 
     @Override

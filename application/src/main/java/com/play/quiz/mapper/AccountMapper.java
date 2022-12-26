@@ -2,12 +2,29 @@ package com.play.quiz.mapper;
 
 import com.play.quiz.dto.AccountDto;
 import com.play.quiz.model.Account;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-public interface AccountMapper {
+import java.util.Objects;
 
-    AccountDto toDto(final Account account);
+@Mapper(componentModel = "spring")
+public abstract class AccountMapper {
 
-    AccountDto toDtoWithId(final Account account, final Long id);
+    private @Autowired PasswordEncoder passwordEncoder;
 
-    Account toEntity(final AccountDto accountDto);
+    @Mapping(target = "password", ignore = true)
+    public abstract AccountDto toDto(final Account account);
+
+    @Mapping(target = "password", source = "password", qualifiedByName = "handlePassword")
+    public abstract Account toEntity(final AccountDto accountDto);
+
+    @Named("handlePassword")
+    protected String handlePassword(final String password) {
+        if (Objects.isNull(password)) return null;
+
+        return passwordEncoder.encode(password);
+    }
 }

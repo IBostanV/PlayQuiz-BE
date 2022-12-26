@@ -6,7 +6,7 @@ import com.play.quiz.email.helper.EmailMessage;
 import com.play.quiz.email.helper.EmailMessageFactory;
 import com.play.quiz.exception.RecordNotFoundException;
 import com.play.quiz.exception.UserNotFoundException;
-import com.play.quiz.mapper.impl.AccountMapperImpl;
+import com.play.quiz.mapper.AccountMapper;
 import com.play.quiz.model.Account;
 import com.play.quiz.model.VerificationToken;
 import com.play.quiz.repository.UserRepository;
@@ -27,24 +27,21 @@ import java.time.LocalDateTime;
 public class UserServiceImpl implements UserService {
     private final EmailService emailService;
     private final UserRepository userRepository;
-    private final AccountMapperImpl accountMapper;
+    private final AccountMapper accountMapper;
     private final EmailMessageFactory emailMessageFactory;
     private final VerificationTokenService verificationTokenService;
 
     @Override
-    public AccountDto save(final AccountDto accountDto) {
+    public Account save(final AccountDto accountDto) {
         final Account account = accountMapper.toEntity(accountDto);
-        final Account savedAccount = userRepository.save(account);
-        return accountMapper.toDto(savedAccount);
+        return userRepository.save(account);
     }
 
     @Override
-    public AccountDto findByEmail(final @NonNull String userEmail) {
+    public Account findByEmail(final @NonNull String userEmail) {
         log.info("Find user by email: " + userEmail);
-        final Account account = userRepository.findUserByEmail(userEmail)
+        return userRepository.findUserByEmail(userEmail)
                 .orElseThrow(() -> new UserNotFoundException("No user found with email: " + userEmail));
-
-        return accountMapper.toDto(account);
     }
 
     @Override
@@ -76,10 +73,9 @@ public class UserServiceImpl implements UserService {
 
     @Async
     @Override
-    public void sendAccountVerificationEmail(final AccountDto accountDto) {
-        final Account account = accountMapper.toEntity(accountDto);
+    public void sendAccountVerificationEmail(final Account account) {
         final VerificationToken verificationToken = verificationTokenService.createVerificationToken(account);
-        final EmailMessage emailMessage = emailMessageFactory.createAccountVerificationEmailMessage(accountDto, verificationToken);
+        final EmailMessage emailMessage = emailMessageFactory.createAccountVerificationEmailMessage(account, verificationToken);
 
         handleEmailSending(emailMessage);
     }

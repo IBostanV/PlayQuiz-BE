@@ -31,17 +31,24 @@ public class Glossary {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "glossary_generator")
     @SequenceGenerator(name = "glossary_generator", sequenceName = "glossaries_seq", allocationSize = 1)
     private Long termId;
+
     private String key;
+
     private String value;
+
     @OneToOne(targetEntity = Category.class)
     @JoinColumn(name = "CAT_ID")
     private Category category;
+
     @Lob
     private byte[] attachment;
+
     private String options;
+
     @OneToOne(targetEntity = Glossary.class)
     @JoinColumn(name = "PARENT_ID")
     private Glossary parent;
+
     @Column(name = "IS_ACTIVE")
     private boolean isActive;
 

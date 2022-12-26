@@ -1,6 +1,6 @@
 package com.play.quiz.email.helper;
 
-import com.play.quiz.dto.AccountDto;
+import com.play.quiz.model.Account;
 import com.play.quiz.model.VerificationToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,12 +18,12 @@ public class EmailMessageFactory {
     private static final String accountActivationSubject = "Activate your account";
     private static final String accountActivationEmailTemplate = "confirmation-email.html";
 
-    public EmailMessage createAccountVerificationEmailMessage(final AccountDto accountDto, final VerificationToken verificationToken) {
+    public EmailMessage createAccountVerificationEmailMessage(final Account account, final VerificationToken verificationToken) {
         final Map<String, Object> properties = Map.of("token", verificationToken.getToken(),
                 "activateAccountServerHost", serverHostUrl + activateAccountPath);
 
         return EmailMessage.builder()
-                .to(accountDto.getEmail())
+                .to(account.getEmail())
                 .from(defaultSenderEmailAddress)
                 .subject(accountActivationSubject)
                 .template(accountActivationEmailTemplate)
