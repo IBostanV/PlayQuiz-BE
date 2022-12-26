@@ -2,10 +2,12 @@ package com.play.quiz.controller;
 
 import com.play.quiz.exception.RecordNotFoundException;
 import com.play.quiz.exception.UserNotFoundException;
+import com.play.quiz.model.helpers.FieldMessagePair;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,32 +21,32 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ExceptionHandlingController {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> userNotFound(final UserNotFoundException userNotFound) {
-        log.info(userNotFound.getMessage());
+    @ExceptionHandler({UserNotFoundException.class, UsernameNotFoundException.class})
+    public ResponseEntity<String> userNotFound(final UserNotFoundException exception) {
+        log.info(exception.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(userNotFound.getMessage());
+                .body(exception.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> accessDenied(final AccessDeniedException exception) {
+        log.info(exception.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(exception.getMessage());
     }
 
     @ExceptionHandler(RecordNotFoundException.class)
-    public ResponseEntity<String> recordNotFound(final RecordNotFoundException recordNotFoundException) {
-        log.info(recordNotFoundException.getMessage());
+    public ResponseEntity<String> recordNotFound(final RecordNotFoundException exception) {
+        log.info(exception.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(recordNotFoundException.getMessage());
+                .body(exception.getMessage());
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> runtimeException(final RuntimeException runtimeException) {
-        log.info(runtimeException.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(runtimeException.getMessage());
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> runtimeException(final Exception exception) {
+    public ResponseEntity<String> runtimeException(final RuntimeException exception) {
         log.info(exception.getMessage());
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -52,14 +54,16 @@ public class ExceptionHandlingController {
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<List<Pair<String, String>>> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
+    public ResponseEntity<List<FieldMessagePair<String, String>>> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
         final List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
 
-        final List<Pair<String, String>> violatedFields = fieldErrors.stream()
-                .filter(fieldError -> Objects.nonNull(fieldError.getDefaultMessage()))
-                .map(fieldError -> Pair.of(fieldError.getField(), fieldError.getDefaultMessage()))
-                .collect(Collectors.toList());
+        return ResponseEntity.badRequest().body(getViolatedFields(fieldErrors));
+    }
 
-        return ResponseEntity.badRequest().body(violatedFields);
+    private static List<FieldMessagePair<String, String>> getViolatedFields(List<FieldError> fieldErrors) {
+        return fieldErrors.stream()
+                .filter(fieldError -> Objects.nonNull(fieldError.getDefaultMessage()))
+                .map(fieldError -> FieldMessagePair.of(fieldError.getField(), fieldError.getDefaultMessage()))
+                .collect(Collectors.toList());
     }
 }

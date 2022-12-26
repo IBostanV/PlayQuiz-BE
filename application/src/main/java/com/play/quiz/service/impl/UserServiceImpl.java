@@ -88,6 +88,7 @@ public class UserServiceImpl implements UserService {
         try { emailService.sendEmail(emailMessage); }
         catch (MessagingException exception) {
             log.warn(exception.getMessage());
+            throw new RuntimeException(exception.getMessage());
         }
     }
 }
