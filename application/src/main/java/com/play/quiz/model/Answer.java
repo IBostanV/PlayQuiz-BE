@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Q_ANSWER")
+@Table(name = "Q_ANSWERS")
 @Getter
 @Builder
 @ToString
@@ -29,11 +29,14 @@ public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answer_generator")
     @SequenceGenerator(name = "answer_generator", sequenceName = "answers_seq", allocationSize = 1)
-    private Long answerId;
+    private Long ansId;
+
     @ManyToOne(targetEntity = Question.class)
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
+
     private String content;
+
     @OneToOne(targetEntity = Glossary.class)
     @JoinColumn(name = "TERM_ID")
     private Glossary glossary;
@@ -43,7 +46,7 @@ public class Answer {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Answer answer = (Answer) o;
-        return answerId != null && Objects.equals(answerId, answer.answerId);
+        return ansId != null && Objects.equals(ansId, answer.ansId);
     }
 
     @Override

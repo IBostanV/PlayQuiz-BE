@@ -54,8 +54,8 @@ public class GlossaryController {
     public ResponseEntity<GlossaryDto> saveGlossary(@Valid @RequestPart(name = "glossary") final GlossaryDto glossaryDto,
                                                     @RequestPart(required = false) final MultipartFile attachment) {
         final GlossaryDto responseBody = glossaryService.save(glossaryDto,attachment);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(responseBody);
+
+        return ResponseEntity.ok(responseBody);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

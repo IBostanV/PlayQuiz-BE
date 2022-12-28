@@ -27,17 +27,17 @@ public class CategoryController {
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDto> getCategory(@RequestParam(required = false) final Long id,
                                                    @RequestParam(required = false) final String naturalId) {
-        CategoryDto categoryDto = Objects.nonNull(id) ? categoryService.getById(id) :
-                categoryService.getByNaturalId(naturalId);
-
-        return ResponseEntity.ok().body(categoryDto);
+        if (Objects.nonNull(id)) {
+            return ResponseEntity.ok(categoryService.getById(id));
+        }
+        return ResponseEntity.ok(categoryService.getByNaturalId(naturalId));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDto> saveCategory(@Valid @RequestBody final CategoryDto requestCategory) {
         final CategoryDto categoryDto = categoryService.save(requestCategory);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(categoryDto);
+
+        return ResponseEntity.ok(categoryDto);
     }
 
     @DeleteMapping("/{categoryId}")

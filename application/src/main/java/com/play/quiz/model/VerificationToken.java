@@ -33,13 +33,18 @@ public class VerificationToken {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "verification_tokens_generator")
     @SequenceGenerator(name = "verification_tokens_generator", sequenceName = "verification_tokens_seq", allocationSize = 1)
     private Long tokenId;
+
     private String token;
+
     @Column(name = "ISSUED_DATE")
     private LocalDateTime issuedDate;
+
     @Column(name = "VALIDITY_PERIOD")
     private Integer validityPeriod;
+
     @Setter @Column(name = "ACTIVATION_DATE")
     private LocalDateTime activationDate;
+
     @OneToOne(targetEntity = Account.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;

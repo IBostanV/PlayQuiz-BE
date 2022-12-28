@@ -29,8 +29,11 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
     @SequenceGenerator(name = "category_generator", sequenceName = "categories_seq", allocationSize = 1)
     private Long catId;
+
     private String name;
+
     private String naturalId;
+
     @OneToOne(targetEntity = Category.class)
     @JoinColumn(name = "SUBCATEGORY_ID")
     private Category parent;

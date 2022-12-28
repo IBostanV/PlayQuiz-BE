@@ -31,15 +31,20 @@ public class Quiz {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "quiz_generator")
     @SequenceGenerator(name = "quiz_generator", sequenceName = "quizzes_seq", allocationSize = 1)
     private Long quizId;
+
     @OneToOne(targetEntity = Category.class)
     @JoinColumn(name = "CAT_ID")
     private Category category;
+
     @Column(name = "QUESTION_IDS")
     private String questionIds;
+
     @Column(name = "CREATED_DATE")
     private LocalDateTime createdDate;
+
     @Column(name = "UPDATED_DATE")
     private LocalDateTime updatedDate;
+
     @Column(name = "QUESTIONS_COUNT")
     private int questionsCount;
 

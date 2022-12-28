@@ -1,11 +1,12 @@
 package com.play.quiz.dto;
 
-import com.play.quiz.model.Account;
-import com.play.quiz.model.Answer;
-import com.play.quiz.model.Category;
+import com.play.quiz.enums.QuestionType;
 import lombok.Builder;
 import lombok.Value;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,27 +14,27 @@ import java.util.List;
 @Builder
 public class QuestionDto {
 
-    Long questionId;
+    Long id;
 
-    Account account;
+    AccountDto createdAccount;
 
-    String type;
+    QuestionType type;
 
     Object tipId;
 
-    Category category;
+    @NotNull CategoryDto category;
 
     boolean isActive;
 
     int complexityLevel;
 
-    String content;
+    @NotBlank String content;
 
     LocalDateTime createdDate;
 
     LocalDateTime updatedDate;
 
-    Account updatedAccount;
+    AccountDto updatedAccount;
 
     String topic;
 
@@ -41,5 +42,5 @@ public class QuestionDto {
 
     String attributes;
 
-    List<Answer> answers;
+    List<AnswerDto> answers;
 }
