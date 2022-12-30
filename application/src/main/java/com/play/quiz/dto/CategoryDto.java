@@ -4,7 +4,7 @@ import com.play.quiz.model.Category;
 import lombok.Builder;
 import lombok.Value;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 @Value
 @Builder

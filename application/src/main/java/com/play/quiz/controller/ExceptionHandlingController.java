@@ -29,6 +29,14 @@ public class ExceptionHandlingController {
                 .body(exception.getMessage());
     }
 
+    @ExceptionHandler(RecordNotFoundException.class)
+    public ResponseEntity<String> recordNotFound(final RecordNotFoundException exception) {
+        log.info(exception.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(exception.getMessage());
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<String> accessDenied(final AccessDeniedException exception) {
         log.info(exception.getMessage());
@@ -37,11 +45,11 @@ public class ExceptionHandlingController {
                 .body(exception.getMessage());
     }
 
-    @ExceptionHandler(RecordNotFoundException.class)
-    public ResponseEntity<String> recordNotFound(final RecordNotFoundException exception) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> illegalArgument(final IllegalArgumentException exception) {
         log.info(exception.getMessage());
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.BAD_REQUEST)
                 .body(exception.getMessage());
     }
 

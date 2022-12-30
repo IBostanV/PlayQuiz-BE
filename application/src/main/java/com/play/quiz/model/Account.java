@@ -1,21 +1,22 @@
 package com.play.quiz.model;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
 @Entity
 @Table(name = "Q_USERS")
 @Builder(toBuilder = true)
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,15 +51,15 @@ public class Account implements Cloneable{
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
     private List<Role> roles = new ArrayList<>();
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 
     public void enable() { this.isEnabled = true; }
+
+    public void setIsEnabled(final boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
 
     public Account withId(final Long accountId) {
         this.accountId = accountId;

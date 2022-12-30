@@ -2,7 +2,7 @@ package com.play.quiz.email;
 
 import com.play.quiz.email.helper.EmailMessage;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 
 public interface EmailService {
 

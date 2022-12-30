@@ -8,9 +8,10 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Builder;
 import lombok.Value;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.List;
 
 @Value
 @Builder
@@ -33,4 +34,6 @@ public class AccountDto {
     LocalDate birthday;
 
     boolean isEnabled;
+
+    List<RoleDto> roles;
 }

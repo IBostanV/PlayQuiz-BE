@@ -1,6 +1,6 @@
 package com.play.quiz.security;
 
-import io.jsonwebtoken.Jwts;
+import com.play.quiz.util.jwt.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,8 +17,9 @@ public class JwtProvider {
     @Value("${application.security.jwt.secret}")
     private String jwtSecret;
 
-    public String getEmail(final String token) {
+    public String getUsernameFromToken(final String token) {
         Assert.hasText(token, "Authentication token can not be empty.");
+
         return Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
@@ -32,6 +33,7 @@ public class JwtProvider {
 
     private String generateToken(final Authentication authentication) {
         final User principal = (User)authentication.getPrincipal();
+
         return Jwts.builder()
                 .setSubject(principal.getUsername())
                 .setIssuedAt(new Date())
