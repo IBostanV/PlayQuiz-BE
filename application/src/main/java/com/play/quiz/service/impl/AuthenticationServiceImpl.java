@@ -9,6 +9,7 @@ import com.play.quiz.service.AuthenticationService;
 import com.play.quiz.service.UserService;
 import com.play.quiz.util.SystemAssert;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
+    @Value("${application.email.sending.enabled:true}")
+    private String emailEnabled;
+
     private final JwtProvider jwtProvider;
     private final UserService userService;
     private final AccountMapper accountMapper;
@@ -27,7 +31,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public AccountInfo register(final AccountDto accountDto) {
         SystemAssert.isAccountUnique(userService.userExists(accountDto), accountDto.getEmail());
         Account account = userService.save(accountDto);
-        userService.sendAccountVerificationEmail(account);
+
+        if (Boolean.parseBoolean(emailEnabled)) {
+            userService.sendAccountVerificationEmail(account);
+        }
 
         return buildAccountInfo(account, authenticate(accountDto));
     }

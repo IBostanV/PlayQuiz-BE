@@ -1,5 +1,14 @@
 package com.play.quiz.model;
 
+import com.play.quiz.enums.UserRole;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,12 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
@@ -28,7 +31,8 @@ public class Role {
     @SequenceGenerator(name = "roles_generator", sequenceName = "roles_seq", allocationSize = 1)
     private Long roleId;
 
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private UserRole name;
 
     @Override
     public boolean equals(Object o) {

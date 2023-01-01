@@ -9,7 +9,6 @@ import com.play.quiz.service.CategoryService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +24,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @NonNull
     @Override
-    @Transactional
     public CategoryDto getById(final Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RecordNotFoundException("No records found by category id: " + categoryId));

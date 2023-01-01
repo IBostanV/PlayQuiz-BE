@@ -12,14 +12,16 @@ import com.play.quiz.model.VerificationToken;
 import com.play.quiz.repository.UserRepository;
 import com.play.quiz.service.UserService;
 import com.play.quiz.service.VerificationTokenService;
+import jakarta.mail.MessagingException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -38,6 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Account findByEmail(final @NonNull String userEmail) {
         log.info("Find user by email: " + userEmail);
         return userRepository.findUserByEmail(userEmail)
@@ -45,6 +48,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<AccountDto> getAccountList() {
+        List<Account> accounts = userRepository.findAll();
+        return accountMapper.toDtoList(accounts);
+    }
+
+    @Override
+    @Transactional
     public boolean userExists(final AccountDto accountDto) {
         return userRepository.findUserByEmail(accountDto.getEmail()).isPresent();
     }

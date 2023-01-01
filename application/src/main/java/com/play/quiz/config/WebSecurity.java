@@ -10,7 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,7 +28,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class WebSecurity {
     @Value("#{'${application.security.allowed-origins}'.split(',')}")
     private final List<String> allowedOrigins;
@@ -44,9 +44,10 @@ public class WebSecurity {
         return http.cors()
                 .and().logout()
                 .and().csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/api/**").authenticated()
-                .and().exceptionHandling()
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/auth/**").permitAll()
+                        .anyRequest().authenticated())
+                .exceptionHandling()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

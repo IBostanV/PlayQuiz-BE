@@ -12,9 +12,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service("quizUserDetailsService")
@@ -24,6 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public UserDetails loadByEmail(final String userEmail) {
         final Account account = userRepository.findUserByEmail(userEmail)
                 .orElseThrow(() -> new UserNotFoundException("No user found with email: " + userEmail));
@@ -39,21 +42,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private static List<? extends GrantedAuthority> getUserAuthorities(final Account account) {
+        if (CollectionUtils.isEmpty(account.getRoles())) {
+            return Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name()));
+        }
+
         return account.getRoles().stream()
                 .map(Role::getName)
-                .map(UserDetailsServiceImpl::getRoles)
+                .map(Enum::name)
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 
-    private static GrantedAuthority getRoles(final String roleName) {
-        if (Objects.isNull(roleName)) {
-            return new SimpleGrantedAuthority(UserRole.ROLE_USER.name());
-        }
-        return new SimpleGrantedAuthority(roleName);
-    }
-
     @Override
-    public UserDetails loadUserByUsername(String user) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String user) throws UsernameNotFoundException {
         return loadByEmail(user);
     }
 }

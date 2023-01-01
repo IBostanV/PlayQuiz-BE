@@ -4,6 +4,8 @@ import com.play.quiz.dto.AccountDto;
 import com.play.quiz.model.helpers.AccountInfo;
 import com.play.quiz.service.AuthenticationService;
 import com.play.quiz.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
 
 @Slf4j
@@ -56,7 +56,12 @@ public class AuthenticationController {
     }
 
     @GetMapping(value = "/activate-account")
-    public void activateAccount(@RequestParam final String token, final HttpServletResponse response) {
+    public ResponseEntity<Void> activateAccount(@RequestParam final String token, final HttpServletResponse response) {
+        handleActivation(token, response);
+        return ResponseEntity.ok().build();
+    }
+
+    private void handleActivation(final String token, final HttpServletResponse response) {
         try {
             userService.activateAccount(token);
             response.sendRedirect(domainHostUrl);
