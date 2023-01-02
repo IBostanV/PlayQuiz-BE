@@ -3,6 +3,7 @@ package com.play.quiz.fixtures;
 import com.play.quiz.dto.AccountDto;
 
 import java.time.LocalDate;
+import java.util.Collections;
 
 public class AccountDtoFixture {
 
@@ -33,6 +34,7 @@ public class AccountDtoFixture {
                 .id(userId)
                 .password("password")
                 .name("User")
-                .birthday(LocalDate.of(2022, 12, 31));
+                .birthday(LocalDate.of(2022, 12, 31))
+                .roles(Collections.singletonList(RoleDtoFixture.getUserRole()));
     }
 }

@@ -17,7 +17,6 @@ public abstract class AccountMapper {
 
     private @Autowired PasswordEncoder passwordEncoder;
 
-    @Mapping(target = "roles", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "id", source = "accountId")
     public abstract AccountDto toDto(final Account account);
@@ -25,7 +24,6 @@ public abstract class AccountMapper {
     @IterableMapping(qualifiedByName = "mappingFields")
     public abstract List<AccountDto> toDtoList(final List<Account> account);
 
-    @Mapping(target = "roles", ignore = true)
     @Mapping(target = "accountId", source = "id")
     @Mapping(target = "password", source = "password", qualifiedByName = "handlePassword")
     public abstract Account toEntity(final AccountDto accountDto);

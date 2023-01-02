@@ -5,6 +5,7 @@ import com.play.quiz.model.Account;
 import com.play.quiz.model.Role;
 import com.play.quiz.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -27,10 +29,13 @@ import java.util.stream.Collectors;
 import static java.math.BigDecimal.ONE;
 import static java.util.stream.Collectors.groupingBy;
 
+@Slf4j
 @Repository
 @AllArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
     private final String saveUserSql;
+
+    private final String saveUserRoles;
 
     private final String findUserByEmailSql;
 
@@ -51,63 +56,77 @@ public class UserRepositoryImpl implements UserRepository {
 
     private Account handleInsert(final Account account) {
         final Long nextUserId = jdbcTemplate.queryForObject(userSequenceNextVal, Long.class);
+        log.info("Execute INSERT USER with id: "+ nextUserId);
         return executeSave(nextUserId, account);
     }
 
     private Account handleUpdate(final Account account) {
+        log.info("Execute UPDATE USER with id: "+ account.getAccountId());
         return executeSave(account.getAccountId(), account);
     }
 
     private Account executeSave(final Long accountId, final Account account) {
-        namedJdbcTemplate.update(saveUserSql, getProperties(accountId, account));
-
         try {
+            namedJdbcTemplate.update(saveUserSql, getProperties(accountId, account));
+            account.getRoles().forEach(role -> namedJdbcTemplate.update(saveUserRoles,
+                    Map.of("accountId", accountId, "roleId", role.getRoleId())));
+
+            log.info("User with id: "+ accountId +" successfully saved");
             return ((Account) account.clone()).withId(accountId);
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+        } catch (CloneNotSupportedException exception) {
+            log.error(exception.getMessage());
+            throw new RuntimeException(exception);
         }
     }
 
     private Map<String, Object> getProperties(final Long accountId, final Account account) {
-        final Function<Object, Object> mapNull = (input) -> Objects.nonNull(input) ? input : "";
+        Map<String, Object> propertyMap = new HashMap<>();
+        propertyMap.put("accountId", accountId);
+        propertyMap.put("email", account.getEmail());
+        propertyMap.put("isEnabled", account.isEnabled());
+        propertyMap.put("password", account.getPassword());
+        propertyMap.put("name", mapNull().apply(account.getName()));
+        propertyMap.put("birthday", mapNull().apply(account.getBirthday()));
+        return propertyMap;
+    }
 
-        return Map.of(
-                "accountId", accountId,
-                "email", account.getEmail(),
-                "isEnabled", account.isEnabled(),
-                "password", account.getPassword(),
-                "name", mapNull.apply(account.getName()),
-                "birthday", mapNull.apply(account.getBirthday()));
+    private Function<Object, Object> mapNull() {
+        return (input) -> Objects.nonNull(input) ? input : "";
     }
 
     @Override
     public Optional<Account> findUserByEmail(final String email) {
-        return executeQueryForObject(email).map(account -> {
-            handleRoles(account);
-            return account;
-        });
+        return executeQueryForObject(email).map(this::setAccountRoles);
+    }
+
+    private Account setAccountRoles(final Account account) {
+        List<Role> roles = handleRoles(account);
+        log.info("Found roles: "+ roles +" for user: "+ account.getEmail());
+        account.setRoles(roles);
+        return account;
     }
 
     private Optional<Account> executeQueryForObject(final String email) {
         try {
             BeanPropertyRowMapper<Account> rowMapper = new BeanPropertyRowMapper<>(Account.class);
             Account account = namedJdbcTemplate.queryForObject(findUserByEmailSql, Map.of("email", email), rowMapper);
+            log.info("Found user with email: "+ email);
 
             return Optional.ofNullable(account);
         } catch (EmptyResultDataAccessException exception) {
+            log.info("No user found with email: "+ email);
             return Optional.empty();
         }
     }
 
-    private void handleRoles(final Account account) {
+    private List<Role> handleRoles(final Account account) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource("accountId", account.getAccountId());
         List<Map<String, Object>> rolesMap = namedJdbcTemplate.queryForList(findUserRolesSql, parameterSource);
-
-        account.setRoles(getRoleList(rolesMap));
+        return getRoleList(rolesMap);
     }
 
-    private static List<Role> getRoleList(final List<Map<String, Object>> maps) {
-        return maps.stream()
+    private static List<Role> getRoleList(final List<Map<String, Object>> rolesMap) {
+        return rolesMap.stream()
                 .map(UserRepositoryImpl::mapRole)
                 .collect(Collectors.toList());
     }

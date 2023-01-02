@@ -20,4 +20,17 @@
         <maven.compiler.target>15</maven.compiler.target>
     </properties>
 
+    <developers>
+        <developer>
+            <id>IBostanV</id>
+            <name>Ion Bostan</name>
+            <email>vanyok93@yahoo.com</email>
+            <roles>
+                <role>Architect</role>
+                <role>Project Lead</role>
+                <role>Business Analyst</role>
+            </roles>
+        </developer>
+    </developers>
+
 </project>

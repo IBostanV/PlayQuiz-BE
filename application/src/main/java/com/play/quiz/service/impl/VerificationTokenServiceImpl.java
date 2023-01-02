@@ -15,21 +15,19 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class VerificationTokenServiceImpl implements VerificationTokenService {
-    private final VerificationTokenRepository verificationTokenRepository;
-
     @Value("#{${application.email.token.validity.period}}")
     private Integer verificationTokenValidityPeriod;
 
+    private final VerificationTokenRepository verificationTokenRepository;
+
     @Override
     public VerificationToken createVerificationToken(final Account account) {
-        final VerificationToken verificationToken = buildVerificationToken(account);
-        return verificationTokenRepository.save(verificationToken);
+        return verificationTokenRepository.save(buildVerificationToken(account));
     }
 
     @Override
     public Optional<VerificationToken> findByToken(final String token) {
-        final VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
-        return Optional.ofNullable(verificationToken);
+        return Optional.ofNullable(verificationTokenRepository.findByToken(token));
     }
 
     @Override

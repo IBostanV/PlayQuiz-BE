@@ -1,5 +1,6 @@
 package com.play.quiz.service.impl;
 
+import com.play.quiz.aop.annotation.Conditional;
 import com.play.quiz.dto.AccountDto;
 import com.play.quiz.email.EmailService;
 import com.play.quiz.email.helper.EmailMessage;
@@ -34,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private final VerificationTokenService verificationTokenService;
 
     @Override
+    @Transactional
     public Account save(final AccountDto accountDto) {
         final Account account = accountMapper.toEntity(accountDto);
         return userRepository.save(account);
@@ -42,7 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Account findByEmail(final @NonNull String userEmail) {
-        log.info("Find user by email: " + userEmail);
+        log.debug("Find user by email: " + userEmail);
         return userRepository.findUserByEmail(userEmail)
                 .orElseThrow(() -> new UserNotFoundException("No user found with email: " + userEmail));
     }
@@ -73,7 +75,7 @@ public class UserServiceImpl implements UserService {
 
     private void enableAccount(final Account account) {
         account.enable();
-        userRepository.save(account);
+        save(accountMapper.toDto(account));
     }
 
     private void updateVerificationToken(VerificationToken verificationToken) {
@@ -83,15 +85,18 @@ public class UserServiceImpl implements UserService {
 
     @Async
     @Override
+    @Conditional(property = "application.email.sending.enabled", value = "true", matchIfMissing = true)
     public void sendAccountVerificationEmail(final Account account) {
-        final VerificationToken verificationToken = verificationTokenService.createVerificationToken(account);
-        final EmailMessage emailMessage = emailMessageFactory.createAccountVerificationEmailMessage(account, verificationToken);
-
+        VerificationToken verificationToken = verificationTokenService.createVerificationToken(account);
+        EmailMessage emailMessage = emailMessageFactory.createAccountVerificationEmailMessage(account, verificationToken);
         handleEmailSending(emailMessage);
     }
 
     private void handleEmailSending(final EmailMessage emailMessage) {
-        try { emailService.sendEmail(emailMessage); }
+        try {
+            log.debug("Sending email to: "+ emailMessage.getTo());
+            emailService.sendEmail(emailMessage);
+        }
         catch (MessagingException exception) {
             log.warn(exception.getMessage());
             throw new RuntimeException(exception.getMessage());

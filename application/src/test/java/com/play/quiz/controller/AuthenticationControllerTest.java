@@ -71,7 +71,7 @@ public class AuthenticationControllerTest {
 
     @Test
     public void given_valid_credentials_when_login_then_successful() throws Exception {
-        final String body = "{\"id\":1,\"name\":null,\"email\":\"vanyok93@yahoo.com\",\"birthday\":null,\"roles\":null,\"enabled\":false}";
+        final String body = "{\"id\":1,\"email\":\"vanyok93@yahoo.com\",\"roles\":[],\"enabled\":false}";
         final String content = "{\"email\":\"vanyok93@yahoo.com\",\"password\":\"password\"}";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
@@ -84,7 +84,6 @@ public class AuthenticationControllerTest {
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .content(content))
-                .andDo(print())
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string(body))
                 .andExpect(result -> assertNotNull(result.getResponse().getHeader(HttpHeaders.AUTHORIZATION)));
@@ -103,7 +102,6 @@ public class AuthenticationControllerTest {
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .content(content))
-                .andDo(print())
                 .andExpect(status().is4xxClientError())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
                 .andExpect(result -> assertTrue(Objects.requireNonNull(result.getResolvedException())
@@ -129,7 +127,6 @@ public class AuthenticationControllerTest {
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .content(content))
-                .andDo(print())
                 .andExpect(status().is5xxServerError())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof BadCredentialsException))
                 .andExpect(content().string("Bad credentials"))
@@ -149,7 +146,6 @@ public class AuthenticationControllerTest {
         mockMvc.perform(post(CONTROLLER_PATH + "/login")
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE))
-                .andDo(print())
                 .andExpect(status().is5xxServerError())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof HttpMessageNotReadableException))
                 .andExpect(result -> assertTrue(result.getResponse().getContentAsString().contains(missingBody)))
@@ -160,7 +156,7 @@ public class AuthenticationControllerTest {
     public void given_valid_credentials_when_register_then_user_registered(final CapturedOutput output) throws Exception {
         final String username = "vanyok93@yahoo.com";
         final String content = "{\"email\":\"" + username + "\",\"password\":\"password\"}";
-        final String bodyMessage = "{\"id\":1,\"name\":null,\"email\":\"vanyok93@yahoo.com\",\"birthday\":null,\"roles\":null,\"enabled\":false}";
+        final String bodyMessage = "{\"id\":1,\"email\":\"vanyok93@yahoo.com\",\"roles\":[{\"roleId\":2,\"name\":\"ROLE_USER\"}],\"enabled\":false}";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = any();
@@ -174,7 +170,6 @@ public class AuthenticationControllerTest {
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .content(content))
-                .andDo(print())
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string(bodyMessage))
                 .andExpect(result -> Assertions.assertTrue(output.getOut().contains("Authenticated user")))
@@ -198,7 +193,6 @@ public class AuthenticationControllerTest {
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .content(content))
-                .andDo(print())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
                 .andExpect(result -> assertTrue(Objects.requireNonNull(result.getResolvedException())
                         .getMessage().contains("default message [password]]; default message [must not be blank]")))
@@ -206,7 +200,6 @@ public class AuthenticationControllerTest {
                         .getMessage().contains("default message [email]]; default message [must not be blank]")))
                 .andExpect(result -> assertTrue(Objects.requireNonNull(result.getResolvedException())
                         .getMessage().contains("Please provide a valid email address")));
-        ;
     }
 
     @Test
@@ -225,7 +218,6 @@ public class AuthenticationControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .param("token", token))
-                .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(result -> assertEquals(result.getResponse().getHeader("Location"), redirectedURL))
                 .andExpect(result -> assertEquals(result.getResponse().getRedirectedUrl(), redirectedURL));

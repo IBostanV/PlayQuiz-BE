@@ -7,10 +7,12 @@ import com.play.quiz.model.Question;
 import com.play.quiz.repository.QuestionRepository;
 import com.play.quiz.service.QuestionService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
@@ -21,26 +23,24 @@ public class QuestionServiceImpl implements QuestionService {
     public QuestionDto save(final QuestionDto questionDto) {
         Question question = questionMapper.mapToEntity(questionDto);
         Question savedQuestion = questionRepository.save(question);
-
         return questionMapper.mapToDto(savedQuestion);
     }
 
     @Override
     public List<QuestionDto> findAll() {
         List<Question> questions = questionRepository.findAll();
-
         return questionMapper.mapToDtoList(questions);
     }
 
     @Override
     public List<QuestionDto> findByCategoryNaturalId(final CategoryType categoryType) {
         List<Question> questions = questionRepository.findByCategory_naturalId(categoryType.name());
-
         return questionMapper.mapToDtoList(questions);
     }
 
     @Override
-    public void deleteById(Long questionId) {
+    public void deleteById(final Long questionId) {
+        log.info("Deleting question with id: "+ questionId);
         questionRepository.deleteById(questionId);
     }
 }

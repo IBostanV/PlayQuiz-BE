@@ -23,11 +23,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
@@ -38,8 +37,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthenticationServiceImplTest {
-
-    private AuthenticationServiceImpl authenticationService;
 
     @Mock
     private JwtProvider jwtProvider;
@@ -65,10 +62,11 @@ public class AuthenticationServiceImplTest {
     @Captor
     private ArgumentCaptor<UsernamePasswordAuthenticationToken> usernamePasswordAuthenticationTokenArgumentCaptor;
 
+    private AuthenticationServiceImpl authenticationService;
+
     @BeforeEach
     public void init() {
         authenticationService = new AuthenticationServiceImpl(jwtProvider, userService, accountMapper, authenticationManager);
-        ReflectionTestUtils.setField(authenticationService, "emailEnabled", "false");
     }
 
     @Test
@@ -173,8 +171,6 @@ public class AuthenticationServiceImplTest {
 
     @Test
     public void given_valid_account_when_register_with_email_then_return_AccountInfo() {
-        ReflectionTestUtils.setField(authenticationService, "emailEnabled", "true");
-
         final AccountInfo accountInfo = AccountInfoFixture.getAccountInfo();
         final AccountDto accountDto = accountInfo.getAccount();
         final Account adminAccount = AccountFixture.getAdminAccount();

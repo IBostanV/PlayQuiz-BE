@@ -27,7 +27,6 @@ public class GlossaryServiceImpl implements GlossaryService {
     public GlossaryDto getById(final Long glossaryId) {
         Glossary glossary = glossaryRepository.findById(glossaryId)
                 .orElseThrow(() -> new RecordNotFoundException("No records found by glossary id: " + glossaryId));
-
         return glossaryMapper.INSTANCE.toDto(glossary);
     }
 
@@ -35,7 +34,6 @@ public class GlossaryServiceImpl implements GlossaryService {
     public GlossaryDto getByKey(final String glossaryKey) {
         Glossary glossary = glossaryRepository.findByKey(glossaryKey)
                 .orElseThrow(() -> new RecordNotFoundException("No records found by category id: " + glossaryKey));
-
         return glossaryMapper.INSTANCE.toDto(glossary);
     }
 
@@ -43,7 +41,6 @@ public class GlossaryServiceImpl implements GlossaryService {
     public GlossaryDto getByCategoryId(final Long categoryId) {
         Glossary glossary = glossaryRepository.findByCategory_catId(categoryId)
                 .orElseThrow(() -> new RecordNotFoundException("No glossary found by category id: " + categoryId));
-
         return glossaryMapper.INSTANCE.toDto(glossary);
     }
 

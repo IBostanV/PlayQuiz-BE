@@ -23,37 +23,28 @@ public class GlossaryController {
     private final GlossaryService glossaryService;
 
     @GetMapping(value = "/id/{glossaryId}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GlossaryDto> getGlossaryById(@PathVariable final Long glossaryId) {
-        return ResponseEntity.ok()
-                .body(glossaryService.getById(glossaryId));
+        return ResponseEntity.ok().body(glossaryService.getById(glossaryId));
     }
 
     @GetMapping(value = "/key/{glossaryKey}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GlossaryDto> getGlossaryByKey(@PathVariable final String glossaryKey) {
-        return ResponseEntity.ok()
-                .body(glossaryService.getByKey(glossaryKey));
+        return ResponseEntity.ok().body(glossaryService.getByKey(glossaryKey));
     }
 
     @GetMapping(value = "/category/{categoryId}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GlossaryDto> getGlossaryByCategory(@PathVariable final Long categoryId) {
-        return ResponseEntity.ok()
-                .body(glossaryService.getByCategoryId(categoryId));
+        return ResponseEntity.ok().body(glossaryService.getByCategoryId(categoryId));
     }
 
     @PatchMapping(value = "/save",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GlossaryDto> saveGlossary(@Valid @RequestPart(name = "glossary") final GlossaryDto glossaryDto,
                                                     @RequestPart(required = false) final MultipartFile attachment) {
-        final GlossaryDto responseBody = glossaryService.save(glossaryDto,attachment);
-
-        return ResponseEntity.ok(responseBody);
+        return ResponseEntity.ok(glossaryService.save(glossaryDto,attachment));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
