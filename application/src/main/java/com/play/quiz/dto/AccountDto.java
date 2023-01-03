@@ -1,20 +1,23 @@
 package com.play.quiz.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Value;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Value
-@Builder
+@Builder(toBuilder = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AccountDto {
 
     Long id;
@@ -35,5 +38,6 @@ public class AccountDto {
 
     boolean isEnabled;
 
-    List<RoleDto> roles;
+    @Builder.Default
+    List<RoleDto> roles = Collections.emptyList();
 }

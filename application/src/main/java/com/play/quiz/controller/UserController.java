@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping(RestEndpoint.CONTEXT_PATH + "/user")
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

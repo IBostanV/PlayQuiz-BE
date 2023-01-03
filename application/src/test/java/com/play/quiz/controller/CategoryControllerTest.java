@@ -30,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -72,7 +71,6 @@ public class CategoryControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .param("id", categoryId.toString()))
-                .andDo(print())
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.catId").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.catId").isNotEmpty())
@@ -101,7 +99,6 @@ public class CategoryControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .param("naturalId", naturalId))
-                .andDo(print())
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.catId").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.catId").isNotEmpty())
@@ -127,7 +124,6 @@ public class CategoryControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .param("id", (String) null))
-                .andDo(print())
                 .andExpect(status().is4xxClientError())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof RecordNotFoundException))
                 .andExpect(content().string(body));

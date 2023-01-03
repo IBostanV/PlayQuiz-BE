@@ -34,22 +34,18 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping(value = "/login",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountDto> login(@Valid @RequestBody final AccountDto accountDto) {
-        final AccountInfo accountInfo = authenticationService.login(accountDto);
+        AccountInfo accountInfo = authenticationService.login(accountDto);
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, accountInfo.getToken().getValue())
                 .body(accountInfo.getAccount());
     }
 
     @PostMapping(value = "/register",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountDto> register(@Valid @RequestBody final AccountDto accountDto) {
-        final AccountInfo accountInfo = authenticationService.register(accountDto);
+        AccountInfo accountInfo = authenticationService.register(accountDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.AUTHORIZATION, accountInfo.getToken().getValue())
                 .body(accountInfo.getAccount());

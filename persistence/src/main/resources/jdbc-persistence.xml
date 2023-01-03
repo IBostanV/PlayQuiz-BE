@@ -20,6 +20,16 @@
         </constructor-arg>
     </bean>
 
+    <bean id="saveUserRoles" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+                     INSERT INTO Q_USERS_ROLES(ACCOUNT_ID, ROLE_ID) VALUES (:accountId, :roleId)
+                ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
     <bean id="userSequenceNextVal" class="java.lang.String">
         <constructor-arg>
             <value>
@@ -63,7 +73,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="findAllUsersSql"  class="java.lang.String">
+    <bean id="findAllUsersSql" class="java.lang.String">
         <constructor-arg>
             <value>
                 <![CDATA[

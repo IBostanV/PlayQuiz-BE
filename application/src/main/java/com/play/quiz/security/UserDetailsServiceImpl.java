@@ -6,6 +6,7 @@ import com.play.quiz.model.Account;
 import com.play.quiz.model.Role;
 import com.play.quiz.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service("quizUserDetailsService")
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -43,9 +45,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private static List<? extends GrantedAuthority> getUserAuthorities(final Account account) {
         if (CollectionUtils.isEmpty(account.getRoles())) {
+            log.info("No roles specified. Give default ["+ UserRole.ROLE_USER.name() +"] for user: "+ account.getEmail());
             return Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name()));
         }
-
+        log.info("Given user roles: "+ account.getRoles());
         return account.getRoles().stream()
                 .map(Role::getName)
                 .map(Enum::name)
@@ -54,7 +57,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(final String user) throws UsernameNotFoundException {
-        return loadByEmail(user);
+    public UserDetails loadUserByUsername(final String emailAsUsername) throws UsernameNotFoundException {
+        return loadByEmail(emailAsUsername);
     }
 }

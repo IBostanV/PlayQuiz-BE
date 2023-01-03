@@ -8,8 +8,10 @@ import com.play.quiz.repository.CategoryRepository;
 import com.play.quiz.service.CategoryService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
@@ -27,7 +29,6 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto getById(final Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RecordNotFoundException("No records found by category id: " + categoryId));
-
         return categoryMapper.INSTANCE.toDto(category);
     }
 
@@ -36,12 +37,12 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto getByNaturalId(final String naturalId) {
         Category category = categoryRepository.findByNaturalId(naturalId)
                 .orElseThrow(() -> new RecordNotFoundException("No records found by natural Id: " + naturalId));
-
         return categoryMapper.INSTANCE.toDto(category);
     }
 
     @Override
     public void deleteById(final Long categoryId) {
+        log.info("Deleting category with id: "+ categoryId);
         categoryRepository.deleteById(categoryId);
     }
 }

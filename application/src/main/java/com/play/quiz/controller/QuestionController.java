@@ -3,6 +3,7 @@ package com.play.quiz.controller;
 import com.play.quiz.dto.QuestionDto;
 import com.play.quiz.enums.CategoryType;
 import com.play.quiz.service.QuestionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,15 +25,12 @@ public class QuestionController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<QuestionDto> save(@Valid @RequestBody final QuestionDto questionDto) {
-        final QuestionDto question = questionService.save(questionDto);
-
-        return ResponseEntity.ok(question);
+        return ResponseEntity.ok(questionService.save(questionDto));
     }
 
     @DeleteMapping(value = "/{questionId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable final Long questionId) {
         questionService.deleteById(questionId);
-
         return ResponseEntity.ok().build();
     }
 
@@ -44,8 +41,6 @@ public class QuestionController {
 
     @GetMapping(value = "/category/{type}")
     public ResponseEntity<List<QuestionDto>> getCategoryQuestions(@PathVariable final CategoryType type) {
-        final List<QuestionDto> questions = questionService.findByCategoryNaturalId(type);
-
-        return ResponseEntity.ok(questions);
+        return ResponseEntity.ok(questionService.findByCategoryNaturalId(type));
     }
 }
