@@ -1,6 +1,7 @@
 package com.play.quiz.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -19,6 +20,7 @@ import java.util.stream.Stream;
 
 import static java.util.concurrent.CompletableFuture.runAsync;
 
+@Slf4j
 @RestController
 @RequestMapping(RestEndpoint.CONTEXT_PATH + "/chat")
 @RequiredArgsConstructor
@@ -49,8 +51,8 @@ public class ChatController {
                     .event()
                     .name("StringList")
                     .data(data, MediaType.APPLICATION_JSON));
-        } catch (IOException e) {
-            System.out.println(e);
+        } catch (IOException exception) {
+            log.error(exception.getMessage());
         }
     }
 
@@ -58,8 +60,9 @@ public class ChatController {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException exception) {
-            exception.printStackTrace();
+            log.error(exception.getMessage());
             sseEmitter.completeWithError(exception);
+            Thread.currentThread().interrupt();
         }
     }
 

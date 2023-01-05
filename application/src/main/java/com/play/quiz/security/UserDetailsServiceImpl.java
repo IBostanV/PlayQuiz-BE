@@ -28,7 +28,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    @Transactional
     public UserDetails loadByEmail(final String userEmail) {
         final Account account = userRepository.findUserByEmail(userEmail)
                 .orElseThrow(() -> new UserNotFoundException("No user found with email: " + userEmail));
@@ -57,6 +56,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(final String emailAsUsername) throws UsernameNotFoundException {
         return loadByEmail(emailAsUsername);
     }

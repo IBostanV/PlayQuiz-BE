@@ -31,6 +31,7 @@ public class AuthenticationController {
     private String domainHostUrl;
 
     private final UserService userService;
+
     private final AuthenticationService authenticationService;
 
     @PostMapping(value = "/login",
@@ -38,7 +39,7 @@ public class AuthenticationController {
     public ResponseEntity<AccountDto> login(@Valid @RequestBody final AccountDto accountDto) {
         AccountInfo accountInfo = authenticationService.login(accountDto);
         return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, accountInfo.getToken().getValue())
+                .header(HttpHeaders.AUTHORIZATION, accountInfo.getJwtToken().getValue())
                 .body(accountInfo.getAccount());
     }
 
@@ -47,7 +48,7 @@ public class AuthenticationController {
     public ResponseEntity<AccountDto> register(@Valid @RequestBody final AccountDto accountDto) {
         AccountInfo accountInfo = authenticationService.register(accountDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header(HttpHeaders.AUTHORIZATION, accountInfo.getToken().getValue())
+                .header(HttpHeaders.AUTHORIZATION, accountInfo.getJwtToken().getValue())
                 .body(accountInfo.getAccount());
     }
 

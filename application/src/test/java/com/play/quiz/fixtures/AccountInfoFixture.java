@@ -1,7 +1,7 @@
 package com.play.quiz.fixtures;
 
 import com.play.quiz.model.helpers.AccountInfo;
-import com.play.quiz.security.Token;
+import com.play.quiz.security.JwtToken;
 
 import java.util.UUID;
 
@@ -26,6 +26,6 @@ public class AccountInfoFixture {
 
     private static AccountInfo.AccountInfoBuilder defaultBuilder() {
         return AccountInfo.builder()
-                .token(new Token(UUID.randomUUID().toString()));
+                .jwtToken(new JwtToken(UUID.randomUUID().toString()));
     }
 }
