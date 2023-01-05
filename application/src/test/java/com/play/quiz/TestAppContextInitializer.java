@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +15,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -35,6 +38,12 @@ public class TestAppContextInitializer implements ApplicationContextInitializer<
 
     @Value("${h2.jdbc.url}")
     private String h2url;
+
+    @Bean
+    @Primary
+    public CsrfTokenRequestAttributeHandler xorCsrfTokenRequestAttributeHandler() {
+        return new XorCsrfTokenRequestAttributeHandler();
+    }
 
     @Bean
     public DataSource dataSource() {

@@ -27,8 +27,8 @@ public class JwtProvider {
                 .getSubject();
     }
 
-    public Token generate(final Authentication authentication) {
-        return new Token(generateToken(authentication));
+    public JwtToken generate(final Authentication authentication) {
+        return new JwtToken(generateToken(authentication));
     }
 
     private String generateToken(final Authentication authentication) {

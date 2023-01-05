@@ -327,7 +327,7 @@ public class DefaultJwtParser extends io.jsonwebtoken.impl.DefaultJwtParser {
             } catch (IllegalArgumentException e) {
                 String algName = algorithm.getValue();
                 String msg = "The parsed JWT indicates it was signed with the " +  algName + " signature " +
-                        "algorithm, but the specified signing key of type " + key.getClass().getName() +
+                        "algorithm, but the specified signing key " + key +
                         " may not be used to validate " + algName + " signatures.  Because the specified " +
                         "signing key reflects a specific and expected algorithm, and the JWT does not reflect " +
                         "this algorithm, it is likely that the JWT was not expected and therefore should not be " +
@@ -396,7 +396,7 @@ public class DefaultJwtParser extends io.jsonwebtoken.impl.DefaultJwtParser {
                 }
             }
 
-            validateExpectedClaims(header, claims);
+            overridenValidateExpectedClaims(header, claims);
         }
 
         Object body = claims != null ? claims : payload;
@@ -408,7 +408,7 @@ public class DefaultJwtParser extends io.jsonwebtoken.impl.DefaultJwtParser {
         }
     }
 
-    private void validateExpectedClaims(Header header, Claims claims) {
+    private void overridenValidateExpectedClaims(Header header, Claims claims) {
         for (String expectedClaimName : expectedClaims.keySet()) {
 
             Object expectedClaimValue = expectedClaims.get(expectedClaimName);

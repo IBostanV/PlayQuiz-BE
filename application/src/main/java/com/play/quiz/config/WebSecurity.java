@@ -19,6 +19,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -38,13 +40,15 @@ public class WebSecurity {
     @Qualifier("quizUserDetailsService")
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationFilter authenticationFilter;
+    private final CsrfTokenRequestAttributeHandler customCsrfTokenRequestAttributeHandler;
 
     @Bean
     protected SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         return http.cors()
                 .and().logout()
-                .and().csrf().disable()
-                .authorizeHttpRequests((requests) -> requests
+                .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .csrfTokenRequestHandler(customCsrfTokenRequestAttributeHandler)
+                .and().authorizeHttpRequests(requests -> requests
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling()
@@ -58,6 +62,7 @@ public class WebSecurity {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setExposedHeaders(exposedHeaders);
         corsConfiguration.setAllowedOrigins(allowedOrigins);
+        corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
 
@@ -79,6 +84,7 @@ public class WebSecurity {
 
     private void handleGlobalAuthenticationConfigurerAdapter() {
         new GlobalAuthenticationConfigurerAdapter() {
+            @Override
             public void configure(final AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
                 authenticationManagerBuilder
                         .userDetailsService(userDetailsService)

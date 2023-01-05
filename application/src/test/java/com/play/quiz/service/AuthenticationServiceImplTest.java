@@ -231,7 +231,7 @@ public class AuthenticationServiceImplTest {
     }
 
     private void commonWhenClauses(final AccountInfo accountInfo, final Account adminAccount, final Authentication authentication) {
-        when(jwtProvider.generate(any())).thenReturn(accountInfo.getToken());
+        when(jwtProvider.generate(any())).thenReturn(accountInfo.getJwtToken());
         when(accountMapper.toDto(adminAccount)).thenReturn(accountInfo.getAccount());
         when(authenticationManager.authenticate(authentication)).thenReturn(authentication);
     }

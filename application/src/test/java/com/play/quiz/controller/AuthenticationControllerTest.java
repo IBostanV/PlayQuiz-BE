@@ -37,9 +37,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -81,6 +81,7 @@ public class AuthenticationControllerTest {
                 .thenReturn(AccountFixture.getAdminAccount());
 
         mockMvc.perform(post(CONTROLLER_PATH + "/login")
+                        .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .content(content))
@@ -99,6 +100,7 @@ public class AuthenticationControllerTest {
                 .thenReturn(AccountFixture.getAdminAccount());
 
         mockMvc.perform(post(CONTROLLER_PATH + "/login")
+                        .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .content(content))
@@ -124,6 +126,7 @@ public class AuthenticationControllerTest {
                 .thenReturn(AccountFixture.getAdminAccount());
 
         mockMvc.perform(post(CONTROLLER_PATH + "/login")
+                        .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .content(content))
@@ -144,6 +147,7 @@ public class AuthenticationControllerTest {
                 .thenReturn(AccountFixture.getAdminAccount());
 
         mockMvc.perform(post(CONTROLLER_PATH + "/login")
+                        .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE))
                 .andExpect(status().is5xxServerError())
@@ -167,6 +171,7 @@ public class AuthenticationControllerTest {
         when(verificationTokenRepository.save(any())).thenReturn(VerificationTokenFixture.getVerificationToken());
 
         mockMvc.perform(post(CONTROLLER_PATH + "/register")
+                        .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .content(content))
@@ -190,6 +195,7 @@ public class AuthenticationControllerTest {
         when(verificationTokenRepository.save(any())).thenReturn(VerificationTokenFixture.getVerificationToken());
 
         mockMvc.perform(post(CONTROLLER_PATH + "/register")
+                        .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .content(content))
