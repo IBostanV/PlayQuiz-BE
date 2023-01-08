@@ -1,6 +1,6 @@
 package com.play.quiz.config;
 
-import com.play.quiz.security.JwtAuthenticationFilter;
+import com.play.quiz.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;

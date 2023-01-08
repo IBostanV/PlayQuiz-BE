@@ -1,4 +1,4 @@
-package com.play.quiz.security;
+package com.play.quiz.security.facade;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

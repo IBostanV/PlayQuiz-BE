@@ -6,6 +6,8 @@ import com.play.quiz.fixtures.AccountFixture;
 import com.play.quiz.fixtures.UserDetailsFixture;
 import com.play.quiz.model.Account;
 import com.play.quiz.repository.UserRepository;
+import com.play.quiz.security.service.UserDetailsService;
+import com.play.quiz.security.service.UserDetailsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

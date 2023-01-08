@@ -1,12 +1,14 @@
 package com.play.quiz.service.impl;
 
 import com.play.quiz.dto.QuestionDto;
+import com.play.quiz.engine.QuestionGenerationEngine;
 import com.play.quiz.enums.CategoryType;
 import com.play.quiz.mapper.QuestionMapper;
 import com.play.quiz.model.Question;
 import com.play.quiz.repository.QuestionRepository;
 import com.play.quiz.service.QuestionService;
-import lombok.AllArgsConstructor;
+import com.play.quiz.util.SystemAssert;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +16,12 @@ import java.util.List;
 
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
-    private QuestionMapper questionMapper;
-    private QuestionRepository questionRepository;
+
+    private final QuestionMapper questionMapper;
+    private final QuestionRepository questionRepository;
+    private final QuestionGenerationEngine generationEngine;
 
     @Override
     public QuestionDto save(final QuestionDto questionDto) {
@@ -33,9 +37,16 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionDto> findByCategoryNaturalId(final CategoryType categoryType) {
+    public List<QuestionDto> findByCategoryType(final CategoryType categoryType) {
         List<Question> questions = questionRepository.findByCategory_naturalId(categoryType.name());
         return questionMapper.mapToDtoList(questions);
+    }
+
+    @Override
+    public List<QuestionDto> generateFromTemplate(final QuestionDto questionDto) {
+        SystemAssert.isTemplateQuestion(questionDto);
+        Question question = questionMapper.mapToEntity(questionDto);
+        return questionMapper.mapToDtoList(generationEngine.generateFromCreatedTemplate(question));
     }
 
     @Override

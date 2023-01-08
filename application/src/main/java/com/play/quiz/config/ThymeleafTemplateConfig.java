@@ -10,8 +10,8 @@ import java.nio.charset.StandardCharsets;
 
 @Configuration
 public class ThymeleafTemplateConfig {
-    private static final String templatePrefix = "/templates/";
-    private static final String templateSuffix = ".html";
+    private static final String TEMPLATE_PREFIX = "/templates/";
+    private static final String TEMPLATE_SUFFIX = ".html";
 
     @Bean
     public SpringTemplateEngine springTemplateEngine() {
@@ -23,8 +23,8 @@ public class ThymeleafTemplateConfig {
 
     private ClassLoaderTemplateResolver emailTemplateResolver() {
         final ClassLoaderTemplateResolver emailTemplateResolver = new ClassLoaderTemplateResolver();
-        emailTemplateResolver.setPrefix(templatePrefix);
-        emailTemplateResolver.setSuffix(templateSuffix);
+        emailTemplateResolver.setPrefix(TEMPLATE_PREFIX);
+        emailTemplateResolver.setSuffix(TEMPLATE_SUFFIX);
         emailTemplateResolver.setTemplateMode(TemplateMode.HTML);
         emailTemplateResolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
         emailTemplateResolver.setCacheable(false);

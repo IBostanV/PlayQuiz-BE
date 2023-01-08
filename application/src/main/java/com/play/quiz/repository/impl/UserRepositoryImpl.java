@@ -166,7 +166,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     private static Account getAccount(final List<Account> accountGroup) {
         return accountGroup.stream()
-                .peek(account -> account.setRoles(getRoles(accountGroup)))
+                .map(account -> {account.setRoles(getRoles(accountGroup)); return account;})
                 .findFirst()
                 .orElse(new Account());
     }

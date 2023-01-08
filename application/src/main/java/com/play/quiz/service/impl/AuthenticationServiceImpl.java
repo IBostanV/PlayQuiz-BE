@@ -6,7 +6,7 @@ import com.play.quiz.enums.UserRole;
 import com.play.quiz.mapper.AccountMapper;
 import com.play.quiz.model.Account;
 import com.play.quiz.model.helpers.AccountInfo;
-import com.play.quiz.security.JwtProvider;
+import com.play.quiz.security.jwt.JwtProvider;
 import com.play.quiz.service.AuthenticationService;
 import com.play.quiz.service.UserService;
 import com.play.quiz.util.SystemAssert;
@@ -15,12 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.List;
 
 @Slf4j
 @Service

@@ -41,6 +41,12 @@ public class QuestionController {
 
     @GetMapping(value = "/category/{type}")
     public ResponseEntity<List<QuestionDto>> getCategoryQuestions(@PathVariable final CategoryType type) {
-        return ResponseEntity.ok(questionService.findByCategoryNaturalId(type));
+        return ResponseEntity.ok(questionService.findByCategoryType(type));
+    }
+
+    @PostMapping(value = "/generator/template",
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<QuestionDto>> generateFromTemplate(@Valid @RequestBody final QuestionDto questionDto) {
+        return ResponseEntity.ok(questionService.generateFromTemplate(questionDto));
     }
 }

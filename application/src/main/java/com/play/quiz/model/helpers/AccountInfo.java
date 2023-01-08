@@ -1,7 +1,7 @@
 package com.play.quiz.model.helpers;
 
 import com.play.quiz.dto.AccountDto;
-import com.play.quiz.security.JwtToken;
+import com.play.quiz.security.jwt.JwtToken;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

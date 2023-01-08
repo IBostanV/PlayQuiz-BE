@@ -1,4 +1,4 @@
-package com.play.quiz.security;
+package com.play.quiz.security.jwt;
 
 import com.play.quiz.controller.RestEndpoint;
 import lombok.NonNull;

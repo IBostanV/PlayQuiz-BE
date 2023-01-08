@@ -1,12 +1,5 @@
 package com.play.quiz.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.hibernate.Hibernate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +10,13 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.Hibernate;
+
 import java.util.Objects;
 
 @Entity
@@ -57,7 +57,9 @@ public class Glossary {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Glossary glossary = (Glossary) o;
-        return termId != null && Objects.equals(termId, glossary.termId);
+        return termId != null && Objects.equals(termId, glossary.termId)
+                && Objects.equals(key, glossary.key)
+                && Objects.equals(category, glossary.category);
     }
 
     @Override

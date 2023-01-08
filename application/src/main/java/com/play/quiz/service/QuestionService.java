@@ -11,7 +11,9 @@ public interface QuestionService {
 
     List<QuestionDto> findAll();
 
-    List<QuestionDto> findByCategoryNaturalId(final CategoryType categoryType);
+    List<QuestionDto> findByCategoryType(final CategoryType categoryType);
+
+    List<QuestionDto> generateFromTemplate(final QuestionDto questionDto);
 
     void deleteById(final Long questionId);
 }

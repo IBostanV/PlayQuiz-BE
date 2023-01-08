@@ -7,8 +7,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class ApiWebServerTest {
+class ApiWebServerTest {
 
     @Test
-    public void contextLoads() {}
+    void contextLoads() {}
 }

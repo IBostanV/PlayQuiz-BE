@@ -1,4 +1,4 @@
-package com.play.quiz.security;
+package com.play.quiz.security.service;
 
 import com.play.quiz.enums.UserRole;
 import com.play.quiz.exception.UserNotFoundException;

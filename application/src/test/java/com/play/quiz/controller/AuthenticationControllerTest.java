@@ -5,7 +5,7 @@ import com.play.quiz.fixtures.AccountFixture;
 import com.play.quiz.fixtures.VerificationTokenFixture;
 import com.play.quiz.model.Account;
 import com.play.quiz.repository.VerificationTokenRepository;
-import com.play.quiz.security.JwtProvider;
+import com.play.quiz.security.jwt.JwtProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan(basePackages = {"com.play.quiz"})
 @ContextConfiguration(initializers = {TestAppContextInitializer.class})
 @ExtendWith(OutputCaptureExtension.class)
-public class AuthenticationControllerTest {
+class AuthenticationControllerTest {
     private static final String CONTROLLER_PATH = "/auth";
 
     @Value("${application.domain.host.url}")
@@ -70,7 +70,7 @@ public class AuthenticationControllerTest {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Test
-    public void given_valid_credentials_when_login_then_successful() throws Exception {
+    void given_valid_credentials_when_login_then_successful() throws Exception {
         final String body = "{\"id\":1,\"email\":\"vanyok93@yahoo.com\",\"roles\":[],\"enabled\":false}";
         final String content = "{\"email\":\"vanyok93@yahoo.com\",\"password\":\"password\"}";
 
@@ -91,7 +91,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    public void given_invalid_credentials_when_login_then_validation_exception() throws Exception {
+    void given_invalid_credentials_when_login_then_validation_exception() throws Exception {
         String content = "{\"email\":\"\",\"password\":\"\"}";
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = any();
@@ -115,7 +115,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    public void given_wrong_password_when_login_then_bad_credentials_exception(final CapturedOutput output) throws Exception {
+    void given_wrong_password_when_login_then_bad_credentials_exception(final CapturedOutput output) throws Exception {
         final String content = "{\"email\":\"vanyok93@yahoo.com\",\"password\":\"no_password\"}";
         final String passwordNotMatchMessage = "Failed to authenticate since password does not match stored value";
 
@@ -137,7 +137,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    public void given_null_content_when_login_then_bad_credentials_exception(final CapturedOutput output) throws Exception {
+    void given_null_content_when_login_then_bad_credentials_exception(final CapturedOutput output) throws Exception {
         final String missingBody = "Required request body is missing";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
@@ -157,7 +157,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    public void given_valid_credentials_when_register_then_user_registered(final CapturedOutput output) throws Exception {
+    void given_valid_credentials_when_register_then_user_registered(final CapturedOutput output) throws Exception {
         final String username = "vanyok93@yahoo.com";
         final String content = "{\"email\":\"" + username + "\",\"password\":\"password\"}";
         final String bodyMessage = "{\"id\":1,\"email\":\"vanyok93@yahoo.com\",\"roles\":[{\"roleId\":2,\"name\":\"ROLE_USER\"}],\"enabled\":false}";
@@ -183,7 +183,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    public void given_invalid_credentials_when_register_then_user_registered() throws Exception {
+    void given_invalid_credentials_when_register_then_user_registered() throws Exception {
         final String content = "{\"email\":\"\",\"password\":\"\"}";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
@@ -209,7 +209,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    public void given_activation_toke_when_activateAccount_then_redirected_successfully() throws Exception {
+    void given_activation_toke_when_activateAccount_then_redirected_successfully() throws Exception {
         final String token = "verification_token";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
