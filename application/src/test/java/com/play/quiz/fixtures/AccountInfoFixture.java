@@ -1,7 +1,7 @@
 package com.play.quiz.fixtures;
 
 import com.play.quiz.model.helpers.AccountInfo;
-import com.play.quiz.security.JwtToken;
+import com.play.quiz.security.jwt.JwtToken;
 
 import java.util.UUID;
 

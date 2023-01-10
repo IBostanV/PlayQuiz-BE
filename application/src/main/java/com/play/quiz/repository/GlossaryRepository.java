@@ -1,11 +1,13 @@
 package com.play.quiz.repository;
 
+import com.play.quiz.model.Category;
 import com.play.quiz.model.Glossary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface GlossaryRepository extends JpaRepository<Glossary, Long> {
@@ -17,4 +19,6 @@ public interface GlossaryRepository extends JpaRepository<Glossary, Long> {
     Optional<Glossary> findByKey(final String key);
 
     Optional<Glossary> findByCategory_catId(final Long categoryId);
+
+    List<Glossary> findAllByCategory(final Category category);
 }

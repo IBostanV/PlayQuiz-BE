@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(value = CategoryController.class)
 @ComponentScan(basePackages = {"com.play.quiz"})
 @ContextConfiguration(initializers = {TestAppContextInitializer.class})
-public class CategoryControllerTest {
+class CategoryControllerTest {
     private static final String CONTROLLER_PATH = "/category";
 
     @Value("${application.security.jwt.token}")
@@ -54,7 +54,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void given_categoryId_when_get_category_then_return_category() throws Exception {
+    void given_categoryId_when_get_category_then_return_category() throws Exception {
         final Long categoryId = 7L;
         final String body = "{\"catId\":"+ categoryId +",\"name\":\"Continent\",\"naturalId\":\"CONTINENT\",\"parent\":null}";
 
@@ -82,7 +82,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void given_naturalId_when_get_category_then_return_category() throws Exception {
+    void given_naturalId_when_get_category_then_return_category() throws Exception {
         final String naturalId = "COUNTRY";
         final String body = "{\"catId\":7,\"name\":\"Continent\",\"naturalId\":\"CONTINENT\",\"parent\":null}";
 
@@ -110,7 +110,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void given_null_categoryId_when_get_category_then_return_category() throws Exception {
+    void given_null_categoryId_when_get_category_then_return_category() throws Exception {
         final String body = "No records found by natural Id: null";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();

@@ -1,5 +1,6 @@
 package com.play.quiz.dto;
 
+import com.play.quiz.enums.QuestionAttribute;
 import com.play.quiz.enums.QuestionType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -39,7 +40,7 @@ public class QuestionDto {
 
     int priority;
 
-    String attributes;
+    List<QuestionAttribute> attributes;
 
     List<AnswerDto> answers;
 }

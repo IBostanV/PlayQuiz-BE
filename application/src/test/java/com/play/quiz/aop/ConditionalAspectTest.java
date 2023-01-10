@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ConditionalAspectTest {
+class ConditionalAspectTest {
 
     @Mock
     private Environment environment;
@@ -34,7 +34,7 @@ public class ConditionalAspectTest {
     }
 
     @Test
-    public void given_property_true_value_true_match_when_conditionalMethod_then_proceed() throws Throwable {
+    void given_property_true_value_true_match_when_conditionalMethod_then_proceed() throws Throwable {
         final MethodSignature methodSignature = anonumousMethodSignature("trueMatchIfMissing");
 
         when(proceedingJoinPoint.getSignature()).thenReturn(methodSignature);
@@ -47,7 +47,7 @@ public class ConditionalAspectTest {
     }
 
     @Test
-    public void given_property_false_value_true_match_when_conditionalMethod_then_null() throws Throwable {
+    void given_property_false_value_true_match_when_conditionalMethod_then_null() throws Throwable {
         final MethodSignature methodSignature = anonumousMethodSignature("trueMatchIfMissing");
 
         when(proceedingJoinPoint.getSignature()).thenReturn(methodSignature);
@@ -59,7 +59,7 @@ public class ConditionalAspectTest {
     }
 
     @Test
-    public void given_property_true_value_false_match_when_conditionalMethod_then_null() throws Throwable {
+    void given_property_true_value_false_match_when_conditionalMethod_then_null() throws Throwable {
         final MethodSignature methodSignature = anonumousMethodSignature("falseMatchIfMissing");
 
         when(proceedingJoinPoint.getSignature()).thenReturn(methodSignature);
@@ -71,7 +71,7 @@ public class ConditionalAspectTest {
     }
 
     @Test
-    public void given_property_false_value_false_match_when_conditionalMethod_then_proceed() throws Throwable {
+    void given_property_false_value_false_match_when_conditionalMethod_then_proceed() throws Throwable {
         final MethodSignature methodSignature = anonumousMethodSignature("falseMatchIfMissing");
 
         when(proceedingJoinPoint.getSignature()).thenReturn(methodSignature);
@@ -84,7 +84,7 @@ public class ConditionalAspectTest {
     }
 
     @Test
-    public void given_property_true_value_true_no_match_when_conditionalMethod_then_proceed() throws Throwable {
+    void given_property_true_value_true_no_match_when_conditionalMethod_then_proceed() throws Throwable {
         final MethodSignature methodSignature = anonumousMethodSignature("trueMatchIfMissingFalse");
 
         when(proceedingJoinPoint.getSignature()).thenReturn(methodSignature);
@@ -97,7 +97,7 @@ public class ConditionalAspectTest {
     }
 
     @Test
-    public void given_property_false_value_true_no_match_when_conditionalMethod_then_null() throws Throwable {
+    void given_property_false_value_true_no_match_when_conditionalMethod_then_null() throws Throwable {
         final MethodSignature methodSignature = anonumousMethodSignature("trueMatchIfMissingFalse");
 
         when(proceedingJoinPoint.getSignature()).thenReturn(methodSignature);
@@ -109,7 +109,7 @@ public class ConditionalAspectTest {
     }
 
     @Test
-    public void given_property_true_value_false_no_match_when_conditionalMethod_then_null() throws Throwable {
+    void given_property_true_value_false_no_match_when_conditionalMethod_then_null() throws Throwable {
         final MethodSignature methodSignature = anonumousMethodSignature("trueMatchIfMissingFalse");
 
         when(proceedingJoinPoint.getSignature()).thenReturn(methodSignature);
@@ -121,7 +121,7 @@ public class ConditionalAspectTest {
     }
 
     @Test
-    public void given_property_false_value_false_no_match_when_conditionalMethod_then_proceed() throws Throwable {
+    void given_property_false_value_false_no_match_when_conditionalMethod_then_proceed() throws Throwable {
         final MethodSignature methodSignature = anonumousMethodSignature("falseMatchIfMissingFalse");
 
         when(proceedingJoinPoint.getSignature()).thenReturn(methodSignature);
@@ -134,7 +134,7 @@ public class ConditionalAspectTest {
     }
 
     @Test
-    public void given_no_property_value_true_match_when_conditionalMethod_then_proceed() throws Throwable {
+    void given_no_property_value_true_match_when_conditionalMethod_then_proceed() throws Throwable {
         final MethodSignature methodSignature = anonumousMethodSignature("trueMatchIfMissing");
 
         when(proceedingJoinPoint.getSignature()).thenReturn(methodSignature);
@@ -147,7 +147,7 @@ public class ConditionalAspectTest {
     }
 
     @Test
-    public void given_no_property_no_value_no_match_when_conditionalMethod_then_proceed() throws Throwable {
+    void given_no_property_no_value_no_match_when_conditionalMethod_then_proceed() throws Throwable {
         final MethodSignature methodSignature = anonumousMethodSignature("trueMatchIfMissing");
 
         when(proceedingJoinPoint.getSignature()).thenReturn(methodSignature);

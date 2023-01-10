@@ -8,7 +8,7 @@ import com.play.quiz.fixtures.AccountInfoFixture;
 import com.play.quiz.mapper.AccountMapper;
 import com.play.quiz.model.Account;
 import com.play.quiz.model.helpers.AccountInfo;
-import com.play.quiz.security.JwtProvider;
+import com.play.quiz.security.jwt.JwtProvider;
 import com.play.quiz.service.impl.AuthenticationServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -113,7 +113,7 @@ public class AuthenticationServiceImplTest {
                 "Expected authenticationService.login() to throw AccountDisabledException."
         );
 
-        assertTrue(accountDisabledException.getMessage().contains("Account " + adminAccount.getEmail() + " disabled"));
+        assertTrue(accountDisabledException.getMessage().contains("Account " + adminAccount.getEmail() + " is disabled"));
 
         verify(userService, only()).findByEmail(accountInfo.getAccount().getEmail());
         verify(jwtProvider, never()).generate(authentication);

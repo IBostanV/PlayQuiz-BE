@@ -1,4 +1,4 @@
-package com.play.quiz.security;
+package com.play.quiz.security.jwt;
 
 import com.play.quiz.util.jwt.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

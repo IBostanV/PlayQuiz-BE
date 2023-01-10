@@ -16,21 +16,21 @@ public class EmailMessageFactory {
     @Value("${application.email.sending-address}")
     private String defaultSenderEmailAddress;
 
-    private static final String activateAccountPath = "/auth/activate-account";
-    private static final String accountActivationSubject = "Activate your account";
-    private static final String accountActivationEmailTemplate = "confirmation-email.html";
+    private static final String ACTIVATE_ACCOUNT_PATH = "/auth/activate-account";
+    private static final String ACCOUNT_ACTIVATION_SUBJECT = "Activate your account";
+    private static final String ACCOUNT_ACTIVATION_EMAIL_TEMPLATE = "confirmation-email.html";
 
     public EmailMessage createAccountVerificationEmailMessage(final Account account, final VerificationToken verificationToken) {
         Map<String, Object> properties = Map.of(
                 "token", verificationToken.getToken(),
-                "activateAccountServerHost", serverHostUrl + activateAccountPath);
+                "activateAccountServerHost", serverHostUrl + ACTIVATE_ACCOUNT_PATH);
         log.info("Creating EmailMessage with properties: " + properties);
 
         return EmailMessage.builder()
                 .to(account.getEmail())
                 .from(defaultSenderEmailAddress)
-                .subject(accountActivationSubject)
-                .template(accountActivationEmailTemplate)
+                .subject(ACCOUNT_ACTIVATION_SUBJECT)
+                .template(ACCOUNT_ACTIVATION_EMAIL_TEMPLATE)
                 .properties(properties)
                 .build();
     }

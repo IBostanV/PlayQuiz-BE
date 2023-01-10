@@ -4,7 +4,7 @@ import com.play.quiz.dto.QuestionDto;
 import com.play.quiz.enums.QuestionType;
 import com.play.quiz.model.Account;
 import com.play.quiz.model.Question;
-import com.play.quiz.security.AuthenticationFacade;
+import com.play.quiz.security.facade.AuthenticationFacade;
 import com.play.quiz.service.UserService;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;

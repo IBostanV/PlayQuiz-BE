@@ -1,15 +1,11 @@
 package com.play.quiz.model;
 
+import com.play.quiz.converter.AttributeListConverter;
+import com.play.quiz.enums.QuestionAttribute;
 import com.play.quiz.enums.QuestionType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.hibernate.Hibernate;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,7 +18,16 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
+
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -75,13 +80,25 @@ public class Question {
 
     private int priority;
 
-    private String attributes;
+    @Convert(converter = AttributeListConverter.class)
+    private List<QuestionAttribute> attributes;
 
+    @Setter
     @OneToMany(mappedBy = "question",
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH},
             orphanRemoval = true)
     @ToString.Exclude
     private List<Answer> answers;
+
+    public Question copy(final QuestionType questionType, final String content) {
+        return copy(questionType, content, Collections.emptyList());
+    }
+
+    public Question copy(final QuestionType questionType, final String content, final List<QuestionAttribute> attributes) {
+        return new Question(null, this.account, questionType, this.tipId, this.category, this.isActive,
+                this.complexityLevel, content, this.createdDate, this.updatedDate, this.updatedAccount,
+                this.topic, this.priority, attributes, this.answers);
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,4 +1,4 @@
-package com.play.quiz.security;
+package com.play.quiz.security.jwt;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
