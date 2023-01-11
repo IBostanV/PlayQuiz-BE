@@ -50,6 +50,7 @@ public class WebSecurity {
                 .csrfTokenRequestHandler(customCsrfTokenRequestAttributeHandler)
                 .and().authorizeHttpRequests(requests -> requests
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
