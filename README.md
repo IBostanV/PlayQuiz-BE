@@ -11,5 +11,3 @@
 - mvn clean verify sonar:sonar -Dsonar.projectKey=PlayQuiz -Dsonar.host.url=http://localhost:9000 -Dsonar.login=<sonar_token>
 
 - git rm -r --cached . -> remove git cached files
-
-- git rm -r --cached . -> remove cached files from cache
