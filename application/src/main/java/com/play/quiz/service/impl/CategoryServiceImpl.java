@@ -20,7 +20,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto save(final CategoryDto categoryDto) {
-        Category category = categoryMapper.toEntity(categoryDto);
+        Category category = categoryMapper.INSTANCE.toEntity(categoryDto);
         return categoryMapper.INSTANCE.toDto(categoryRepository.save(category));
     }
 

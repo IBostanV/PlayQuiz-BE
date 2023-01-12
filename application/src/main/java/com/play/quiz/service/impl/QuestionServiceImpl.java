@@ -2,8 +2,8 @@ package com.play.quiz.service.impl;
 
 import com.play.quiz.dto.QuestionDto;
 import com.play.quiz.engine.QuestionGenerationEngine;
-import com.play.quiz.enums.CategoryType;
 import com.play.quiz.mapper.QuestionMapper;
+import com.play.quiz.model.Category;
 import com.play.quiz.model.Question;
 import com.play.quiz.repository.QuestionRepository;
 import com.play.quiz.service.QuestionService;
@@ -37,8 +37,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionDto> findByCategoryType(final CategoryType categoryType) {
-        List<Question> questions = questionRepository.findByCategory_naturalId(categoryType.name());
+    public List<QuestionDto> findByCategory(final Category category) {
+        List<Question> questions = questionRepository.findByCategory_naturalId(category.getNaturalId());
         return questionMapper.mapToDtoList(questions);
     }
 
@@ -50,8 +50,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public void deleteById(final Long questionId) {
-        log.info("Deleting question with id: "+ questionId);
-        questionRepository.deleteById(questionId);
+    public void deactivate(final Long questionId) {
+        questionRepository.deactivate(questionId);
     }
 }

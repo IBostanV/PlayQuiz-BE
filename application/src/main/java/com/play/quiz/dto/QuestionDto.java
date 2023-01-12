@@ -5,6 +5,7 @@ import com.play.quiz.enums.QuestionType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Value
 @Builder
+@EqualsAndHashCode(exclude = {"answers"})
 public class QuestionDto {
 
     Long id;

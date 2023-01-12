@@ -1,10 +1,8 @@
 package com.play.quiz.dto;
 
-import com.play.quiz.model.Category;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Value;
-
-import jakarta.validation.constraints.NotBlank;
 
 @Value
 @Builder
@@ -15,5 +13,5 @@ public class CategoryDto {
 
    String naturalId;
 
-   Category parent;
+   CategoryDto parent;
 }
