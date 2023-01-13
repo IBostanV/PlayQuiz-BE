@@ -60,4 +60,6 @@ public abstract class QuestionMapper {
         }
         return QuestionType.CREATED;
     }
+
+    public abstract List<Question> mapToEntityList(final List<QuestionDto> quizQuestions);
 }

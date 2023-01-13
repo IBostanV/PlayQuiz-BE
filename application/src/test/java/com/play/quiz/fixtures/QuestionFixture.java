@@ -1,5 +1,6 @@
 package com.play.quiz.fixtures;
 
+import com.play.quiz.dto.QuestionDto;
 import com.play.quiz.enums.QuestionAttribute;
 import com.play.quiz.enums.QuestionType;
 import com.play.quiz.model.Answer;
@@ -11,6 +12,16 @@ import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 public class QuestionFixture {
+
+    public static Question getNoAnswerQuestion(final Long id, final String placeholder) {
+        return Question.builder()
+                .questionId(id)
+                .type(QuestionType.GENERATED)
+                .attributes(Collections.emptyList())
+                .category(CategoryFixture.getCategory())
+                .content("What is the meaning of "+ placeholder +"?")
+                .build();
+    }
 
     public static Question getGeneratedQuestion(final Long id, final String placeholder) {
         Question.QuestionBuilder questionBuilder = Question.builder()
@@ -24,6 +35,15 @@ public class QuestionFixture {
 
         return questionBuilder
                 .answers(Collections.singletonList(answer))
+                .build();
+    }
+
+    public static QuestionDto getQuestionDto() {
+        return QuestionDto.builder()
+                .type(QuestionType.GENERATED)
+                .attributes(Collections.emptyList())
+                .content("What is the meaning of Life?")
+                .category(CategoryFixture.getCategoryDto())
                 .build();
     }
 

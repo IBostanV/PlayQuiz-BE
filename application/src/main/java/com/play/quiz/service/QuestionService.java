@@ -1,7 +1,7 @@
 package com.play.quiz.service;
 
 import com.play.quiz.dto.QuestionDto;
-import com.play.quiz.enums.CategoryType;
+import com.play.quiz.model.Category;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ public interface QuestionService {
 
     List<QuestionDto> findAll();
 
-    List<QuestionDto> findByCategoryType(final CategoryType categoryType);
+    List<QuestionDto> findByCategory(final Category category);
 
     List<QuestionDto> generateFromTemplate(final QuestionDto questionDto);
 
-    void deleteById(final Long questionId);
+    void deactivate(final Long questionId);
 }

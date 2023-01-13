@@ -1,13 +1,8 @@
 package com.play.quiz.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.hibernate.Hibernate;
-
+import com.play.quiz.converter.QuestionIdsConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,8 +11,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.Hibernate;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "Q_QUIZZES")
@@ -37,7 +42,8 @@ public class Quiz {
     private Category category;
 
     @Column(name = "QUESTION_IDS")
-    private String questionIds;
+    @Convert(converter = QuestionIdsConverter.class)
+    private Set<Long> questionIds;
 
     @Column(name = "CREATED_DATE")
     private LocalDateTime createdDate;
@@ -47,6 +53,9 @@ public class Quiz {
 
     @Column(name = "QUESTIONS_COUNT")
     private int questionsCount;
+
+    @Transient
+    private List<Question> questionList;
 
     @Override
     public boolean equals(Object o) {
