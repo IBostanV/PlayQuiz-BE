@@ -6,8 +6,6 @@ import com.play.quiz.fixtures.CategoryFixture;
 import com.play.quiz.fixtures.QuestionFixture;
 import com.play.quiz.fixtures.QuizFixture;
 import com.play.quiz.mapper.QuestionMapper;
-import com.play.quiz.mapper.QuizMapper;
-import com.play.quiz.mapper.QuizMapperImpl;
 import com.play.quiz.model.Question;
 import com.play.quiz.repository.QuizRepository;
 import com.play.quiz.service.impl.QuizServiceImpl;
@@ -44,8 +42,7 @@ class QuizServiceImplTest {
 
     @BeforeEach
     void init() {
-        QuizMapper quizMapper = new QuizMapperImpl();
-        quizService = new QuizServiceImpl(quizMapper, quizRepository, questionMapper, questionService);
+        quizService = new QuizServiceImpl(quizRepository, questionMapper, questionService);
     }
 
     @Test

@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QuizServiceImpl implements QuizService {
 
-    private final QuizMapper quizMapper;
     private final QuizRepository quizRepository;
     private final QuestionMapper questionMapper;
     private final QuestionService questionService;
@@ -31,7 +30,7 @@ public class QuizServiceImpl implements QuizService {
         List<Question> questions = questionMapper.mapToEntityList(
                 questionService.findByCategory(getCategory(quizDto)));
         handleQuestionDiscrepancy(quizDto, questions);
-        return quizMapper.toDto(
+        return QuizMapper.INSTANCE.toDto(
                 quizRepository.save(
                         buildQuiz(questions, quizDto)));
     }
@@ -72,7 +71,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public QuizDto getById(final Long quizId) {
-        return quizMapper.INSTANCE.toDto(
+        return QuizMapper.INSTANCE.toDto(
                 quizRepository.getReferenceById(quizId));
     }
 }

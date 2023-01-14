@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,19 +53,14 @@ public class AuthenticationController {
                 .body(accountInfo.getAccount());
     }
 
-    @GetMapping(value = "/activate-account")
-    public ResponseEntity<Void> activateAccount(@RequestParam final String token, final HttpServletResponse response) {
-        handleActivation(token, response);
-        return ResponseEntity.ok().build();
+    @GetMapping(value = "/create-token", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CsrfToken getCsrfToken(final CsrfToken csrfToken) {
+        return csrfToken;
     }
 
-    private void handleActivation(final String token, final HttpServletResponse response) {
-        try {
-            userService.activateAccount(token);
-            response.sendRedirect(domainHostUrl);
-        } catch (IOException exception) {
-            log.error(exception.getMessage());
-            throw new RuntimeException(exception);
-        }
+    @GetMapping(value = "/activate-account")
+    public void activateAccount(@RequestParam final String token, final HttpServletResponse response) throws IOException {
+        userService.activateAccount(token);
+        response.sendRedirect(domainHostUrl);
     }
 }

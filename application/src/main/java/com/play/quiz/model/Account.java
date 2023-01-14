@@ -30,7 +30,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account implements Cloneable{
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
     @SequenceGenerator(name = "user_generator", sequenceName = "users_seq", allocationSize = 1)
@@ -53,8 +53,14 @@ public class Account implements Cloneable{
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
     private List<Role> roles = new ArrayList<>();
 
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public Account(final Account account, final Long accountId) {
+        this.accountId = accountId;
+        this.name = account.getName();
+        this.email = account.getEmail();
+        this.roles = account.getRoles();
+        this.isEnabled = account.isEnabled;
+        this.birthday = account.getBirthday();
+        this.password = account.getPassword();
     }
 
     public void enable() { this.isEnabled = true; }

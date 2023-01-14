@@ -56,27 +56,21 @@ public class UserRepositoryImpl implements UserRepository {
 
     private Account handleInsert(final Account account) {
         final Long nextUserId = jdbcTemplate.queryForObject(userSequenceNextVal, Long.class);
-        log.info("Execute INSERT USER with id: "+ nextUserId);
+        log.info("Execute INSERT USER with id: " + nextUserId);
         return executeSave(nextUserId, account);
     }
 
     private Account handleUpdate(final Account account) {
-        log.info("Execute UPDATE USER with id: "+ account.getAccountId());
+        log.info("Execute UPDATE USER with id: " + account.getAccountId());
         return executeSave(account.getAccountId(), account);
     }
 
     private Account executeSave(final Long accountId, final Account account) {
-        try {
-            namedJdbcTemplate.update(saveUserSql, getProperties(accountId, account));
-            account.getRoles().forEach(role -> namedJdbcTemplate.update(saveUserRoles,
-                    Map.of("accountId", accountId, "roleId", role.getRoleId())));
-
-            log.info("User with id: "+ accountId +" successfully saved");
-            return ((Account) account.clone()).withId(accountId);
-        } catch (CloneNotSupportedException exception) {
-            log.error(exception.getMessage());
-            throw new RuntimeException(exception);
-        }
+        namedJdbcTemplate.update(saveUserSql, getProperties(accountId, account));
+        account.getRoles().forEach(role -> namedJdbcTemplate.update(saveUserRoles,
+                Map.of("accountId", accountId, "roleId", role.getRoleId())));
+        log.info("User with id: " + accountId + " successfully saved");
+        return new Account(account, accountId);
     }
 
     private Map<String, Object> getProperties(final Long accountId, final Account account) {
@@ -91,7 +85,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private Function<Object, Object> mapNull() {
-        return (input) -> Objects.nonNull(input) ? input : "";
+        return input -> Objects.nonNull(input) ? input : "";
     }
 
     @Override
@@ -101,7 +95,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     private Account setAccountRoles(final Account account) {
         List<Role> roles = handleRoles(account);
-        log.info("Found roles: "+ roles +" for user: "+ account.getEmail());
+        log.info("Found roles: " + roles + " for user: " + account.getEmail());
         account.setRoles(roles);
         return account;
     }
@@ -110,11 +104,11 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             BeanPropertyRowMapper<Account> rowMapper = new BeanPropertyRowMapper<>(Account.class);
             Account account = namedJdbcTemplate.queryForObject(findUserByEmailSql, Map.of("email", email), rowMapper);
-            log.info("Found user with email: "+ email);
+            log.info("Found user with email: " + email);
 
             return Optional.ofNullable(account);
         } catch (EmptyResultDataAccessException exception) {
-            log.info("No user found with email: "+ email);
+            log.info("No user found with email: " + email);
             return Optional.empty();
         }
     }
@@ -166,7 +160,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     private static Account getAccount(final List<Account> accountGroup) {
         return accountGroup.stream()
-                .map(account -> {account.setRoles(getRoles(accountGroup)); return account;})
+                .map(account -> {
+                    account.setRoles(getRoles(accountGroup));
+                    return account;
+                })
                 .findFirst()
                 .orElse(new Account());
     }
