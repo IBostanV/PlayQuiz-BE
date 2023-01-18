@@ -15,13 +15,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-    private final CategoryMapper categoryMapper;
     private final CategoryRepository categoryRepository;
 
     @Override
     public CategoryDto save(final CategoryDto categoryDto) {
-        Category category = categoryMapper.INSTANCE.toEntity(categoryDto);
-        return categoryMapper.INSTANCE.toDto(categoryRepository.save(category));
+        Category category = CategoryMapper.INSTANCE.toEntity(categoryDto);
+        return CategoryMapper.INSTANCE.toDto(categoryRepository.save(category));
     }
 
     @NonNull
@@ -29,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto getById(final Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RecordNotFoundException("No records found by category id: " + categoryId));
-        return categoryMapper.INSTANCE.toDto(category);
+        return CategoryMapper.INSTANCE.toDto(category);
     }
 
     @NonNull
@@ -37,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto getByNaturalId(final String naturalId) {
         Category category = categoryRepository.findByNaturalId(naturalId)
                 .orElseThrow(() -> new RecordNotFoundException("No records found by natural Id: " + naturalId));
-        return categoryMapper.INSTANCE.toDto(category);
+        return CategoryMapper.INSTANCE.toDto(category);
     }
 
     @Override

@@ -1,7 +1,10 @@
 package com.play.quiz.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.play.quiz.controller.RestEndpoint;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.DefaultContentTypeResolver;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -16,23 +19,31 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 import java.util.List;
 
 @Configuration
-@EnableWebSocketMessageBroker
 @RequiredArgsConstructor
+@EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+    @Value("#{'${application.security.allowed-origins}'.split(',')}")
+    private final List<String> allowedOrigins;
+
     private final ObjectMapper objectMapper;
-    private final DefaultHandshakeHandler defaultHandshakeHandler;
 
     @Override
     public void configureMessageBroker(final MessageBrokerRegistry messageBrokerRegistry) {
-        messageBrokerRegistry.setApplicationDestinationPrefixes("/play-quiz");
+        messageBrokerRegistry.setApplicationDestinationPrefixes(RestEndpoint.CONTEXT_PATH + "/pq");
         messageBrokerRegistry.enableSimpleBroker("/topic");
+    }
+
+    @Bean
+    public DefaultHandshakeHandler handshakeHandler() {
+        return new DefaultHandshakeHandler();
     }
 
     @Override
     public void registerStompEndpoints(final StompEndpointRegistry stompEndpointRegistry) {
         stompEndpointRegistry
-                .addEndpoint("/ws")
-                .setHandshakeHandler(defaultHandshakeHandler)
+                .addEndpoint(RestEndpoint.CONTEXT_PATH + "/pq")
+                .setHandshakeHandler(handshakeHandler())
+                .setAllowedOrigins(allowedOrigins.toArray(new String[0]))
                 .withSockJS();
     }
 

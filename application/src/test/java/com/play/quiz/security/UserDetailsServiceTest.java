@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UserDetailsServiceTest {
+class UserDetailsServiceTest {
     private UserDetailsService userDetailsService;
 
     @Mock
@@ -45,7 +45,7 @@ public class UserDetailsServiceTest {
     }
 
     @Test
-    public void give_userEmail_when_loadByEmail_then_return_userDetails() {
+    void give_userEmail_when_loadByEmail_then_return_userDetails() {
         final String userEmail = "vanyok93@yahoo.com";
         final Account adminAccount = AccountFixture.getAdminAccount();
         final UserDetails adminUserDetails = UserDetailsFixture.getAdminUserDetails();
@@ -64,7 +64,7 @@ public class UserDetailsServiceTest {
     }
 
     @Test
-    public void give_no_roles_account_when_loadByEmail_then_return_userDetails_with_role_user() {
+    void give_no_roles_account_when_loadByEmail_then_return_userDetails_with_role_user() {
         final String userEmail = "vanyok93@yahoo.com";
         final Account adminAccount = AccountFixture.getNoRolesAccount();
         final UserDetails adminUserDetails = UserDetailsFixture.getAdminUserDetails();
@@ -87,7 +87,7 @@ public class UserDetailsServiceTest {
     }
 
     @Test
-    public void give_no_email_when_loadByEmail_then_UserNotFoundException_thrown() {
+    void give_no_email_when_loadByEmail_then_UserNotFoundException_thrown() {
         UserNotFoundException userNotFoundException = assertThrows(UserNotFoundException.class,
                 () -> userDetailsService.loadByEmail(null),
                 "Expected authenticationService.login() to throw UserNotFoundException."

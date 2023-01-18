@@ -36,7 +36,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthenticationServiceImplTest {
+class AuthenticationServiceImplTest {
 
     @Mock
     private JwtProvider jwtProvider;
@@ -65,12 +65,12 @@ public class AuthenticationServiceImplTest {
     private AuthenticationServiceImpl authenticationService;
 
     @BeforeEach
-    public void init() {
+    void init() {
         authenticationService = new AuthenticationServiceImpl(jwtProvider, userService, accountMapper, authenticationManager);
     }
 
     @Test
-    public void given_valid_credentials_when_login_then_login_user() {
+    void given_valid_credentials_when_login_then_login_user() {
         final AccountInfo accountInfo = AccountInfoFixture.getAccountInfo();
         final Account adminAccount = AccountFixture.getAdminAccount();
         final Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -99,7 +99,7 @@ public class AuthenticationServiceImplTest {
     }
 
     @Test
-    public void given_disabled_account_when_login_then_AccountDisabledException_thrown() {
+    void given_disabled_account_when_login_then_AccountDisabledException_thrown() {
         final AccountInfo accountInfo = AccountInfoFixture.getAccountInfoWithDisabledAccount();
         final Account adminAccount = AccountFixture.getDisabledAdminAccount();
         final Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -122,7 +122,7 @@ public class AuthenticationServiceImplTest {
     }
 
     @Test
-    public void given_account_no_email_when_login_then_exception() {
+    void given_account_no_email_when_login_then_exception() {
         final AccountInfo accountInfo = AccountInfoFixture.getAccountInfoWithNoEmailAccount();
         final Account adminAccount = AccountFixture.getDisabledAdminAccount();
         final Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -143,7 +143,7 @@ public class AuthenticationServiceImplTest {
     }
 
     @Test
-    public void given_valid_account_when_register_then_return_AccountInfo() {
+    void given_valid_account_when_register_then_return_AccountInfo() {
         final AccountInfo accountInfo = AccountInfoFixture.getAccountInfo();
         final AccountDto accountDto = accountInfo.getAccount();
         final Account adminAccount = AccountFixture.getAdminAccount();
@@ -170,7 +170,7 @@ public class AuthenticationServiceImplTest {
     }
 
     @Test
-    public void given_valid_account_when_register_with_email_then_return_AccountInfo() {
+    void given_valid_account_when_register_with_email_then_return_AccountInfo() {
         final AccountInfo accountInfo = AccountInfoFixture.getAccountInfo();
         final AccountDto accountDto = accountInfo.getAccount();
         final Account adminAccount = AccountFixture.getAdminAccount();
@@ -199,7 +199,7 @@ public class AuthenticationServiceImplTest {
     }
 
     @Test
-    public void given_existing_account_when_userExists_then_DuplicateUserException_thrown() {
+    void given_existing_account_when_userExists_then_DuplicateUserException_thrown() {
         final AccountInfo accountInfo = AccountInfoFixture.getAccountInfo();
         final AccountDto accountDto = accountInfo.getAccount();
         final Account adminAccount = AccountFixture.getAdminAccount();

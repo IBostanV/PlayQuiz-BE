@@ -20,17 +20,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(SpringExtension.class)
-public class AuthenticationFacadeTest {
+class AuthenticationFacadeTest {
     private AuthenticationFacade authenticationFacade;
 
     @BeforeEach
-    public void init() {
+    void init() {
         authenticationFacade = new AuthenticationFacadeImpl();
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void given_admin_user_when_getAuthentication_then_return_authentication() {
+    void given_admin_user_when_getAuthentication_then_return_authentication() {
         final Authentication mockAuthentication = SecurityContextHolder.getContext().getAuthentication();
 
         Authentication authentication = authenticationFacade.getAuthentication();
@@ -41,7 +41,7 @@ public class AuthenticationFacadeTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void given_admin_user_when_getPrincipal_then_return_principal() {
+    void given_admin_user_when_getPrincipal_then_return_principal() {
         final SimpleGrantedAuthority admin = new SimpleGrantedAuthority(UserRole.ROLE_ADMIN.name());
         final Authentication mockAuthentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -53,7 +53,7 @@ public class AuthenticationFacadeTest {
     }
 
     @Test
-    public void given_no_authentication_when_getAuthentication_then_return_null_authentication() {
+    void given_no_authentication_when_getAuthentication_then_return_null_authentication() {
         Authentication authentication = authenticationFacade.getAuthentication();
 
         assertNull(authentication);
