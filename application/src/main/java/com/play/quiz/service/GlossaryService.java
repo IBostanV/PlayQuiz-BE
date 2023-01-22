@@ -13,5 +13,5 @@ public interface GlossaryService {
 
     GlossaryDto getByCategoryId(final Long categoryId);
 
-    void toggleGlossary(final Long glossaryId);
+    Integer toggleGlossary(final Long glossaryId);
 }

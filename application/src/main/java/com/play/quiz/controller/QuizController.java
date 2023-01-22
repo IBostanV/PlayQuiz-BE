@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_QUIZ;
+
 @RestController
-@RequestMapping(RestEndpoint.CONTEXT_PATH + "/quiz")
+@RequestMapping(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_QUIZ)
 @RequiredArgsConstructor
 public class QuizController {
     private final QuizService quizService;

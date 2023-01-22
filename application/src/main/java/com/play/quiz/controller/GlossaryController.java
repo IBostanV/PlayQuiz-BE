@@ -16,26 +16,25 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_GLOSSARY;
+
 @RestController
-@RequestMapping(RestEndpoint.CONTEXT_PATH + "/glossary")
+@RequestMapping(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_GLOSSARY)
 @RequiredArgsConstructor
 public class GlossaryController {
     private final GlossaryService glossaryService;
 
-    @GetMapping(value = "/id/{glossaryId}",
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/id/{glossaryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GlossaryDto> getGlossaryById(@PathVariable final Long glossaryId) {
         return ResponseEntity.ok().body(glossaryService.getById(glossaryId));
     }
 
-    @GetMapping(value = "/key/{glossaryKey}",
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/key/{glossaryKey}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GlossaryDto> getGlossaryByKey(@PathVariable final String glossaryKey) {
         return ResponseEntity.ok().body(glossaryService.getByKey(glossaryKey));
     }
 
-    @GetMapping(value = "/category/{categoryId}",
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/category/{categoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GlossaryDto> getGlossaryByCategory(@PathVariable final Long categoryId) {
         return ResponseEntity.ok().body(glossaryService.getByCategoryId(categoryId));
     }
@@ -44,12 +43,11 @@ public class GlossaryController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GlossaryDto> saveGlossary(@Valid @RequestPart(name = "glossary") final GlossaryDto glossaryDto,
                                                     @RequestPart(required = false) final MultipartFile attachment) {
-        return ResponseEntity.ok(glossaryService.save(glossaryDto,attachment));
+        return ResponseEntity.ok(glossaryService.save(glossaryDto, attachment));
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> toggleGlossary(@RequestParam final Long id) {
-        glossaryService.toggleGlossary(id);
-        return ResponseEntity.ok().build();
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> toggleGlossary(@RequestParam final Long id) {
+        return ResponseEntity.ok(glossaryService.toggleGlossary(id));
     }
 }

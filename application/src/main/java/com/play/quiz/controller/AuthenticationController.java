@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_AUTH;
+
 @Slf4j
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(REQUEST_MAPPING_AUTH)
 @RequiredArgsConstructor
 public class AuthenticationController {
     @Value("${application.domain.host.url}")

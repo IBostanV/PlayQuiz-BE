@@ -14,7 +14,7 @@ public interface GlossaryRepository extends JpaRepository<Glossary, Long> {
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE Glossary glos SET glos.isActive = CASE WHEN glos.isActive = TRUE THEN FALSE ELSE TRUE END WHERE glos.termId = :id")
-    void toggleGlossary(@Param("id") final Long id);
+    int toggleGlossary(@Param("id") final Long id);
 
     Optional<Glossary> findByKey(final String key);
 
