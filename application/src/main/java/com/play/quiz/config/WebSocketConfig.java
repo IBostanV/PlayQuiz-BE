@@ -7,7 +7,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.play.quiz.controller.RestEndpoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.DefaultContentTypeResolver;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -23,6 +22,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static com.play.quiz.controller.RestEndpoint.WS_BROKER_PARTY;
+import static com.play.quiz.controller.RestEndpoint.WS_BROKER_SOLO;
+
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSocketMessageBroker
@@ -35,19 +37,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(final MessageBrokerRegistry messageBrokerRegistry) {
         messageBrokerRegistry.setApplicationDestinationPrefixes(RestEndpoint.CONTEXT_PATH + "/app");
-        messageBrokerRegistry.enableSimpleBroker("/party", "/solo");
-    }
-
-    @Bean
-    public DefaultHandshakeHandler handshakeHandler() {
-        return new DefaultHandshakeHandler();
+        messageBrokerRegistry.enableSimpleBroker(WS_BROKER_PARTY, WS_BROKER_SOLO);
     }
 
     @Override
     public void registerStompEndpoints(final StompEndpointRegistry stompEndpointRegistry) {
         stompEndpointRegistry
                 .addEndpoint(RestEndpoint.CONTEXT_PATH + "/pq")
-                .setHandshakeHandler(handshakeHandler())
+                .setHandshakeHandler(new DefaultHandshakeHandler())
                 .setAllowedOrigins(allowedOrigins.toArray(new String[0]))
                 .withSockJS();
     }
@@ -66,7 +63,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     private JavaTimeModule javaTimeModule() {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(formatter));
         javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(formatter));

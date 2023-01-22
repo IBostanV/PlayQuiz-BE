@@ -17,13 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_CATEGORY;
+
 @RestController
-@RequestMapping(RestEndpoint.CONTEXT_PATH + "/category")
+@RequestMapping(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_CATEGORY)
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDto> getCategory(@RequestParam(required = false) final Long id,
                                                    @RequestParam(required = false) final String naturalId) {
         return ResponseEntity.ok(Objects.nonNull(id) ?

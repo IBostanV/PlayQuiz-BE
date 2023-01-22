@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_AUTH;
+
 @Slf4j
 @Component
 public class EmailMessageFactory {
@@ -16,7 +18,7 @@ public class EmailMessageFactory {
     @Value("${application.email.sending-address}")
     private String defaultSenderEmailAddress;
 
-    private static final String ACTIVATE_ACCOUNT_PATH = "/auth/activate-account";
+    private static final String ACTIVATE_ACCOUNT_PATH = REQUEST_MAPPING_AUTH + "/activate-account";
     private static final String ACCOUNT_ACTIVATION_SUBJECT = "Activate your account";
     private static final String ACCOUNT_ACTIVATION_EMAIL_TEMPLATE = "confirmation-email.html";
 

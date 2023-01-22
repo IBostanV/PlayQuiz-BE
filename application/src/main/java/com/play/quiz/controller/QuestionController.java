@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_QUESTION;
+
 @RestController
-@RequestMapping(RestEndpoint.CONTEXT_PATH + "/question")
+@RequestMapping(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_QUESTION)
 @RequiredArgsConstructor
 public class QuestionController {
     private final QuestionService questionService;
@@ -38,7 +40,7 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.findAll());
     }
 
-    @GetMapping(value = "/category/{category}")
+    @GetMapping(value = "/category/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<QuestionDto>> getCategoryQuestions(@PathVariable final Category category) {
         return ResponseEntity.ok(questionService.findByCategory(category));
     }

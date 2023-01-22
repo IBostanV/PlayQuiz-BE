@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_CATEGORY;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -38,8 +39,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan(basePackages = {"com.play.quiz"})
 @ContextConfiguration(initializers = {TestAppContextInitializer.class})
 class CategoryControllerTest {
-    private static final String CONTROLLER_PATH = "/category";
-
     @Value("${application.security.jwt.token}")
     private String token;
 
@@ -66,7 +65,7 @@ class CategoryControllerTest {
         when(categoryRepository.findById(categoryId))
                 .thenReturn(Optional.ofNullable(CategoryFixture.getCategory()));
 
-        mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + CONTROLLER_PATH)
+        mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_CATEGORY)
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
@@ -94,7 +93,7 @@ class CategoryControllerTest {
         when(categoryRepository.findByNaturalId(naturalId))
                 .thenReturn(Optional.ofNullable(CategoryFixture.getCategory()));
 
-        mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + CONTROLLER_PATH)
+        mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_CATEGORY)
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
@@ -119,7 +118,7 @@ class CategoryControllerTest {
         when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper))
                 .thenReturn(AccountFixture.getAdminAccount());
 
-        mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + CONTROLLER_PATH)
+        mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_CATEGORY)
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)

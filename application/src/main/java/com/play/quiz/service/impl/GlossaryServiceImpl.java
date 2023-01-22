@@ -47,7 +47,7 @@ public class GlossaryServiceImpl implements GlossaryService {
     @NonNull
     @Override
     @Transactional
-    public void toggleGlossary(final Long glossaryId) {
-        glossaryRepository.toggleGlossary(glossaryId);
+    public Integer toggleGlossary(final Long glossaryId) {
+        return glossaryRepository.toggleGlossary(glossaryId);
     }
 }

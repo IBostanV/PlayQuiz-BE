@@ -31,6 +31,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_AUTH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,8 +50,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(initializers = {TestAppContextInitializer.class})
 @ExtendWith(OutputCaptureExtension.class)
 class AuthenticationControllerTest {
-    private static final String CONTROLLER_PATH = "/auth";
-
     @Value("${application.domain.host.url}")
     private String redirectedURL;
 
@@ -80,7 +79,7 @@ class AuthenticationControllerTest {
         when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper))
                 .thenReturn(AccountFixture.getAdminAccount());
 
-        mockMvc.perform(post(CONTROLLER_PATH + "/login")
+        mockMvc.perform(post(REQUEST_MAPPING_AUTH + "/login")
                         .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
@@ -99,7 +98,7 @@ class AuthenticationControllerTest {
         when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper))
                 .thenReturn(AccountFixture.getAdminAccount());
 
-        mockMvc.perform(post(CONTROLLER_PATH + "/login")
+        mockMvc.perform(post(REQUEST_MAPPING_AUTH + "/login")
                         .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
@@ -125,7 +124,7 @@ class AuthenticationControllerTest {
         when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper))
                 .thenReturn(AccountFixture.getAdminAccount());
 
-        mockMvc.perform(post(CONTROLLER_PATH + "/login")
+        mockMvc.perform(post(REQUEST_MAPPING_AUTH + "/login")
                         .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
@@ -146,7 +145,7 @@ class AuthenticationControllerTest {
         when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper))
                 .thenReturn(AccountFixture.getAdminAccount());
 
-        mockMvc.perform(post(CONTROLLER_PATH + "/login")
+        mockMvc.perform(post(REQUEST_MAPPING_AUTH + "/login")
                         .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE))
@@ -170,7 +169,7 @@ class AuthenticationControllerTest {
         when(namedParameterJdbcTemplate.update(any(), any(), any())).thenReturn(1);
         when(verificationTokenRepository.save(any())).thenReturn(VerificationTokenFixture.getVerificationToken());
 
-        mockMvc.perform(post(CONTROLLER_PATH + "/register")
+        mockMvc.perform(post(REQUEST_MAPPING_AUTH + "/register")
                         .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
@@ -194,7 +193,7 @@ class AuthenticationControllerTest {
         when(namedParameterJdbcTemplate.update(any(), any(), any())).thenReturn(1);
         when(verificationTokenRepository.save(any())).thenReturn(VerificationTokenFixture.getVerificationToken());
 
-        mockMvc.perform(post(CONTROLLER_PATH + "/register")
+        mockMvc.perform(post(REQUEST_MAPPING_AUTH + "/register")
                         .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
@@ -219,7 +218,7 @@ class AuthenticationControllerTest {
         when(jdbcTemplate.queryForObject(any(), ArgumentMatchers.eq(Long.class))).thenReturn(1L);
         when(verificationTokenRepository.findByToken(token)).thenReturn(VerificationTokenFixture.getVerificationToken());
 
-        mockMvc.perform(get(CONTROLLER_PATH + "/activate-account")
+        mockMvc.perform(get(REQUEST_MAPPING_AUTH + "/activate-account")
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
