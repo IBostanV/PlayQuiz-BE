@@ -40,7 +40,7 @@ public class Account {
 
     private String email;
 
-    private String password;
+    private char[] password;
 
     private LocalDate birthday;
 

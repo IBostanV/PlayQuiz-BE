@@ -75,7 +75,7 @@ class AuthenticationServiceImplTest {
         final Account adminAccount = AccountFixture.getAdminAccount();
         final Authentication authentication = new UsernamePasswordAuthenticationToken(
                 accountInfo.getAccount().getEmail(),
-                accountInfo.getAccount().getPassword());
+                new String(accountInfo.getAccount().getPassword()));
 
         commonWhenClauses(accountInfo, adminAccount, authentication);
         when(userService.findByEmail(accountInfo.getAccount().getEmail())).thenReturn(adminAccount);
@@ -149,7 +149,7 @@ class AuthenticationServiceImplTest {
         final Account adminAccount = AccountFixture.getAdminAccount();
         final Authentication authentication = new UsernamePasswordAuthenticationToken(
                 accountInfo.getAccount().getEmail(),
-                accountInfo.getAccount().getPassword());
+                new String(accountInfo.getAccount().getPassword()));
 
         commonWhenClauses(accountInfo, adminAccount, authentication);
         when(userService.userExists(accountInfo.getAccount())).thenReturn(false);
@@ -176,7 +176,7 @@ class AuthenticationServiceImplTest {
         final Account adminAccount = AccountFixture.getAdminAccount();
         final Authentication authentication = new UsernamePasswordAuthenticationToken(
                 accountInfo.getAccount().getEmail(),
-                accountInfo.getAccount().getPassword());
+                new String(accountInfo.getAccount().getPassword()));
 
         commonWhenClauses(accountInfo, adminAccount, authentication);
         when(userService.userExists(accountInfo.getAccount())).thenReturn(false);

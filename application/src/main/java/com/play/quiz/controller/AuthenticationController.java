@@ -37,8 +37,7 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    @PostMapping(value = "/login",
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountDto> login(@Valid @RequestBody final AccountDto accountDto) {
         AccountInfo accountInfo = authenticationService.login(accountDto);
         return ResponseEntity.ok()
@@ -46,8 +45,7 @@ public class AuthenticationController {
                 .body(accountInfo.getAccount());
     }
 
-    @PostMapping(value = "/register",
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountDto> register(@Valid @RequestBody final AccountDto accountDto) {
         AccountInfo accountInfo = authenticationService.register(accountDto);
         return ResponseEntity.status(HttpStatus.CREATED)

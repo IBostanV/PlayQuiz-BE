@@ -40,9 +40,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private AccountDto assignRoles(final AccountDto accountDto) {
-        Long roleId = UserRole.ROLE_USER.getRoleId();
-        RoleDto roleDto = RoleDto.builder().name(UserRole.ROLE_USER).roleId(roleId).build();
-        return accountDto.toBuilder().roles(Collections.singletonList(roleDto)).build();
+        RoleDto roleDto = RoleDto.builder()
+                .name(UserRole.ROLE_USER)
+                .roleId(UserRole.ROLE_USER.getRoleId())
+                .build();
+        return accountDto.toBuilder()
+                .roles(Collections.singletonList(roleDto))
+                .build();
     }
 
     @Override
@@ -62,6 +66,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private Authentication authenticate(final AccountDto accountDto) {
         return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                accountDto.getEmail(), accountDto.getPassword()));
+                accountDto.getEmail(), new String(accountDto.getPassword())));
     }
 }

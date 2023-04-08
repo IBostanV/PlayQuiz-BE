@@ -37,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private static UserDetails buildUserDetails(final Account account) {
         return User.builder()
                 .username(account.getEmail())
-                .password(account.getPassword())
+                .password(new String(account.getPassword()))
                 .authorities(getUserAuthorities(account))
                 .build();
     }

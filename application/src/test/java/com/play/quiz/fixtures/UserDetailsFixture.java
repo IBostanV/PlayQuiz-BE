@@ -13,7 +13,7 @@ public class UserDetailsFixture {
 
         return User.builder()
                 .username(account.getEmail())
-                .password(account.getPassword())
+                .password(new String(account.getPassword()))
                 .authorities(simpleGrantedAuthority)
                 .build();
     }
