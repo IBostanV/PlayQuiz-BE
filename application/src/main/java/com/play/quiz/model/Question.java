@@ -3,6 +3,7 @@ package com.play.quiz.model;
 import com.play.quiz.converter.AttributeListConverter;
 import com.play.quiz.enums.QuestionAttribute;
 import com.play.quiz.enums.QuestionType;
+import com.play.quiz.model.translation.QuestionTranslation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -90,6 +91,13 @@ public class Question {
     @ToString.Exclude
     private List<Answer> answers;
 
+    @OneToMany(mappedBy = "question",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true)
+    @ToString.Exclude
+    private List<QuestionTranslation> questionTranslations;
+
+
     public Question copy(final QuestionType questionType, final String content) {
         return copy(questionType, content, Collections.emptyList());
     }
@@ -97,7 +105,7 @@ public class Question {
     public Question copy(final QuestionType questionType, final String content, final List<QuestionAttribute> attributes) {
         return new Question(null, this.account, questionType, this.tipId, this.category, this.isActive,
                 this.complexityLevel, content, this.createdDate, this.updatedDate, this.updatedAccount,
-                this.topic, this.priority, attributes, this.answers);
+                this.topic, this.priority, attributes, this.answers, this.questionTranslations);
     }
 
     @Override

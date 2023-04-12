@@ -1,10 +1,12 @@
 package com.play.quiz.dto;
 
+import com.play.quiz.dto.translation.GlossaryTranslationDto;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Value;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import java.util.List;
 
 @Value
 @Builder
@@ -25,4 +27,6 @@ public class GlossaryDto {
     GlossaryDto parent;
 
     boolean isActive;
+
+    List<GlossaryTranslationDto> glossaryTranslations;
 }
