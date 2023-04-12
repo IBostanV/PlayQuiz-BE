@@ -31,7 +31,7 @@ public class AccountFixture {
         return Account.builder()
                 .accountId(accountId)
                 .email("vanyok93@yahoo.com")
-                .password("{noop}password")
+                .password("{noop}password".toCharArray())
                 .roles(List.of(getUserRole(), getAdminRole()));
     }
 

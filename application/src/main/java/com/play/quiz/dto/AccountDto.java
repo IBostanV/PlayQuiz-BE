@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Value;
 
@@ -28,9 +29,9 @@ public class AccountDto {
     @Email(regexp = ".+@.+\\..+", message="Please provide a valid email address")
     String email;
 
-    @NotBlank
+    @NotEmpty
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String password;
+    char[] password;
 
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)

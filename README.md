@@ -1,7 +1,3 @@
-#Modules
-- application
-- persistence
-
 #Commands
 - mvn clean install -> clean project and rebuild it
 - mvn migration:new -Dmigration.description=name_of_the_migration

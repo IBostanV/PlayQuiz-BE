@@ -29,10 +29,10 @@ public abstract class AccountMapper {
     public abstract Account toEntity(final AccountDto accountDto);
 
     @Named("handlePassword")
-    protected String handlePassword(final String password) {
+    protected char[] handlePassword(final char[] password) {
         if (Objects.isNull(password)) return null;
 
-        return passwordEncoder.encode(password);
+        return passwordEncoder.encode(new String(password)).toCharArray();
     }
 
     @Named("mappingFields")

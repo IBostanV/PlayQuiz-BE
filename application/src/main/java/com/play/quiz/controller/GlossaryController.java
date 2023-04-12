@@ -39,8 +39,7 @@ public class GlossaryController {
         return ResponseEntity.ok().body(glossaryService.getByCategoryId(categoryId));
     }
 
-    @PatchMapping(value = "/save",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GlossaryDto> saveGlossary(@Valid @RequestPart(name = "glossary") final GlossaryDto glossaryDto,
                                                     @RequestPart(required = false) final MultipartFile attachment) {
         return ResponseEntity.ok(glossaryService.save(glossaryDto, attachment));
