@@ -1,5 +1,7 @@
 package com.play.quiz.model;
 
+import com.play.quiz.model.translation.GlossaryTranslation;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -17,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -51,6 +55,12 @@ public class Glossary {
 
     @Column(name = "IS_ACTIVE")
     private boolean isActive;
+
+    @OneToMany(mappedBy = "glossary",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true)
+    @ToString.Exclude
+    private List<GlossaryTranslation> glossaryTranslations;
 
     @Override
     public boolean equals(Object o) {

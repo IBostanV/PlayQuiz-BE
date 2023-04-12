@@ -1,5 +1,7 @@
 package com.play.quiz.model;
 
+import com.play.quiz.model.translation.AnswerTranslation;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -17,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -41,6 +45,13 @@ public class Answer {
     @OneToOne(targetEntity = Glossary.class)
     @JoinColumn(name = "TERM_ID")
     private Glossary glossary;
+
+    @OneToMany(mappedBy = "answer",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true)
+    @ToString.Exclude
+    private List<AnswerTranslation> answerTranslations;
+
 
     @Override
     public boolean equals(Object o) {

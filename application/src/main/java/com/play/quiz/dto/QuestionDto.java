@@ -1,5 +1,6 @@
 package com.play.quiz.dto;
 
+import com.play.quiz.dto.translation.QuestionTranslationDto;
 import com.play.quiz.enums.QuestionAttribute;
 import com.play.quiz.enums.QuestionType;
 import jakarta.validation.constraints.NotBlank;
@@ -45,4 +46,6 @@ public class QuestionDto {
     List<QuestionAttribute> attributes;
 
     List<AnswerDto> answers;
+
+    List<QuestionTranslationDto> questionTranslations;
 }
