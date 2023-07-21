@@ -1,0 +1,47 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  devtools:
+    restart:
+      enabled: false
+  jpa:
+    open-in-view: false
+    properties:
+      jakarta:
+        persistence:
+          sharedCache.mode: UNSPECIFIED
+
+application:
+  domain:
+    host:
+      url: http://localhost:3000
+  server:
+    host:
+      url: http://localhost:8080
+  security:
+    allowed-origins: http://localhost:3000
+    exposed-headers: Authorization
+  email:
+    sending-address: play.quiz.10@gmail.com
+    token:
+      validity:
+        period: 60
+    sending:
+      enabled: false
+
+# Trace @Transaction behavior
+logging:
+  level:
+    org:
+      springframework:
+        transaction:
+          interceptor: TRACE
+        security: DEBUG
+        web: DEBUG
