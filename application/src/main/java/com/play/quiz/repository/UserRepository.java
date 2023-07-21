@@ -12,4 +12,6 @@ public interface UserRepository {
     Optional<Account> findUserByEmail(final String email);
 
     List<Account> findAll();
+
+    void enableAccount(final Long accountId);
 }

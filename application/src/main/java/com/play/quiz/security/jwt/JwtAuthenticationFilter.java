@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +45,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(final HttpServletRequest request,
-                                    final HttpServletResponse response,
+    protected void doFilterInternal(final @NotNull HttpServletRequest request,
+                                    final @NotNull HttpServletResponse response,
                                     final FilterChain filterChain) throws ServletException, IOException {
         final @NonNull String token = parseRequest(request);
         final @NonNull String emailAsUsername = jwtProvider.getUsernameFromToken(token);

@@ -94,4 +94,14 @@
         </constructor-arg>
     </bean>
 
+    <bean id="activateAccountSql" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+                     UPDATE Q_USERS SET IS_ENABLED = 1 WHERE ACCOUNT_ID = :accountId
+                ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
 </beans>

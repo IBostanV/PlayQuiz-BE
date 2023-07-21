@@ -34,7 +34,6 @@ public class AuthenticationController {
     private String domainHostUrl;
 
     private final UserService userService;
-
     private final AuthenticationService authenticationService;
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

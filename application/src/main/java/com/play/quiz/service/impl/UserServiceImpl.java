@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void activateAccount(final @NonNull String token) {
         final VerificationToken verificationToken = verificationTokenService.findByToken(token)
                 .orElseThrow(() -> new RecordNotFoundException("No records found for token: " + token));
@@ -75,10 +76,10 @@ public class UserServiceImpl implements UserService {
 
     private void enableAccount(final Account account) {
         account.enable();
-        save(accountMapper.toDto(account));
+        userRepository.enableAccount(account.getAccountId());
     }
 
-    private void updateVerificationToken(VerificationToken verificationToken) {
+    private void updateVerificationToken(final VerificationToken verificationToken) {
         verificationToken.setActivationDate(LocalDateTime.now());
         verificationTokenService.save(verificationToken);
     }

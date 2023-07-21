@@ -34,19 +34,13 @@ import static java.util.stream.Collectors.groupingBy;
 @AllArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
     private final String saveUserSql;
-
     private final String saveUserRoles;
-
-    private final String findUserByEmailSql;
-
-    private final String findUserRolesSql;
-
-    private final String userSequenceNextVal;
-
     private final String findAllUsersSql;
-
+    private final String findUserRolesSql;
+    private final String findUserByEmailSql;
     private final JdbcTemplate jdbcTemplate;
-
+    private final String activateAccountSql;
+    private final String userSequenceNextVal;
     private final NamedParameterJdbcTemplate namedJdbcTemplate;
 
     @Override
@@ -78,7 +72,7 @@ public class UserRepositoryImpl implements UserRepository {
         propertyMap.put("accountId", accountId);
         propertyMap.put("email", account.getEmail());
         propertyMap.put("isEnabled", account.isEnabled());
-        propertyMap.put("password", account.getPassword());
+        propertyMap.put("password", String.valueOf(mapNull().apply(account.getPassword())));
         propertyMap.put("name", mapNull().apply(account.getName()));
         propertyMap.put("birthday", mapNull().apply(account.getBirthday()));
         return propertyMap;
@@ -136,6 +130,11 @@ public class UserRepositoryImpl implements UserRepository {
     public List<Account> findAll() {
         List<Map<String, Object>> accountMap = jdbcTemplate.queryForList(findAllUsersSql);
         return mapResultSetRows(accountMap);
+    }
+
+    @Override
+    public void enableAccount(final Long accountId) {
+        namedJdbcTemplate.update(activateAccountSql, Map.of("accountId", accountId));
     }
 
     private List<Account> mapResultSetRows(final List<Map<String, Object>> accountMap) {
