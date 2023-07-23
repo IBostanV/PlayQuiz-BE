@@ -1,0 +1,12 @@
+-- // name_of_the_migration
+INSERT INTO Q_LANGUAGES VALUES(1, 'EN', 'English')/execute/
+INSERT INTO Q_LANGUAGES VALUES(2, 'RU', 'Русский')/execute/
+INSERT INTO Q_LANGUAGES VALUES(3, 'DE', 'Deutsch')/execute/
+INSERT INTO Q_LANGUAGES VALUES(4, 'RO', 'Română')/execute/
+
+-- //@UNDO
+DELETE FROM Q_LANGUAGES WHERE ID = 1/execute/
+DELETE FROM Q_LANGUAGES WHERE ID = 2/execute/
+DELETE FROM Q_LANGUAGES WHERE ID = 3/execute/
+DELETE FROM Q_LANGUAGES WHERE ID = 4/execute/
+
