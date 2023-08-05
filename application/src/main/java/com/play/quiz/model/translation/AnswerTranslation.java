@@ -32,7 +32,7 @@ public class AnswerTranslation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answer_transl_generator")
     @SequenceGenerator(name = "answer_transl_generator", sequenceName = "answer_transl_seq", allocationSize = 1)
-    private Long transId;
+    private Long translId;
 
     private String name;
 

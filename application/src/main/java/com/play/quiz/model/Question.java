@@ -1,5 +1,10 @@
 package com.play.quiz.model;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
 import com.play.quiz.converter.AttributeListConverter;
 import com.play.quiz.enums.QuestionAttribute;
 import com.play.quiz.enums.QuestionType;
@@ -26,11 +31,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
-
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "Q_QUESTIONS")
@@ -60,7 +60,7 @@ public class Question {
     private Category category;
 
     @Column(name = "IS_ACTIVE")
-    private boolean isActive;
+    private Boolean isActive;
 
     @Column(name = "COMPLEXITY_LEVEL")
     private int complexityLevel;
@@ -95,8 +95,7 @@ public class Question {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             orphanRemoval = true)
     @ToString.Exclude
-    private List<QuestionTranslation> questionTranslations;
-
+    private List<QuestionTranslation> translations;
 
     public Question copy(final QuestionType questionType, final String content) {
         return copy(questionType, content, Collections.emptyList());
@@ -105,7 +104,15 @@ public class Question {
     public Question copy(final QuestionType questionType, final String content, final List<QuestionAttribute> attributes) {
         return new Question(null, this.account, questionType, this.tipId, this.category, this.isActive,
                 this.complexityLevel, content, this.createdDate, this.updatedDate, this.updatedAccount,
-                this.topic, this.priority, attributes, this.answers, this.questionTranslations);
+                this.topic, this.priority, attributes, this.answers, this.translations);
+    }
+
+    public void handleTranslationsParent() {
+        this.translations.forEach(translation -> translation.setQuestion(this));
+    }
+
+    public void handleAnswersParent() {
+        this.answers.forEach(answer -> answer.setQuestion(this));
     }
 
     @Override

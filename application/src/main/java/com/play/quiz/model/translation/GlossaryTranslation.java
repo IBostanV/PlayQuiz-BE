@@ -32,7 +32,7 @@ public class GlossaryTranslation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "term_transl_generator")
     @SequenceGenerator(name = "term_transl_generator", sequenceName = "term_transl_seq", allocationSize = 1)
-    private Long transId;
+    private Long translId;
 
     private String name;
 

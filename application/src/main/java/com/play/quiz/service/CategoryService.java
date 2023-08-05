@@ -1,5 +1,7 @@
 package com.play.quiz.service;
 
+import java.util.List;
+
 import com.play.quiz.dto.CategoryDto;
 
 public interface CategoryService {
@@ -11,4 +13,6 @@ public interface CategoryService {
     CategoryDto getByNaturalId(final String categoryName);
 
     void deleteById(final Long categoryId);
+
+    List<CategoryDto> getCategories();
 }

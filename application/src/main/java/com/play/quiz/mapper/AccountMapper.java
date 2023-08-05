@@ -1,5 +1,8 @@
 package com.play.quiz.mapper;
 
+import java.util.List;
+import java.util.Objects;
+
 import com.play.quiz.dto.AccountDto;
 import com.play.quiz.model.Account;
 import org.mapstruct.IterableMapping;
@@ -8,9 +11,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.List;
-import java.util.Objects;
 
 @Mapper(componentModel = "spring")
 public abstract class AccountMapper {
@@ -30,8 +30,9 @@ public abstract class AccountMapper {
 
     @Named("handlePassword")
     protected char[] handlePassword(final char[] password) {
-        if (Objects.isNull(password)) return null;
-
+        if (Objects.isNull(password)) {
+            return null;
+        }
         return passwordEncoder.encode(new String(password)).toCharArray();
     }
 

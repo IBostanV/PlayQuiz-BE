@@ -1,5 +1,16 @@
 package com.play.quiz.controller;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_CATEGORY;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Map;
+import java.util.Optional;
+
 import com.play.quiz.TestAppContextInitializer;
 import com.play.quiz.exception.RecordNotFoundException;
 import com.play.quiz.fixtures.AccountFixture;
@@ -23,17 +34,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Map;
-import java.util.Optional;
-
-import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_CATEGORY;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @ActiveProfiles("test")
 @WebMvcTest(value = CategoryController.class)
 @ComponentScan(basePackages = {"com.play.quiz"})
@@ -55,7 +55,7 @@ class CategoryControllerTest {
     @WithMockUser(roles = "ADMIN")
     void given_categoryId_when_get_category_then_return_category() throws Exception {
         final Long categoryId = 7L;
-        final String body = "{\"catId\":"+ categoryId +",\"name\":\"Continent\",\"naturalId\":\"CONTINENT\",\"parent\":null,\"categoryTranslations\":null}";
+        final String body = "{\"catId\":"+ categoryId +",\"naturalId\":\"CONTINENT\",\"parent\":null,\"name\":\"Continent\",\"categoryTranslations\":null}";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = ArgumentMatchers.any();
@@ -82,8 +82,9 @@ class CategoryControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void given_naturalId_when_get_category_then_return_category() throws Exception {
+        final long categoryId = 7L;
         final String naturalId = "COUNTRY";
-        final String body = "{\"catId\":7,\"name\":\"Continent\",\"naturalId\":\"CONTINENT\",\"parent\":null,\"categoryTranslations\":null}";
+        final String body = "{\"catId\":"+ categoryId +",\"naturalId\":\"CONTINENT\",\"parent\":null,\"name\":\"Continent\",\"categoryTranslations\":null}";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = ArgumentMatchers.any();

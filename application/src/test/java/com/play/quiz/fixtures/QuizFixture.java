@@ -1,17 +1,16 @@
 package com.play.quiz.fixtures;
 
-import com.play.quiz.dto.QuizDto;
-import com.play.quiz.enums.QuizType;
-import com.play.quiz.model.Question;
-import com.play.quiz.model.Quiz;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class QuizFixture {
+import com.play.quiz.dto.QuizDto;
+import com.play.quiz.enums.QuizType;
+import com.play.quiz.model.Question;
+import com.play.quiz.model.Quiz;
 
+public class QuizFixture {
     public static QuizDto getQuizNoQuestionDto() {
         return QuizDto.builder()
                 .quizId(1L)

@@ -11,7 +11,7 @@ import lombok.Value;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GlossaryTranslationDto {
 
-    Long transId;
+    Long translId;
 
     String name;
 

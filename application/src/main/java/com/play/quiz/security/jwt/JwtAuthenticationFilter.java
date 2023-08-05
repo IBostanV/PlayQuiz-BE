@@ -1,5 +1,11 @@
 package com.play.quiz.security.jwt;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import com.play.quiz.controller.RestEndpoint;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,12 +27,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
-
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -37,11 +37,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
 
+    private static final String ACTIVATE_ACCOUNT_LINK = "/activate-account";
+
     @Override
     protected boolean shouldNotFilter(final HttpServletRequest request) {
-        final String activateAccountPath = "/activate-account";
         return !request.getRequestURI().startsWith(RestEndpoint.CONTEXT_PATH)
-                || request.getRequestURI().endsWith(activateAccountPath);
+                || request.getRequestURI().endsWith(ACTIVATE_ACCOUNT_LINK);
     }
 
     @Override

@@ -1,9 +1,10 @@
 package com.play.quiz.fixtures;
 
-import com.play.quiz.model.Glossary;
-
 import java.util.Arrays;
 import java.util.List;
+
+import com.play.quiz.dto.GlossaryDto;
+import com.play.quiz.model.Glossary;
 
 public class GlossaryFixture {
 
@@ -25,6 +26,15 @@ public class GlossaryFixture {
                 .key(key)
                 .value(value)
                 .category(CategoryFixture.getCategory())
+                .build();
+    }
+
+    public static GlossaryDto getGlossaryDto() {
+        return GlossaryDto.builder()
+                .termId(26L)
+                .key("Life")
+                .value("Power")
+                .category(CategoryFixture.getCategoryDto())
                 .build();
     }
 }

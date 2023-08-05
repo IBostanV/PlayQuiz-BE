@@ -1,5 +1,8 @@
 package com.play.quiz.model;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,19 +12,16 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.time.LocalDateTime;
+import org.hibernate.proxy.HibernateProxy;
 
 @Entity
 @Table(name = "Q_MESSAGES")
 @Getter
 @Builder
 @ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message {
@@ -37,4 +37,20 @@ public class Message {
     private String destination;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Message message = (Message) o;
+        return getMessageId() != null && Objects.equals(getMessageId(), message.getMessageId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return getClass().hashCode();
+    }
 }

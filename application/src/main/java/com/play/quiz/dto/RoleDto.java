@@ -8,8 +8,6 @@ import lombok.Value;
 @Value
 @Builder
 public class RoleDto {
-
    Long roleId;
-
    @NotNull UserRole name;
 }

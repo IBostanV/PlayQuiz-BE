@@ -1,15 +1,17 @@
 package com.play.quiz.fixtures;
 
-import com.play.quiz.dto.QuestionDto;
-import com.play.quiz.enums.QuestionAttribute;
-import com.play.quiz.enums.QuestionType;
-import com.play.quiz.model.Answer;
-import com.play.quiz.model.Question;
+import static com.play.quiz.fixtures.QuestionTranslationFixture.getQuestionTranslation;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
+
+import com.play.quiz.dto.QuestionDto;
+import com.play.quiz.enums.QuestionAttribute;
+import com.play.quiz.enums.QuestionType;
+import com.play.quiz.model.Answer;
+import com.play.quiz.model.Question;
 
 public class QuestionFixture {
 
@@ -18,6 +20,7 @@ public class QuestionFixture {
                 .questionId(id)
                 .type(QuestionType.GENERATED)
                 .attributes(Collections.emptyList())
+                .translations(Collections.emptyList())
                 .category(CategoryFixture.getCategory())
                 .content("What is the meaning of "+ placeholder +"?")
                 .build();
@@ -28,6 +31,7 @@ public class QuestionFixture {
                 .questionId(id)
                 .type(QuestionType.GENERATED)
                 .attributes(Collections.emptyList())
+                .translations(Collections.emptyList())
                 .category(CategoryFixture.getCategory())
                 .content("What is the meaning of "+ placeholder +"?");
         Answer answer = AnswerFixture
@@ -44,6 +48,30 @@ public class QuestionFixture {
                 .attributes(Collections.emptyList())
                 .content("What is the meaning of Life?")
                 .category(CategoryFixture.getCategoryDto())
+                .build();
+    }
+
+    public static QuestionDto getQuestionDtoWithTranslations() {
+        return QuestionDto.builder()
+                .type(QuestionType.GENERATED)
+                .attributes(Collections.emptyList())
+                .content("What is the meaning of Life?")
+                .category(CategoryFixture.getCategoryDto())
+                .answers(Collections.singletonList(AnswerFixture.getAnswerDtoNoQuestion()))
+                .translations(Collections.singletonList(QuestionTranslationFixture.getQuestionTranslationDto()))
+                .build();
+    }
+
+    public static Question getQuestion() {
+        return Question.builder()
+                .questionId(2L)
+                .isActive(Boolean.TRUE)
+                .type(QuestionType.CREATED)
+                .attributes(Collections.emptyList())
+                .content("What is the meaning of Life?")
+                .category(CategoryFixture.getCategory())
+                .translations(Collections.singletonList(getQuestionTranslation()))
+                .answers(Collections.singletonList(AnswerFixture.getAnswerNoQuestion()))
                 .build();
     }
 

@@ -1,5 +1,7 @@
 package com.play.quiz.service.impl;
 
+import java.util.List;
+
 import com.play.quiz.dto.QuestionDto;
 import com.play.quiz.engine.QuestionGenerationEngine;
 import com.play.quiz.mapper.QuestionMapper;
@@ -11,8 +13,7 @@ import com.play.quiz.util.SystemAssert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -26,11 +27,15 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public QuestionDto save(final QuestionDto questionDto) {
         Question question = questionMapper.mapToEntity(questionDto);
+        question.handleAnswersParent();
+        question.handleTranslationsParent();
+
         Question savedQuestion = questionRepository.save(question);
         return questionMapper.mapToDto(savedQuestion);
     }
 
     @Override
+    @Transactional
     public List<QuestionDto> findAll() {
         List<Question> questions = questionRepository.findAll();
         return questionMapper.mapToDtoList(questions);
