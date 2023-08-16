@@ -1,9 +1,16 @@
 package com.play.quiz.mapper;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.play.quiz.dto.AnswerDto;
 import com.play.quiz.dto.QuestionDto;
+import com.play.quiz.dto.translation.QuestionTranslationDto;
 import com.play.quiz.enums.QuestionType;
 import com.play.quiz.model.Account;
+import com.play.quiz.model.Answer;
 import com.play.quiz.model.Question;
+import com.play.quiz.model.translation.QuestionTranslation;
 import com.play.quiz.security.facade.AuthenticationFacade;
 import com.play.quiz.service.UserService;
 import org.mapstruct.IterableMapping;
@@ -13,15 +20,12 @@ import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Mapper(componentModel = "spring",
         imports = LocalDateTime.class)
 public abstract class QuestionMapper {
 
-    private @Autowired UserService userService;
-    private @Autowired AuthenticationFacade authenticationFacade;
+    @Autowired private UserService userService;
+    @Autowired private AuthenticationFacade authenticationFacade;
 
     @Mapping(target = "id", source = "questionId")
     public abstract QuestionDto mapToDto(final Question question);
@@ -48,6 +52,12 @@ public abstract class QuestionMapper {
     @Mapping(target = "id", source = "questionId")
     @Mapping(target = "answers", ignore = true)
     protected abstract QuestionDto withoutAnswers(Question question);
+
+    @Mapping(target = "question", ignore = true)
+    protected abstract QuestionTranslationDto mapTranslationToDto(QuestionTranslation source);
+
+    @Mapping(target = "question", ignore = true)
+    protected abstract AnswerDto mapAnswersToDto(Answer source);
 
     protected Account getAccount() {
         String emailAsUsername = authenticationFacade.getPrincipal().getUsername();

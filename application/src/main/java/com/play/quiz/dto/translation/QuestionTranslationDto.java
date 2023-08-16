@@ -10,14 +10,9 @@ import lombok.Value;
 @Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionTranslationDto {
-
-    Long transId;
-
     String name;
-
-    String description;
-
+    Long translId;
     Language language;
-
+    String description;
     QuestionDto question;
 }

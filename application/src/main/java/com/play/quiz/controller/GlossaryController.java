@@ -1,5 +1,9 @@
 package com.play.quiz.controller;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_GLOSSARY;
+
+import java.util.List;
+
 import com.play.quiz.dto.GlossaryDto;
 import com.play.quiz.service.GlossaryService;
 import jakarta.validation.Valid;
@@ -15,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_GLOSSARY;
 
 @RestController
 @RequestMapping(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_GLOSSARY)
@@ -35,12 +37,12 @@ public class GlossaryController {
     }
 
     @GetMapping(value = "/category/{categoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GlossaryDto> getGlossaryByCategory(@PathVariable final Long categoryId) {
+    public ResponseEntity<List<GlossaryDto>> getGlossariesByCategory(@PathVariable final Long categoryId) {
         return ResponseEntity.ok().body(glossaryService.getByCategoryId(categoryId));
     }
 
-    @PatchMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GlossaryDto> saveGlossary(@Valid @RequestPart(name = "glossary") final GlossaryDto glossaryDto,
+    @PatchMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<GlossaryDto> saveGlossary(@Valid @RequestPart(name = "request") final GlossaryDto glossaryDto,
                                                     @RequestPart(required = false) final MultipartFile attachment) {
         return ResponseEntity.ok(glossaryService.save(glossaryDto, attachment));
     }

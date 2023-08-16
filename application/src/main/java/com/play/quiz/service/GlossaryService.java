@@ -1,5 +1,7 @@
 package com.play.quiz.service;
 
+import java.util.List;
+
 import com.play.quiz.dto.GlossaryDto;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,7 +13,7 @@ public interface GlossaryService {
 
     GlossaryDto getByKey(final String glossaryKey);
 
-    GlossaryDto getByCategoryId(final Long categoryId);
+    List<GlossaryDto> getByCategoryId(final Long categoryId);
 
     Integer toggleGlossary(final Long glossaryId);
 }

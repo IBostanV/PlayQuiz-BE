@@ -1,5 +1,8 @@
 package com.play.quiz.model;
 
+import java.util.List;
+import java.util.Objects;
+
 import com.play.quiz.model.translation.GlossaryTranslation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,9 +22,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.Hibernate;
-
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "Q_GLOSSARIES")
@@ -54,11 +54,10 @@ public class Glossary {
     private Glossary parent;
 
     @Column(name = "IS_ACTIVE")
-    private boolean isActive;
+    private Boolean isActive;
 
     @OneToMany(mappedBy = "glossary",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            orphanRemoval = true)
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @ToString.Exclude
     private List<GlossaryTranslation> glossaryTranslations;
 

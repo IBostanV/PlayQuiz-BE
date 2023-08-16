@@ -1,5 +1,8 @@
 package com.play.quiz.model;
 
+import java.util.List;
+import java.util.Objects;
+
 import com.play.quiz.model.translation.AnswerTranslation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -20,9 +23,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import java.util.List;
-import java.util.Objects;
-
 @Entity
 @Table(name = "Q_ANSWERS")
 @Getter
@@ -38,6 +38,7 @@ public class Answer {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "QUESTION_ID")
+    @ToString.Exclude
     private Question question;
 
     private String content;
@@ -51,6 +52,10 @@ public class Answer {
             orphanRemoval = true)
     @ToString.Exclude
     private List<AnswerTranslation> answerTranslations;
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
 
 
     @Override

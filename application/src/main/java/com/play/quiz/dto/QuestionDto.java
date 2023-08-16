@@ -1,5 +1,9 @@
 package com.play.quiz.dto;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.play.quiz.dto.translation.QuestionTranslationDto;
 import com.play.quiz.enums.QuestionAttribute;
 import com.play.quiz.enums.QuestionType;
@@ -9,43 +13,26 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Value
 @Builder
-@EqualsAndHashCode(exclude = {"answers"})
+@EqualsAndHashCode(exclude = {"answers", "translations"})
 public class QuestionDto {
-
     Long id;
-
-    AccountDto createdAccount;
-
-    QuestionType type;
-
     Object tipId;
-
-    @NotNull CategoryDto category;
-
-    boolean isActive;
-
-    int complexityLevel;
-
-    @NotBlank String content;
-
-    LocalDateTime createdDate;
-
-    LocalDateTime updatedDate;
-
-    AccountDto updatedAccount;
-
     String topic;
-
     int priority;
-
-    List<QuestionAttribute> attributes;
-
+    Boolean isActive;
+    QuestionType type;
+    int complexityLevel;
     List<AnswerDto> answers;
-
-    List<QuestionTranslationDto> questionTranslations;
+    @NotBlank String content;
+    AccountDto createdAccount;
+    LocalDateTime createdDate;
+    LocalDateTime updatedDate;
+    AccountDto updatedAccount;
+    @NotNull CategoryDto category;
+    @Builder.Default
+    List<QuestionAttribute> attributes = new ArrayList<>();
+    @Builder.Default
+    List<QuestionTranslationDto> translations = new ArrayList<>();
 }

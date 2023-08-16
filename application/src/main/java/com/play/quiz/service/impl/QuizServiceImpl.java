@@ -1,5 +1,11 @@
 package com.play.quiz.service.impl;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.play.quiz.dto.QuestionDto;
 import com.play.quiz.dto.QuizDto;
 import com.play.quiz.mapper.QuestionMapper;
 import com.play.quiz.mapper.QuizMapper;
@@ -12,27 +18,22 @@ import com.play.quiz.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class QuizServiceImpl implements QuizService {
 
+    private final QuizMapper quizMapper;
     private final QuizRepository quizRepository;
     private final QuestionMapper questionMapper;
     private final QuestionService questionService;
 
     @Override
     public QuizDto create(final QuizDto quizDto) {
-        List<Question> questions = questionMapper.mapToEntityList(
-                questionService.findByCategory(getCategory(quizDto)));
+        List<QuestionDto> questionsByCategory = questionService.findByCategory(getCategory(quizDto));
+        List<Question> questions = questionMapper.mapToEntityList(questionsByCategory);
         handleQuestionDiscrepancy(quizDto, questions);
-        return QuizMapper.INSTANCE.toDto(
-                quizRepository.save(
-                        buildQuiz(questions, quizDto)));
+        Quiz quiz = quizRepository.save(buildQuiz(questions, quizDto));
+        return quizMapper.toDto(quiz);
     }
 
     private static void handleQuestionDiscrepancy(final QuizDto quizDto, final List<Question> questions) {
@@ -71,7 +72,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public QuizDto getById(final Long quizId) {
-        return QuizMapper.INSTANCE.toDto(
+        return quizMapper.toDto(
                 quizRepository.getReferenceById(quizId));
     }
 }

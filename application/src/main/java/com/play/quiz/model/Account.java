@@ -1,5 +1,9 @@
 package com.play.quiz.model;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,10 +21,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "Q_USERS")
@@ -51,6 +51,7 @@ public class Account {
     @JoinTable(name = "Q_USERS_ROLES",
             joinColumns = @JoinColumn(name = "ACCOUNT_ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
+    @ToString.Exclude
     private List<Role> roles = new ArrayList<>();
 
     public Account(final Account account, final Long accountId) {

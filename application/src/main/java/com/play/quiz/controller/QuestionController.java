@@ -1,7 +1,15 @@
 package com.play.quiz.controller;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_QUESTION;
+
+import java.util.List;
+
 import com.play.quiz.dto.QuestionDto;
+import com.play.quiz.enums.QuestionAttribute;
+import com.play.quiz.enums.QuestionType;
 import com.play.quiz.model.Category;
+import com.play.quiz.model.Language;
+import com.play.quiz.service.LanguageService;
 import com.play.quiz.service.QuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,18 +22,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_QUESTION;
-
 @RestController
 @RequestMapping(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_QUESTION)
 @RequiredArgsConstructor
 public class QuestionController {
     private final QuestionService questionService;
+    private final LanguageService languageService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<QuestionDto> save(@Valid @RequestBody final QuestionDto questionDto) {
+    public ResponseEntity<QuestionDto> saveQuestion(@Valid @RequestBody final QuestionDto questionDto) {
         return ResponseEntity.ok(questionService.save(questionDto));
     }
 
@@ -35,7 +40,7 @@ public class QuestionController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/get-questions", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<QuestionDto>> getQuestions() {
         return ResponseEntity.ok(questionService.findAll());
     }
@@ -48,5 +53,20 @@ public class QuestionController {
     @PostMapping(value = "/generator/template", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<QuestionDto>> generateFromTemplate(@Valid @RequestBody final QuestionDto questionDto) {
         return ResponseEntity.ok(questionService.generateFromTemplate(questionDto));
+    }
+
+    @GetMapping(value = "/question-types", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<QuestionType[]> getQuestionTypes() {
+        return ResponseEntity.ok(QuestionType.values());
+    }
+
+    @GetMapping(value = "/question-attributes", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<QuestionAttribute[]> getQuestionAttributes() {
+        return ResponseEntity.ok(QuestionAttribute.values());
+    }
+
+    @GetMapping(value = "/question-languages", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Language>> getQuestionLanguages() {
+        return ResponseEntity.ok(languageService.findAll());
     }
 }
