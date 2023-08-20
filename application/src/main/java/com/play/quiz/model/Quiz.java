@@ -1,5 +1,11 @@
 package com.play.quiz.model;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
 import com.play.quiz.converter.QuestionIdsConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -18,11 +24,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.Hibernate;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "Q_QUIZZES")
@@ -55,7 +56,7 @@ public class Quiz {
     private int questionsCount;
 
     @Transient
-    private List<Question> questionList;
+    private List<Question> questionList = new ArrayList<>(questionsCount);
 
     @Override
     public boolean equals(Object o) {

@@ -1,11 +1,6 @@
 package com.play.quiz.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.hibernate.Hibernate;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +9,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 
 @Entity
 @Table(name = "Q_PROPERTIES")
@@ -47,5 +47,13 @@ public class Property {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public Long getLongValue() {
+        return Long.parseLong(this.value);
+    }
+
+    public Integer getIntValue() {
+        return Integer.parseInt(this.value);
     }
 }

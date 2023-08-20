@@ -4,14 +4,18 @@ import java.util.List;
 
 import com.play.quiz.dto.translation.AnswerTranslationDto;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
 
-@Value
-@Builder
+@Data
+@Builder(toBuilder = true)
 public class AnswerDto {
-    Long id;
-    String content;
-    GlossaryDto glossary;
-    QuestionDto question;
-    List<AnswerTranslationDto> answerTranslations;
+    private Long id;
+    private String content;
+    private GlossaryDto glossary;
+    private QuestionDto question;
+    private List<AnswerTranslationDto> answerTranslations;
+
+    public static AnswerDto withContent(final String content) {
+        return new AnswerDto(null, content, null, null, null);
+    }
 }

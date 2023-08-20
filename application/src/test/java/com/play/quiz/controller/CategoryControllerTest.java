@@ -55,7 +55,7 @@ class CategoryControllerTest {
     @WithMockUser(roles = "ADMIN")
     void given_categoryId_when_get_category_then_return_category() throws Exception {
         final Long categoryId = 7L;
-        final String body = "{\"catId\":"+ categoryId +",\"naturalId\":\"CONTINENT\",\"parent\":null,\"name\":\"Continent\",\"categoryTranslations\":null}";
+        final String body = "{\"catId\":"+ categoryId +",\"visible\":null,\"naturalId\":\"CONTINENT\",\"parent\":null,\"name\":\"Continent\",\"categoryTranslations\":null}";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = ArgumentMatchers.any();
@@ -84,7 +84,7 @@ class CategoryControllerTest {
     void given_naturalId_when_get_category_then_return_category() throws Exception {
         final long categoryId = 7L;
         final String naturalId = "COUNTRY";
-        final String body = "{\"catId\":"+ categoryId +",\"naturalId\":\"CONTINENT\",\"parent\":null,\"name\":\"Continent\",\"categoryTranslations\":null}";
+        final String body = "{\"catId\":"+ categoryId +",\"visible\":null,\"naturalId\":\"CONTINENT\",\"parent\":null,\"name\":\"Continent\",\"categoryTranslations\":null}";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = ArgumentMatchers.any();

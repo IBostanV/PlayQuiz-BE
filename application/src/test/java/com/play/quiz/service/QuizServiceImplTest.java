@@ -21,8 +21,10 @@ import com.play.quiz.mapper.QuizMapper;
 import com.play.quiz.mapper.QuizMapperImpl;
 import com.play.quiz.model.Question;
 import com.play.quiz.model.Quiz;
+import com.play.quiz.repository.PropertyRepository;
 import com.play.quiz.repository.QuizRepository;
 import com.play.quiz.service.impl.QuizServiceImpl;
+import com.play.quiz.util.EncryptionUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,12 +43,23 @@ class QuizServiceImplTest {
     @Mock
     private QuestionMapper questionMapper;
 
+    @Mock
+    private CategoryService categoryService;
+
+    @Mock
+    private PropertyRepository propertyRepository;
+
+    @Mock
+    private GlossaryService glossaryService;
+
     private QuizService quizService;
 
     @BeforeEach
     void init() {
         QuizMapper quizMapper = new QuizMapperImpl();
-        quizService = new QuizServiceImpl(quizMapper, quizRepository, questionMapper, questionService);
+        EncryptionUtils encryptionUtils = new EncryptionUtils(propertyRepository);
+        quizService = new QuizServiceImpl(quizMapper, quizRepository, questionMapper, questionService,
+                categoryService, glossaryService, propertyRepository);
     }
 
     @Test

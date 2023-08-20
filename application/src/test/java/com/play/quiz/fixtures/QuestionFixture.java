@@ -44,10 +44,12 @@ public class QuestionFixture {
 
     public static QuestionDto getQuestionDto() {
         return QuestionDto.builder()
+                .id(1L)
                 .type(QuestionType.GENERATED)
                 .attributes(Collections.emptyList())
                 .content("What is the meaning of Life?")
                 .category(CategoryFixture.getCategoryDto())
+                .answers(Collections.singletonList(AnswerFixture.getAnswerDtoNoQuestion()))
                 .build();
     }
 

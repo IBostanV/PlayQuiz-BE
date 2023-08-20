@@ -1,5 +1,11 @@
 package com.play.quiz.service.impl;
 
+import static com.play.quiz.controller.RestEndpoint.WS_BROKER_SOLO;
+
+import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.play.quiz.model.Message;
 import com.play.quiz.repository.MessageRepository;
 import com.play.quiz.service.MessageService;
@@ -7,15 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static com.play.quiz.controller.RestEndpoint.WS_BROKER_SOLO;
-
 @Service
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
+
     private final MessageRepository messageRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
 

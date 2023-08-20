@@ -40,8 +40,8 @@ application:
 logging:
   level:
     org:
-      springframework:
-        transaction:
+      springframework: DEBUG
+      springframework.transaction:
           interceptor: TRACE
-        security: DEBUG
-        web: DEBUG
+      springframework.security: DEBUG
+      springframework.web: DEBUG

@@ -1,9 +1,12 @@
 package com.play.quiz.service;
 
+import java.util.List;
+import java.util.Set;
+
+import com.play.quiz.dto.AnswerDto;
 import com.play.quiz.dto.QuestionDto;
 import com.play.quiz.model.Category;
-
-import java.util.List;
+import com.play.quiz.model.Question;
 
 public interface QuestionService {
 
@@ -16,4 +19,10 @@ public interface QuestionService {
     List<QuestionDto> generateFromTemplate(final QuestionDto questionDto);
 
     void deactivate(final Long questionId);
+
+    List<Question> getGeneralKnowledgeQuestions(int questionCount);
+
+    List<Question> getByIds(final Set<Long> idList);
+
+    List<AnswerDto> getAnswers(final Long questionId);
 }

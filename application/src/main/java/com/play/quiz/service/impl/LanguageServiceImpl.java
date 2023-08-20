@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class LanguageServiceImpl implements LanguageService {
+
     private final LanguageRepository languageRepository;
 
     @Override

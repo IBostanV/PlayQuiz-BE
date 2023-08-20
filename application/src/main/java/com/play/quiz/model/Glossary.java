@@ -44,6 +44,10 @@ public class Glossary {
     @JoinColumn(name = "CAT_ID")
     private Category category;
 
+    @OneToOne(targetEntity = GlossaryType.class)
+    @JoinColumn(name = "TYPE_ID")
+    private GlossaryType type;
+
     @Lob
     private byte[] attachment;
 

@@ -1,17 +1,7 @@
 package com.play.quiz.repository.impl;
 
-import com.play.quiz.enums.UserRole;
-import com.play.quiz.model.Account;
-import com.play.quiz.model.Role;
-import com.play.quiz.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Repository;
+import static java.math.BigDecimal.ONE;
+import static java.util.stream.Collectors.groupingBy;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -26,8 +16,18 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static java.math.BigDecimal.ONE;
-import static java.util.stream.Collectors.groupingBy;
+import com.play.quiz.enums.UserRole;
+import com.play.quiz.model.Account;
+import com.play.quiz.model.Role;
+import com.play.quiz.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 @Slf4j
 @Repository
@@ -72,7 +72,7 @@ public class UserRepositoryImpl implements UserRepository {
         propertyMap.put("accountId", accountId);
         propertyMap.put("email", account.getEmail());
         propertyMap.put("isEnabled", account.isEnabled());
-        propertyMap.put("password", String.valueOf(mapNull().apply(account.getPassword())));
+        propertyMap.put("password", String.copyValueOf((char[])mapNull().apply(account.getPassword())));
         propertyMap.put("name", mapNull().apply(account.getName()));
         propertyMap.put("birthday", mapNull().apply(account.getBirthday()));
         return propertyMap;

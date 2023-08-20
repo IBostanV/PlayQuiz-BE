@@ -4,6 +4,7 @@ import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_QUESTION;
 
 import java.util.List;
 
+import com.play.quiz.dto.AnswerDto;
 import com.play.quiz.dto.QuestionDto;
 import com.play.quiz.enums.QuestionAttribute;
 import com.play.quiz.enums.QuestionType;
@@ -40,7 +41,7 @@ public class QuestionController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/get-questions", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all-questions", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<QuestionDto>> getQuestions() {
         return ResponseEntity.ok(questionService.findAll());
     }
@@ -68,5 +69,10 @@ public class QuestionController {
     @GetMapping(value = "/question-languages", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Language>> getQuestionLanguages() {
         return ResponseEntity.ok(languageService.findAll());
+    }
+
+    @GetMapping(value = "/fetch-answers/{questionId}")
+    public ResponseEntity<List<AnswerDto>> checkAnswers(@PathVariable Long questionId) {
+        return ResponseEntity.ok(questionService.getAnswers(questionId));
     }
 }
