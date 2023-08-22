@@ -11,6 +11,7 @@ import lombok.Value;
 @Builder
 public class CategoryDto {
    Long catId;
+   Boolean visible;
    String naturalId;
    CategoryDto parent;
    @NotBlank String name;

@@ -7,4 +7,6 @@ public interface QuizService {
     QuizDto create(final QuizDto quizDto);
 
     QuizDto getById(final Long quizId);
+
+    QuizDto getExpressQuiz();
 }

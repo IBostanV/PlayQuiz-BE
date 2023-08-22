@@ -17,7 +17,7 @@ public class AnswerFixture {
 
     public static Answer getAnswerNoQuestion() {
         return Answer.builder()
-                .ansId(26L)
+                .ansId(1L)
                 .content("Power")
                 .glossary(GlossaryFixture.getGlossary())
                 .build();
@@ -25,8 +25,15 @@ public class AnswerFixture {
 
     public static AnswerDto getAnswerDtoNoQuestion() {
         return AnswerDto.builder()
-                .id(26L)
+                .id(1L)
                 .content("Power")
+                .glossary(GlossaryFixture.getGlossaryDto())
+                .build();
+    }
+
+    public static AnswerDto getAnswerDtoNoQuestionNoId() {
+        return AnswerDto.builder()
+                .content("What is the meaning of Life?")
                 .glossary(GlossaryFixture.getGlossaryDto())
                 .build();
     }

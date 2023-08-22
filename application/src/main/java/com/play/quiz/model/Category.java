@@ -1,5 +1,8 @@
 package com.play.quiz.model;
 
+import java.util.List;
+import java.util.Objects;
+
 import com.play.quiz.model.translation.CategoryTranslation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -18,9 +21,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import java.util.List;
-import java.util.Objects;
-
 @Entity
 @Table(name = "Q_CATEGORIES")
 @Getter
@@ -37,6 +37,8 @@ public class Category {
     private String name;
 
     private String naturalId;
+
+    private Boolean visible;
 
     @OneToOne(targetEntity = Category.class)
     @JoinColumn(name = "SUBCATEGORY_ID")

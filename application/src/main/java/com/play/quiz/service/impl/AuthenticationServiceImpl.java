@@ -1,5 +1,7 @@
 package com.play.quiz.service.impl;
 
+import java.util.Collections;
+
 import com.play.quiz.dto.AccountDto;
 import com.play.quiz.dto.RoleDto;
 import com.play.quiz.enums.UserRole;
@@ -18,12 +20,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
+
     private final JwtProvider jwtProvider;
     private final UserService userService;
     private final AccountMapper accountMapper;

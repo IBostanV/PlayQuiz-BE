@@ -1,5 +1,11 @@
 package com.play.quiz.controller;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import com.play.quiz.exception.EmailSendFailedException;
 import com.play.quiz.exception.RecordNotFoundException;
 import com.play.quiz.exception.UserNotFoundException;
 import com.play.quiz.model.helpers.FieldMessagePair;
@@ -12,11 +18,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice
@@ -62,7 +63,7 @@ public class ExceptionHandlingController {
                 .body(exception.getMessage());
     }
 
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler({EmailSendFailedException.class, RuntimeException.class})
     public ResponseEntity<String> runtimeException(final RuntimeException exception) {
         log.info(exception.getMessage());
         return ResponseEntity

@@ -3,7 +3,7 @@ package com.play.quiz.fixtures;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import com.play.quiz.dto.QuizDto;
 import com.play.quiz.enums.QuizType;
@@ -31,8 +31,8 @@ public class QuizFixture {
     }
 
     private static List<Question> getQuestionList() {
-        return IntStream.range(0, 5)
-                .mapToObj(i -> QuestionFixture.getGeneratedQuestion(1L, "Life"))
+        return LongStream.rangeClosed(1, 5)
+                .mapToObj(i -> QuestionFixture.getGeneratedQuestion(i, "Life"))
                 .collect(Collectors.toList());
     }
 }

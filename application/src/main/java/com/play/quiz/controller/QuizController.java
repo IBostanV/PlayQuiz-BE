@@ -1,5 +1,7 @@
 package com.play.quiz.controller;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_QUIZ;
+
 import com.play.quiz.dto.QuizDto;
 import com.play.quiz.service.QuizService;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_QUIZ;
 
 @RestController
 @RequestMapping(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_QUIZ)
@@ -28,5 +28,10 @@ public class QuizController {
     @GetMapping(value = "/{quizId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<QuizDto> getQuiz(@PathVariable final Long quizId) {
         return ResponseEntity.ok(quizService.getById(quizId));
+    }
+
+    @GetMapping(value = "/express", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<QuizDto> getExpressQuiz() {
+        return ResponseEntity.ok(quizService.getExpressQuiz());
     }
 }

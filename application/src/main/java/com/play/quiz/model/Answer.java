@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
@@ -36,11 +37,13 @@ public class Answer {
     @SequenceGenerator(name = "answer_generator", sequenceName = "answers_seq", allocationSize = 1)
     private Long ansId;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "QUESTION_ID")
     @ToString.Exclude
     private Question question;
 
+    @Setter
     private String content;
 
     @OneToOne(targetEntity = Glossary.class)
@@ -52,11 +55,6 @@ public class Answer {
             orphanRemoval = true)
     @ToString.Exclude
     private List<AnswerTranslation> answerTranslations;
-
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
-
 
     @Override
     public boolean equals(Object o) {

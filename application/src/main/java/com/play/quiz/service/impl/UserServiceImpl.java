@@ -1,10 +1,14 @@
 package com.play.quiz.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.play.quiz.aop.annotation.Conditional;
 import com.play.quiz.dto.AccountDto;
 import com.play.quiz.email.EmailService;
 import com.play.quiz.email.helper.EmailMessage;
 import com.play.quiz.email.helper.EmailMessageFactory;
+import com.play.quiz.exception.EmailSendFailedException;
 import com.play.quiz.exception.RecordNotFoundException;
 import com.play.quiz.exception.UserNotFoundException;
 import com.play.quiz.mapper.AccountMapper;
@@ -20,9 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -100,7 +101,7 @@ public class UserServiceImpl implements UserService {
         }
         catch (MessagingException exception) {
             log.warn(exception.getMessage());
-            throw new RuntimeException(exception.getMessage());
+            throw new EmailSendFailedException(exception.getMessage());
         }
     }
 }
