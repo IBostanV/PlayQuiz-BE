@@ -1,6 +1,6 @@
 package com.play.quiz.fixtures;
 
-import com.play.quiz.model.VerificationToken;
+import com.play.quiz.domain.VerificationToken;
 
 import java.util.UUID;
 

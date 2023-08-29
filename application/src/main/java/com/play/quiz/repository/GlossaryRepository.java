@@ -3,8 +3,8 @@ package com.play.quiz.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.play.quiz.model.Category;
-import com.play.quiz.model.Glossary;
+import com.play.quiz.domain.Category;
+import com.play.quiz.domain.Glossary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

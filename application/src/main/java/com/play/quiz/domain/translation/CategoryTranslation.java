@@ -1,7 +1,7 @@
-package com.play.quiz.model.translation;
+package com.play.quiz.domain.translation;
 
-import com.play.quiz.model.Category;
-import com.play.quiz.model.Language;
+import com.play.quiz.domain.Category;
+import com.play.quiz.domain.Language;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

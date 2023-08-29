@@ -2,7 +2,7 @@ package com.play.quiz.dto.translation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.play.quiz.dto.GlossaryDto;
-import com.play.quiz.model.Language;
+import com.play.quiz.domain.Language;
 import lombok.Builder;
 import lombok.Value;
 

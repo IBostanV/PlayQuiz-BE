@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.play.quiz.dto.GlossaryDto;
-import com.play.quiz.model.Glossary;
+import com.play.quiz.domain.Glossary;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

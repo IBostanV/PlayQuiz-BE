@@ -6,7 +6,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.play.quiz.model.Message;
+import com.play.quiz.domain.Message;
 import com.play.quiz.repository.MessageRepository;
 import com.play.quiz.service.MessageService;
 import lombok.RequiredArgsConstructor;

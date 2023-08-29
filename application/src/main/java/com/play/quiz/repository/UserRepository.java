@@ -1,6 +1,6 @@
 package com.play.quiz.repository;
 
-import com.play.quiz.model.Account;
+import com.play.quiz.domain.Account;
 
 import java.util.List;
 import java.util.Optional;

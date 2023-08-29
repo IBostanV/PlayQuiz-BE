@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.play.quiz.dto.GlossaryDto;
-import com.play.quiz.model.Glossary;
+import com.play.quiz.domain.Glossary;
 
 public class GlossaryFixture {
 

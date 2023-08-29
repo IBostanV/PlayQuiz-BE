@@ -1,7 +1,7 @@
 package com.play.quiz.service;
 
 import com.play.quiz.dto.AccountDto;
-import com.play.quiz.model.helpers.AccountInfo;
+import com.play.quiz.domain.helpers.AccountInfo;
 
 public interface AuthenticationService {
 

@@ -1,8 +1,8 @@
 package com.play.quiz.fixtures;
 
 import com.play.quiz.dto.AnswerDto;
-import com.play.quiz.model.Answer;
-import com.play.quiz.model.Question;
+import com.play.quiz.domain.Answer;
+import com.play.quiz.domain.Question;
 
 public class AnswerFixture {
 

@@ -1,6 +1,6 @@
 package com.play.quiz.controller;
 
-import com.play.quiz.model.Message;
+import com.play.quiz.domain.Message;
 import com.play.quiz.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

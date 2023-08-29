@@ -1,5 +1,9 @@
 package com.play.quiz.config;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_AUTH;
+
+import java.util.List;
+
 import com.play.quiz.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,10 +32,6 @@ import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
-
-import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_AUTH;
 
 @Configuration
 @EnableWebSecurity

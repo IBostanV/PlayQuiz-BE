@@ -1,7 +1,7 @@
 package com.play.quiz.fixtures;
 
 import com.play.quiz.enums.UserRole;
-import com.play.quiz.model.Account;
+import com.play.quiz.domain.Account;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

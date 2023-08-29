@@ -10,8 +10,8 @@ import java.util.stream.LongStream;
 import com.play.quiz.dto.QuestionDto;
 import com.play.quiz.enums.QuestionAttribute;
 import com.play.quiz.enums.QuestionType;
-import com.play.quiz.model.Answer;
-import com.play.quiz.model.Question;
+import com.play.quiz.domain.Answer;
+import com.play.quiz.domain.Question;
 
 public class QuestionFixture {
 

@@ -3,7 +3,7 @@ package com.play.quiz.service;
 import java.util.List;
 
 import com.play.quiz.dto.GlossaryDto;
-import com.play.quiz.model.GlossaryType;
+import com.play.quiz.domain.GlossaryType;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface GlossaryService {

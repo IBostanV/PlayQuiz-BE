@@ -1,9 +1,9 @@
-package com.play.quiz.model;
+package com.play.quiz.domain;
 
-import java.util.Objects;
-
-import jakarta.persistence.Column;
+import com.play.quiz.enums.UserRole;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,44 +16,34 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
+import java.util.Objects;
+
 @Entity
-@Table(name = "Q_PROPERTIES")
+@Table(name = "Q_ROLES")
 @Getter
 @Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Property {
+public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prop_generator")
-    @SequenceGenerator(name = "prop_generator", sequenceName = "prop_sequence", allocationSize = 1)
-    private Long propertyId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roles_generator")
+    @SequenceGenerator(name = "roles_generator", sequenceName = "roles_seq", allocationSize = 1)
+    private Long roleId;
 
-    private String name;
-
-    private String value;
-
-    @Column(name = "OLD_VALUE")
-    private String oldValue;
+    @Enumerated(EnumType.STRING)
+    private UserRole name;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Property that = (Property) o;
-        return propertyId != null && Objects.equals(propertyId, that.propertyId);
+        Role role = (Role) o;
+        return roleId != null && Objects.equals(roleId, role.roleId);
     }
 
     @Override
     public int hashCode() {
         return getClass().hashCode();
-    }
-
-    public Long getLongValue() {
-        return Long.parseLong(this.value);
-    }
-
-    public Integer getIntValue() {
-        return Integer.parseInt(this.value);
     }
 }

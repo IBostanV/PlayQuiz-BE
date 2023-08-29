@@ -1,7 +1,7 @@
 package com.play.quiz.controller;
 
 import com.play.quiz.dto.AccountDto;
-import com.play.quiz.model.helpers.AccountInfo;
+import com.play.quiz.domain.helpers.AccountInfo;
 import com.play.quiz.service.AuthenticationService;
 import com.play.quiz.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;

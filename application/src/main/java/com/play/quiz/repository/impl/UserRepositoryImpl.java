@@ -17,8 +17,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.play.quiz.enums.UserRole;
-import com.play.quiz.model.Account;
-import com.play.quiz.model.Role;
+import com.play.quiz.domain.Account;
+import com.play.quiz.domain.Role;
 import com.play.quiz.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

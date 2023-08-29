@@ -1,7 +1,7 @@
 package com.play.quiz.email.helper;
 
-import com.play.quiz.model.Account;
-import com.play.quiz.model.VerificationToken;
+import com.play.quiz.domain.Account;
+import com.play.quiz.domain.VerificationToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

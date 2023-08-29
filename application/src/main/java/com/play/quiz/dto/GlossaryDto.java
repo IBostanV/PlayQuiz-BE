@@ -3,7 +3,7 @@ package com.play.quiz.dto;
 import java.util.List;
 
 import com.play.quiz.dto.translation.GlossaryTranslationDto;
-import com.play.quiz.model.GlossaryType;
+import com.play.quiz.domain.GlossaryType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;

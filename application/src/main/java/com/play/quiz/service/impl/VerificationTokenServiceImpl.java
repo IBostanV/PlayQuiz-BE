@@ -1,7 +1,7 @@
 package com.play.quiz.service.impl;
 
-import com.play.quiz.model.Account;
-import com.play.quiz.model.VerificationToken;
+import com.play.quiz.domain.Account;
+import com.play.quiz.domain.VerificationToken;
 import com.play.quiz.repository.VerificationTokenRepository;
 import com.play.quiz.service.VerificationTokenService;
 import lombok.RequiredArgsConstructor;

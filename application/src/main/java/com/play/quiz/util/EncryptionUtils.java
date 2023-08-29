@@ -8,7 +8,7 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.play.quiz.model.Property;
+import com.play.quiz.domain.Property;
 import com.play.quiz.repository.PropertyRepository;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;

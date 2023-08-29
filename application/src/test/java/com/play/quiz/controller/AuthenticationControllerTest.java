@@ -3,7 +3,7 @@ package com.play.quiz.controller;
 import com.play.quiz.TestAppContextInitializer;
 import com.play.quiz.fixtures.AccountFixture;
 import com.play.quiz.fixtures.VerificationTokenFixture;
-import com.play.quiz.model.Account;
+import com.play.quiz.domain.Account;
 import com.play.quiz.repository.VerificationTokenRepository;
 import com.play.quiz.security.jwt.JwtProvider;
 import org.junit.jupiter.api.Assertions;

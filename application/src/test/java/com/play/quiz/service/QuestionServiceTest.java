@@ -17,7 +17,7 @@ import com.play.quiz.fixtures.QuestionFixture;
 import com.play.quiz.fixtures.QuestionTranslationFixture;
 import com.play.quiz.mapper.QuestionMapper;
 import com.play.quiz.mapper.QuestionMapperImpl;
-import com.play.quiz.model.Question;
+import com.play.quiz.domain.Question;
 import com.play.quiz.repository.GlossaryRepository;
 import com.play.quiz.repository.QuestionRepository;
 import com.play.quiz.service.impl.QuestionServiceImpl;

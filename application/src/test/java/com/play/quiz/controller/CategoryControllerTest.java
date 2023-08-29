@@ -15,7 +15,7 @@ import com.play.quiz.TestAppContextInitializer;
 import com.play.quiz.exception.RecordNotFoundException;
 import com.play.quiz.fixtures.AccountFixture;
 import com.play.quiz.fixtures.CategoryFixture;
-import com.play.quiz.model.Account;
+import com.play.quiz.domain.Account;
 import com.play.quiz.repository.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;

@@ -5,7 +5,7 @@ import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_GLOSSARY;
 import java.util.List;
 
 import com.play.quiz.dto.GlossaryDto;
-import com.play.quiz.model.GlossaryType;
+import com.play.quiz.domain.GlossaryType;
 import com.play.quiz.service.GlossaryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
