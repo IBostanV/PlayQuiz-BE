@@ -1,19 +1,24 @@
 package com.play.quiz.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.play.quiz.domain.Answer;
 import com.play.quiz.domain.Question;
 import com.play.quiz.domain.Quiz;
 import com.play.quiz.domain.UserHistory;
+import com.play.quiz.dto.AnswerDto;
 import com.play.quiz.dto.GlossaryDto;
+import com.play.quiz.dto.QuestionDto;
 import com.play.quiz.dto.UserHistoryDto;
 import com.play.quiz.dto.wrapper.HistoryAnswer;
 import com.play.quiz.exception.RecordNotFoundException;
@@ -42,13 +47,15 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 
     @Override
     public UserHistoryDto save(final UserHistoryDto userHistoryDto) {
-        UserHistory userHistory = userHistoryMapper.toEntity(userHistoryDto).toBuilder()
+        UserHistory userHistory = userHistoryMapper.toEntity(userHistoryDto);
+        return userHistoryMapper.toDto(saveUserHistory(userHistory));
+    }
+
+    private UserHistory saveUserHistory(final UserHistory userHistory) {
+        return userHistoryRepository.save(userHistory.toBuilder()
                 .completedDate(LocalDateTime.now())
                 .account(authenticationFacade.getAccount())
-                .build();
-        UserHistory savedEntity = userHistoryRepository.save(userHistory);
-
-        return userHistoryMapper.toDto(savedEntity);
+                .build());
     }
 
     @NonNull
@@ -56,48 +63,75 @@ public class UserHistoryServiceImpl implements UserHistoryService {
     @Transactional
     public UserHistoryDto getById(final Long historyId) {
         log.debug("Get UserHistory with historyId: " + historyId);
-        UserHistory userHistory = userHistoryRepository.getReferenceById(historyId);
-        List<Question> questionList = questionService.getByIds(userHistory.getQuiz().getQuestionIds());
+        UserHistoryDto historyDto = buildUserHistory(historyId);
+        JsonArray jsonUserAnswers = JsonParser.parseString(historyDto.getAnswersJson()).getAsJsonArray();
 
-        Quiz quiz = userHistory.getQuiz().toBuilder().questionList(questionList).build();
-        UserHistory userHistoryWithQuestions = userHistory.toBuilder().quiz(quiz).build();
-        UserHistoryDto historyDto = userHistoryMapper.toDto(userHistoryWithQuestions);
-        handleJsonAnswers(historyDto, questionList);
+        historyDto.getQuiz().getQuestionList().forEach(question ->
+                historyDto.getAnswers().addAll(createUserAnswersFromJson(jsonUserAnswers, question)));
 
         return historyDto;
     }
 
-    private void handleJsonAnswers(final UserHistoryDto historyDto, final List<Question> questionList) {
-        JsonArray jsonElements = JsonParser.parseString(historyDto.getAnswersJson()).getAsJsonArray();
+    private UserHistoryDto buildUserHistory(final Long historyId) {
+        UserHistory userHistory = userHistoryRepository.getReferenceById(historyId);
+        List<Question> questionList = questionService.getByIds(userHistory.getQuiz().getQuestionIds());
+        Quiz quiz = userHistory.getQuiz().toBuilder().questionList(questionList).build();
 
-        jsonElements.forEach(jsonElement -> {
-            Set<Map.Entry<String, JsonElement>> answersEntrySet = jsonElement.getAsJsonObject().entrySet();
-            answersEntrySet.forEach(jsonKeyValue -> questionList.stream()
-                    .filter(question -> Objects.equals(question.getQuestionId(), Long.parseLong(jsonKeyValue.getKey())))
-                    .forEach(question -> historyDto.getAnswers().add(fillHistoryAnswers(jsonKeyValue, question))));
-        });
+        return userHistoryMapper.toDto(userHistory.toBuilder().quiz(quiz).build());
     }
 
-    private HistoryAnswer fillHistoryAnswers(final Map.Entry<String, JsonElement> jsonKeyValue, final Question question) {
-        Answer answer = question.getAnswers().stream().findFirst().orElseThrow(
-                () -> new RecordNotFoundException("No answers found for question: " + question.getQuestionId()));
+    private List<HistoryAnswer> createUserAnswersFromJson(final JsonArray userAnswers, final QuestionDto question) {
+        if (!userAnswers.isEmpty()) {
+            List<HistoryAnswer> singleAnswerAsList = getAnswers(userAnswers, question);
+            if (!singleAnswerAsList.isEmpty()) return singleAnswerAsList;
+        }
 
-        long glossaryId = jsonKeyValue.getValue().getAsLong();
+        return Collections.singletonList(new HistoryAnswer(
+                0, question.getContent(), null, getFirstAnswer(question).getContent()));
+    }
+
+    private List<HistoryAnswer> getAnswers(JsonArray userAnswers, QuestionDto question) {
+        for (JsonElement userAnswer : userAnswers) {
+            final Set<String> questionIds = userAnswer.getAsJsonObject().keySet();
+            final Function<Map.Entry<String, JsonElement>, HistoryAnswer> createAnswer =
+                    keyValue -> createHistoryAnswer(keyValue.getValue().getAsJsonObject(), question);
+
+            if (questionIds.contains(question.getId().toString())) {
+                log.info("User answered the question: " + question.getId());
+                return userAnswer.getAsJsonObject().entrySet()
+                        .stream().map(createAnswer).collect(Collectors.toList());
+            }
+        }
+
+        log.info("User did not answer the question.");
+        return Collections.emptyList();
+    }
+
+    private HistoryAnswer createHistoryAnswer(final JsonObject keyValue, final QuestionDto question) {
+        AnswerDto answer = getFirstAnswer(question);
+        Long glossaryId = getJsonElementValue(keyValue, "answer").getAsLong();
+        double time = getJsonElementValue(keyValue, "time").getAsDouble();
+
         if (Objects.equals(answer.getGlossary().getTermId(), glossaryId)) {
             log.debug("User answered right. Glossary id: " + glossaryId);
-            return buildHistoryAnswer(question.getContent(), answer.getContent(), null);
-        } else {
-            log.debug("User answered wrong. Get wrong answer by glossary id: " + glossaryId);
-            GlossaryDto glossaryDto = glossaryService.getById(glossaryId);
-            return buildHistoryAnswer(question.getContent(), glossaryDto.getValue(), answer.getContent());
+            return new HistoryAnswer(time, question.getContent(), answer.getContent(), null);
         }
+
+        log.debug("User answered wrong. Get user answer by glossary id: " + glossaryId);
+        GlossaryDto glossaryDto = glossaryService.getById(glossaryId);
+        return new HistoryAnswer(time, question.getContent(), glossaryDto.getValue(), answer.getContent());
     }
 
-    private HistoryAnswer buildHistoryAnswer(final String content, final String userAnswer, final String rightAnswer) {
-        return HistoryAnswer.builder()
-                .content(content)
-                .userAnswer(userAnswer)
-                .rightAnswer(rightAnswer)
-                .build();
+    private static JsonElement getJsonElementValue(final JsonObject keyValue, final String key) {
+        return Objects.requireNonNull(keyValue.entrySet().stream()
+                .filter(entry -> Objects.equals(entry.getKey(), key))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElse(null));
+    }
+
+    private static AnswerDto getFirstAnswer(final QuestionDto question) {
+        return question.getAnswers().stream().findFirst()
+                .orElseThrow(() -> new RecordNotFoundException("No answers found for question: " + question.getId()));
     }
 }

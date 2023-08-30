@@ -3,6 +3,7 @@ package com.play.quiz.service.impl;
 import static com.play.quiz.util.Constant.DEFAULT_EXPRESS_QUESTIONS_COUNT;
 import static com.play.quiz.util.Constant.EXPRESS;
 import static com.play.quiz.util.Constant.EXPRESS_QUIZ_DEFAULT_ANSWER_COUNT;
+import static com.play.quiz.util.Constant.EXPRESS_QUIZ_DEFAULT_TIME_SECONDS;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -155,11 +156,14 @@ public class QuizServiceImpl implements QuizService {
     }
 
     private QuizDto createQuiz(int questionCount, final CategoryDto category, final List<QuestionDto> questionList) {
+        Property quizTime = propertyRepository.findByName(EXPRESS_QUIZ_DEFAULT_TIME_SECONDS);
+
         return QuizDto.builder()
                 .category(category)
                 .questionList(questionList)
                 .questionsCount(questionCount)
                 .createdDate(LocalDateTime.now())
+                .quizTime(quizTime.getIntValue())
                 .questionIds(getQuestionIds(questionMapper.mapToEntityList(questionList)))
                 .build();
     }

@@ -14,6 +14,7 @@ import lombok.Value;
 @Builder(toBuilder = true)
 public class QuizDto {
     Long quizId;
+    Integer quizTime;
     QuizType quizType;
     Set<Long> questionIds;
     LocalDateTime updatedDate;
