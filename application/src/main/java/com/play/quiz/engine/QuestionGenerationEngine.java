@@ -1,9 +1,9 @@
 package com.play.quiz.engine;
 
 import com.play.quiz.enums.QuestionType;
-import com.play.quiz.model.Answer;
-import com.play.quiz.model.Glossary;
-import com.play.quiz.model.Question;
+import com.play.quiz.domain.Answer;
+import com.play.quiz.domain.Glossary;
+import com.play.quiz.domain.Question;
 import com.play.quiz.repository.GlossaryRepository;
 import com.play.quiz.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;

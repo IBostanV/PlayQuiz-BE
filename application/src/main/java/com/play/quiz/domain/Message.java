@@ -1,4 +1,4 @@
-package com.play.quiz.model;
+package com.play.quiz.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

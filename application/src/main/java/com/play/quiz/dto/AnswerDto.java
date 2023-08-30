@@ -15,7 +15,7 @@ public class AnswerDto {
     private QuestionDto question;
     private List<AnswerTranslationDto> answerTranslations;
 
-    public static AnswerDto withContent(final String content) {
-        return new AnswerDto(null, content, null, null, null);
+    public static AnswerDto withGlossary(final GlossaryDto glossaryDto) {
+        return new AnswerDto(null, glossaryDto.getValue(), glossaryDto, null, null);
     }
 }

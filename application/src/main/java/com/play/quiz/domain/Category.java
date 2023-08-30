@@ -1,9 +1,9 @@
-package com.play.quiz.model;
+package com.play.quiz.domain;
 
 import java.util.List;
 import java.util.Objects;
 
-import com.play.quiz.model.translation.CategoryTranslation;
+import com.play.quiz.domain.translation.CategoryTranslation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

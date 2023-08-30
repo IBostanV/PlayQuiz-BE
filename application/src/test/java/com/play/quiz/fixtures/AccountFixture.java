@@ -1,8 +1,8 @@
 package com.play.quiz.fixtures;
 
 import com.play.quiz.enums.UserRole;
-import com.play.quiz.model.Account;
-import com.play.quiz.model.Role;
+import com.play.quiz.domain.Account;
+import com.play.quiz.domain.Role;
 
 import java.util.Collections;
 import java.util.List;

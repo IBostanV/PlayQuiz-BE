@@ -5,8 +5,8 @@ import java.util.Set;
 
 import com.play.quiz.dto.AnswerDto;
 import com.play.quiz.dto.QuestionDto;
-import com.play.quiz.model.Category;
-import com.play.quiz.model.Question;
+import com.play.quiz.domain.Category;
+import com.play.quiz.domain.Question;
 
 public interface QuestionService {
 

@@ -1,4 +1,4 @@
-package com.play.quiz.model;
+package com.play.quiz.domain;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -8,7 +8,7 @@ import java.util.Objects;
 import com.play.quiz.converter.AttributeListConverter;
 import com.play.quiz.enums.QuestionAttribute;
 import com.play.quiz.enums.QuestionType;
-import com.play.quiz.model.translation.QuestionTranslation;
+import com.play.quiz.domain.translation.QuestionTranslation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;

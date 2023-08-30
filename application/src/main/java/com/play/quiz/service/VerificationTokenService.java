@@ -1,7 +1,7 @@
 package com.play.quiz.service;
 
-import com.play.quiz.model.Account;
-import com.play.quiz.model.VerificationToken;
+import com.play.quiz.domain.Account;
+import com.play.quiz.domain.VerificationToken;
 
 import java.util.Optional;
 

@@ -1,7 +1,7 @@
-package com.play.quiz.model.translation;
+package com.play.quiz.domain.translation;
 
-import com.play.quiz.model.Answer;
-import com.play.quiz.model.Language;
+import com.play.quiz.domain.Glossary;
+import com.play.quiz.domain.Language;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -20,18 +20,18 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "Q_ANSWER_TRANSLATIONS")
+@Table(name = "Q_GLOSSARY_TRANSLATIONS")
 @Getter
 @Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class AnswerTranslation {
+public class GlossaryTranslation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answer_transl_generator")
-    @SequenceGenerator(name = "answer_transl_generator", sequenceName = "answer_transl_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "term_transl_generator")
+    @SequenceGenerator(name = "term_transl_generator", sequenceName = "term_transl_seq", allocationSize = 1)
     private Long translId;
 
     private String name;
@@ -43,6 +43,6 @@ public class AnswerTranslation {
     private Language language;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ANS_ID")
-    private Answer answer;
+    @JoinColumn(name = "TERM_ID")
+    private Glossary glossary;
 }

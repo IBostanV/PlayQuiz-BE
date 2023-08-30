@@ -18,10 +18,10 @@ import com.play.quiz.dto.QuestionDto;
 import com.play.quiz.dto.QuizDto;
 import com.play.quiz.mapper.QuestionMapper;
 import com.play.quiz.mapper.QuizMapper;
-import com.play.quiz.model.Category;
-import com.play.quiz.model.Property;
-import com.play.quiz.model.Question;
-import com.play.quiz.model.Quiz;
+import com.play.quiz.domain.Category;
+import com.play.quiz.domain.Property;
+import com.play.quiz.domain.Question;
+import com.play.quiz.domain.Quiz;
 import com.play.quiz.repository.PropertyRepository;
 import com.play.quiz.repository.QuizRepository;
 import com.play.quiz.service.CategoryService;
@@ -128,7 +128,7 @@ public class QuizServiceImpl implements QuizService {
         List<Long> glossaryIdList = getGlossaryIdList(answers);
 
         fetchWrongAnswerGlossaryList(categoryDto, options, answerAmountToAdd, glossaryIdList)
-                .forEach(glossary -> answers.add(AnswerDto.withContent(glossary.getValue())));
+                .forEach(glossary -> answers.add(AnswerDto.withGlossary(glossary)));
     }
 
     private List<GlossaryDto> fetchWrongAnswerGlossaryList(

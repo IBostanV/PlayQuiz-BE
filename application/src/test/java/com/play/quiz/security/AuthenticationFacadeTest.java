@@ -1,8 +1,6 @@
 package com.play.quiz.security;
 
 import com.play.quiz.enums.UserRole;
-import com.play.quiz.security.facade.AuthenticationFacade;
-import com.play.quiz.security.facade.AuthenticationFacadeImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

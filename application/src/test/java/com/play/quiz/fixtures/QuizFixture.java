@@ -7,8 +7,8 @@ import java.util.stream.LongStream;
 
 import com.play.quiz.dto.QuizDto;
 import com.play.quiz.enums.QuizType;
-import com.play.quiz.model.Question;
-import com.play.quiz.model.Quiz;
+import com.play.quiz.domain.Question;
+import com.play.quiz.domain.Quiz;
 
 public class QuizFixture {
     public static QuizDto getQuizNoQuestionDto() {

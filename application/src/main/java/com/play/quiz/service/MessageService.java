@@ -1,6 +1,6 @@
 package com.play.quiz.service;
 
-import com.play.quiz.model.Message;
+import com.play.quiz.domain.Message;
 
 import java.security.Principal;
 import java.util.List;

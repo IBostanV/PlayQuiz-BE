@@ -2,7 +2,7 @@ package com.play.quiz.service.impl;
 
 import java.util.List;
 
-import com.play.quiz.model.Language;
+import com.play.quiz.domain.Language;
 import com.play.quiz.repository.LanguageRepository;
 import com.play.quiz.service.LanguageService;
 import lombok.RequiredArgsConstructor;

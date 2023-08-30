@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.play.quiz.dto.AccountDto;
-import com.play.quiz.model.Account;
+import com.play.quiz.domain.Account;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

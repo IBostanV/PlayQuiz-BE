@@ -1,8 +1,8 @@
 package com.play.quiz.fixtures;
 
 import com.play.quiz.dto.translation.QuestionTranslationDto;
-import com.play.quiz.model.Language;
-import com.play.quiz.model.translation.QuestionTranslation;
+import com.play.quiz.domain.Language;
+import com.play.quiz.domain.translation.QuestionTranslation;
 
 public class QuestionTranslationFixture {
     public static QuestionTranslation getQuestionTranslation() {

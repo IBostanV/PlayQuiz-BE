@@ -1,4 +1,4 @@
-package com.play.quiz.model;
+package com.play.quiz.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import org.hibernate.Hibernate;
 @Entity
 @Table(name = "Q_QUIZZES")
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor

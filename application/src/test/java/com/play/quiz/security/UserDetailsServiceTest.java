@@ -4,7 +4,7 @@ import com.play.quiz.enums.UserRole;
 import com.play.quiz.exception.UserNotFoundException;
 import com.play.quiz.fixtures.AccountFixture;
 import com.play.quiz.fixtures.UserDetailsFixture;
-import com.play.quiz.model.Account;
+import com.play.quiz.domain.Account;
 import com.play.quiz.repository.UserRepository;
 import com.play.quiz.security.service.UserDetailsService;
 import com.play.quiz.security.service.UserDetailsServiceImpl;

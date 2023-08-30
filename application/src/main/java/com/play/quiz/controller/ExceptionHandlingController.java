@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import com.play.quiz.exception.EmailSendFailedException;
 import com.play.quiz.exception.RecordNotFoundException;
 import com.play.quiz.exception.UserNotFoundException;
-import com.play.quiz.model.helpers.FieldMessagePair;
+import com.play.quiz.domain.helpers.FieldMessagePair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

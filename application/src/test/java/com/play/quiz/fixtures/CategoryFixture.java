@@ -1,7 +1,7 @@
 package com.play.quiz.fixtures;
 
 import com.play.quiz.dto.CategoryDto;
-import com.play.quiz.model.Category;
+import com.play.quiz.domain.Category;
 
 public class CategoryFixture {
 

@@ -3,7 +3,7 @@ package com.play.quiz.mapper;
 import java.util.List;
 
 import com.play.quiz.dto.CategoryDto;
-import com.play.quiz.model.Category;
+import com.play.quiz.domain.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
