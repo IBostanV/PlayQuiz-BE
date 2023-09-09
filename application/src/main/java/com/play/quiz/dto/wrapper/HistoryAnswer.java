@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HistoryAnswer {
+    private double time;
     private String content;
     private String userAnswer;
     private String rightAnswer;

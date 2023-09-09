@@ -12,6 +12,5 @@ public class Constant {
     public static final String ENCRYPTION_ALGORITHM = "ENCRYPTION_ALGORITHM";
     public static final String DEFAULT_EXPRESS_QUESTIONS_COUNT = "DEFAULT_EXPRESS_QUESTIONS_COUNT";
     public static final String EXPRESS_QUIZ_DEFAULT_ANSWER_COUNT = "EXPRESS_QUIZ_DEFAULT_ANSWER_COUNT";
-    public static final String RIGHT_ANSWER_PREFIX = "A_";
-    public static final String WRONG_ANSWER_PREFIX = "Z_";
+    public static final String EXPRESS_QUIZ_DEFAULT_TIME_SECONDS = "EXPRESS_QUIZ_DEFAULT_TIME_SECONDS";
 }
