@@ -1,4 +1,4 @@
--- // name_of_the_migration
+-- // add_express_constants
 INSERT INTO Q_CATEGORIES VALUES (1, 'Express', 'EXPRESS', null, 0)/execute/
 
 INSERT INTO Q_PROPERTIES VALUES (1, 'DEFAULT_EXPRESS_QUESTIONS_COUNT', 10, null)/execute/

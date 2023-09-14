@@ -15,19 +15,19 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.play.quiz.domain.Question;
 import com.play.quiz.domain.Quiz;
-import com.play.quiz.domain.UserHistory;
+import com.play.quiz.domain.UserQuizHistory;
 import com.play.quiz.dto.AnswerDto;
 import com.play.quiz.dto.GlossaryDto;
 import com.play.quiz.dto.QuestionDto;
-import com.play.quiz.dto.UserHistoryDto;
+import com.play.quiz.dto.UserQuizHistoryDto;
 import com.play.quiz.dto.wrapper.HistoryAnswer;
 import com.play.quiz.exception.RecordNotFoundException;
-import com.play.quiz.mapper.UserHistoryMapper;
-import com.play.quiz.repository.UserHistoryRepository;
+import com.play.quiz.mapper.UserQuizHistoryMapper;
+import com.play.quiz.repository.UserQuizHistoryRepository;
 import com.play.quiz.security.AuthenticationFacade;
 import com.play.quiz.service.GlossaryService;
 import com.play.quiz.service.QuestionService;
-import com.play.quiz.service.UserHistoryService;
+import com.play.quiz.service.UserQuizHistoryService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,22 +37,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserHistoryServiceImpl implements UserHistoryService {
+public class UserQuizQuizHistoryServiceImpl implements UserQuizHistoryService {
 
     private final QuestionService questionService;
     private final GlossaryService glossaryService;
-    private final UserHistoryMapper userHistoryMapper;
+    private final UserQuizHistoryMapper userQuizHistoryMapper;
     private final AuthenticationFacade authenticationFacade;
-    private final UserHistoryRepository userHistoryRepository;
+    private final UserQuizHistoryRepository userQuizHistoryRepository;
 
     @Override
-    public UserHistoryDto save(final UserHistoryDto userHistoryDto) {
-        UserHistory userHistory = userHistoryMapper.toEntity(userHistoryDto);
-        return userHistoryMapper.toDto(saveUserHistory(userHistory));
+    public UserQuizHistoryDto save(final UserQuizHistoryDto userQuizHistoryDto) {
+        UserQuizHistory userQuizHistory = userQuizHistoryMapper.toEntity(userQuizHistoryDto);
+        return userQuizHistoryMapper.toDto(saveUserHistory(userQuizHistory));
     }
 
-    private UserHistory saveUserHistory(final UserHistory userHistory) {
-        return userHistoryRepository.save(userHistory.toBuilder()
+    private UserQuizHistory saveUserHistory(final UserQuizHistory userQuizHistory) {
+        return userQuizHistoryRepository.save(userQuizHistory.toBuilder()
                 .completedDate(LocalDateTime.now())
                 .account(authenticationFacade.getAccount())
                 .build());
@@ -61,9 +61,9 @@ public class UserHistoryServiceImpl implements UserHistoryService {
     @NonNull
     @Override
     @Transactional
-    public UserHistoryDto getById(final Long historyId) {
+    public UserQuizHistoryDto getById(final Long historyId) {
         log.debug("Get UserHistory with historyId: " + historyId);
-        UserHistoryDto historyDto = buildUserHistory(historyId);
+        UserQuizHistoryDto historyDto = buildUserHistory(historyId);
         JsonArray jsonUserAnswers = JsonParser.parseString(historyDto.getAnswersJson()).getAsJsonArray();
 
         historyDto.getQuiz().getQuestionList().forEach(question ->
@@ -72,12 +72,12 @@ public class UserHistoryServiceImpl implements UserHistoryService {
         return historyDto;
     }
 
-    private UserHistoryDto buildUserHistory(final Long historyId) {
-        UserHistory userHistory = userHistoryRepository.getReferenceById(historyId);
-        List<Question> questionList = questionService.getByIds(userHistory.getQuiz().getQuestionIds());
-        Quiz quiz = userHistory.getQuiz().toBuilder().questionList(questionList).build();
+    private UserQuizHistoryDto buildUserHistory(final Long historyId) {
+        UserQuizHistory userQuizHistory = userQuizHistoryRepository.getReferenceById(historyId);
+        List<Question> questionList = questionService.getByIds(userQuizHistory.getQuiz().getQuestionIds());
+        Quiz quiz = userQuizHistory.getQuiz().toBuilder().questionList(questionList).build();
 
-        return userHistoryMapper.toDto(userHistory.toBuilder().quiz(quiz).build());
+        return userQuizHistoryMapper.toDto(userQuizHistory.toBuilder().quiz(quiz).build());
     }
 
     private List<HistoryAnswer> createUserAnswersFromJson(final JsonArray userAnswers, final QuestionDto question) {

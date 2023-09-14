@@ -6,21 +6,21 @@ import java.util.stream.Collectors;
 import com.play.quiz.domain.Answer;
 import com.play.quiz.domain.Glossary;
 import com.play.quiz.domain.Question;
-import com.play.quiz.domain.UserHistory;
+import com.play.quiz.domain.UserQuizHistory;
 import com.play.quiz.dto.AnswerDto;
 import com.play.quiz.dto.GlossaryDto;
 import com.play.quiz.dto.QuestionDto;
-import com.play.quiz.dto.UserHistoryDto;
+import com.play.quiz.dto.UserQuizHistoryDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface UserHistoryMapper {
+public interface UserQuizHistoryMapper {
 
     @Mapping(target = "trophies", ignore = true)
-    UserHistoryDto toDto(final UserHistory userHistory);
+    UserQuizHistoryDto toDto(final UserQuizHistory userQuizHistory);
 
-    UserHistory toEntity(final UserHistoryDto userHistoryDto);
+    UserQuizHistory toEntity(final UserQuizHistoryDto userQuizHistoryDto);
 
     default AnswerDto answerToAnswerDto(final Answer answer) {
         return AnswerDto.builder()

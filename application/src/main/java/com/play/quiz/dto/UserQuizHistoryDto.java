@@ -12,7 +12,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class UserHistoryDto {
+public class UserQuizHistoryDto {
     QuizDto quiz;
     Long historyId;
     Double spentTime;
