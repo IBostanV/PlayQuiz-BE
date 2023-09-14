@@ -32,7 +32,7 @@ import org.hibernate.Hibernate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class UserHistory {
+public class UserQuizHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "history_generator")
     @SequenceGenerator(name = "history_generator", sequenceName = "user_history_seq", allocationSize = 1)
@@ -67,7 +67,7 @@ public class UserHistory {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        UserHistory that = (UserHistory) o;
+        UserQuizHistory that = (UserQuizHistory) o;
         return historyId != null && Objects.equals(historyId, that.historyId);
     }
 

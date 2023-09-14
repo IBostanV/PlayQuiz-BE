@@ -1,9 +1,17 @@
 package com.play.quiz.security;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import java.util.Set;
+
 import com.play.quiz.enums.UserRole;
+import com.play.quiz.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,19 +19,15 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 @ExtendWith(SpringExtension.class)
 class AuthenticationFacadeTest {
+    @Mock
+    private UserService userService;
     private AuthenticationFacade authenticationFacade;
 
     @BeforeEach
     void init() {
-        authenticationFacade = new AuthenticationFacadeImpl();
+        authenticationFacade = new AuthenticationFacadeImpl(userService);
     }
 
     @Test

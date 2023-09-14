@@ -1,5 +1,9 @@
 package com.play.quiz;
 
+import javax.sql.DataSource;
+
+import com.play.quiz.domain.Account;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContextInitializer;
@@ -19,8 +23,6 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.play.quiz.repository")
@@ -85,14 +87,14 @@ public class TestAppContextInitializer implements ApplicationContextInitializer<
         HibernatePersistenceProvider hibernatePersistenceProvider = new HibernatePersistenceProvider();
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource);
-        factoryBean.setPackagesToScan("com.play.quiz.model");
+        factoryBean.setPackagesToScan(Account.class.getPackage().getName());
         factoryBean.setPersistenceProvider(hibernatePersistenceProvider);
 
         return factoryBean;
     }
 
     @Override
-    public void initialize(ConfigurableApplicationContext applicationContext) {
+    public void initialize(@NotNull ConfigurableApplicationContext applicationContext) {
         System.getProperties().setProperty("env", "test");
     }
 }

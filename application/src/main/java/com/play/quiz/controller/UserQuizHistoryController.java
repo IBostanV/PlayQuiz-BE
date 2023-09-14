@@ -2,8 +2,8 @@ package com.play.quiz.controller;
 
 import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_USER_HISTORY;
 
-import com.play.quiz.dto.UserHistoryDto;
-import com.play.quiz.service.UserHistoryService;
+import com.play.quiz.dto.UserQuizHistoryDto;
+import com.play.quiz.service.UserQuizHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_USER_HISTORY)
 @RequiredArgsConstructor
-public class UserHistoryController {
+public class UserQuizHistoryController {
 
-    private final UserHistoryService userHistoryService;
+    private final UserQuizHistoryService userQuizHistoryService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserHistoryDto> saveUserQuiz(@RequestBody final UserHistoryDto userHistoryDto) {
-        return ResponseEntity.ok(userHistoryService.save(userHistoryDto));
+    public ResponseEntity<UserQuizHistoryDto> saveUserQuiz(@RequestBody final UserQuizHistoryDto userQuizHistoryDto) {
+        return ResponseEntity.ok(userQuizHistoryService.save(userQuizHistoryDto));
     }
 
     @GetMapping(value = "/history/{historyId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserHistoryDto> getUserQuiz(@PathVariable final Long historyId) {
-        return ResponseEntity.ok(userHistoryService.getById(historyId));
+    public ResponseEntity<UserQuizHistoryDto> getUserQuiz(@PathVariable final Long historyId) {
+        return ResponseEntity.ok(userQuizHistoryService.getById(historyId));
     }
 }
