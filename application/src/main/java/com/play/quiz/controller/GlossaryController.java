@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_GLOSSARY)
 @RequiredArgsConstructor
 public class GlossaryController {
+
     private final GlossaryService glossaryService;
 
     @GetMapping(value = "/id/{glossaryId}", produces = MediaType.APPLICATION_JSON_VALUE)

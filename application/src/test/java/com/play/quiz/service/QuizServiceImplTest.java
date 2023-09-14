@@ -59,7 +59,7 @@ class QuizServiceImplTest {
         QuizMapper quizMapper = new QuizMapperImpl();
         EncryptionUtils encryptionUtils = new EncryptionUtils(propertyRepository);
         quizService = new QuizServiceImpl(quizMapper, quizRepository, questionMapper, questionService,
-                categoryService, glossaryService, propertyRepository);
+                categoryService, propertyRepository);
     }
 
     @Test

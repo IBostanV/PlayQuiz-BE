@@ -75,4 +75,9 @@ public class QuestionController {
     public ResponseEntity<List<AnswerDto>> checkAnswers(@PathVariable Long questionId) {
         return ResponseEntity.ok(questionService.getAnswers(questionId));
     }
+
+    @GetMapping(value = "/question-with-options/{questionId}")
+    public ResponseEntity<QuestionDto> getQuestionWithOptions(@PathVariable("questionId") final Long questionId) {
+        return ResponseEntity.ok(questionService.getQuestionWithOptions(questionId));
+    }
 }

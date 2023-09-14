@@ -120,4 +120,9 @@ public class GlossaryServiceImpl implements GlossaryService {
     public List<GlossaryType> getGlossaryTypes() {
         return glossaryTypeRepository.findAll();
     }
+
+    @Override
+    public Glossary getEntityById(final Long glossaryId) {
+        return glossaryRepository.getReferenceById(glossaryId);
+    }
 }

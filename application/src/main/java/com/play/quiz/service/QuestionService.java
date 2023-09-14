@@ -22,7 +22,11 @@ public interface QuestionService {
 
     List<Question> getGeneralKnowledgeQuestions(int questionCount);
 
+    Question getById(final Long questionId);
+
     List<Question> getByIds(final Set<Long> idList);
 
     List<AnswerDto> getAnswers(final Long questionId);
+
+    QuestionDto getQuestionWithOptions(final Long questionId);
 }
