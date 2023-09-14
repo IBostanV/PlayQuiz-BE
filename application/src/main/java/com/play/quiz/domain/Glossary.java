@@ -7,6 +7,7 @@ import com.play.quiz.domain.translation.GlossaryTranslation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -53,7 +54,8 @@ public class Glossary {
 
     private String options;
 
-    @OneToOne(targetEntity = Glossary.class)
+    @ToString.Exclude
+    @OneToOne(targetEntity = Glossary.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_ID")
     private Glossary parent;
 
@@ -64,6 +66,10 @@ public class Glossary {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @ToString.Exclude
     private List<GlossaryTranslation> glossaryTranslations;
+
+    public void setParent(Glossary parent) {
+        this.parent = parent;
+    }
 
     @Override
     public boolean equals(Object o) {
