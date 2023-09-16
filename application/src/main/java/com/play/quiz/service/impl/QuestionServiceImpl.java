@@ -1,6 +1,6 @@
 package com.play.quiz.service.impl;
 
-import static com.play.quiz.util.Constant.EXPRESS_QUIZ_DEFAULT_ANSWER_COUNT;
+import static com.play.quiz.util.Constant.EXPRESS_QUIZ_DEFAULT_OPTIONS_COUNT;
 
 import java.util.List;
 import java.util.Objects;
@@ -8,19 +8,20 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.play.quiz.domain.Answer;
+import com.play.quiz.domain.Category;
+import com.play.quiz.domain.Glossary;
+import com.play.quiz.domain.GlossaryType;
 import com.play.quiz.domain.Property;
+import com.play.quiz.domain.Question;
 import com.play.quiz.dto.AnswerDto;
-import com.play.quiz.dto.CategoryDto;
-import com.play.quiz.dto.GlossaryDto;
 import com.play.quiz.dto.QuestionDto;
 import com.play.quiz.engine.QuestionGenerationEngine;
 import com.play.quiz.enums.QuestionAttribute;
 import com.play.quiz.mapper.QuestionMapper;
-import com.play.quiz.domain.Category;
-import com.play.quiz.domain.Glossary;
-import com.play.quiz.domain.Question;
 import com.play.quiz.repository.PropertyRepository;
 import com.play.quiz.repository.QuestionRepository;
+import com.play.quiz.service.AnswerService;
 import com.play.quiz.service.GlossaryService;
 import com.play.quiz.service.QuestionService;
 import com.play.quiz.util.SystemAssert;
@@ -37,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
 
+    private final AnswerService answerService;
     private final QuestionMapper questionMapper;
     private final GlossaryService glossaryService;
     private final PropertyRepository propertyRepository;
@@ -70,7 +72,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<QuestionDto> findAll() {
         List<Question> questions = questionRepository.findAll();
         return questionMapper.mapToDtoList(questions);
@@ -112,60 +114,47 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<AnswerDto> getAnswers(final Long questionId) {
         Question question = questionRepository.getReferenceById(questionId);
         return questionMapper.mapToDto(question).getAnswers();
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public QuestionDto getQuestionWithOptions(final Long questionId) {
         Question question = questionRepository.getReferenceById(questionId);
-        QuestionDto questionDto = questionMapper.mapToDto(question);
-
-        handleAnswerDiscrepancy(questionDto, questionDto.getCategory());
-        return questionDto;
+        handleAnswerDiscrepancy(question);
+        return questionMapper.mapToDto(question);
     }
 
-    private void handleAnswerDiscrepancy(final QuestionDto questionDto, final CategoryDto categoryDto) {
-        Property questionsCount = propertyRepository.findByName(EXPRESS_QUIZ_DEFAULT_ANSWER_COUNT);
-        List<AnswerDto> answers = questionDto.getAnswers();
+    private void handleAnswerDiscrepancy(final Question question) {
+        Property optionsCountProperty = propertyRepository.findByName(EXPRESS_QUIZ_DEFAULT_OPTIONS_COUNT);
+        int optionsCount = optionsCountProperty.getIntValue();
+        List<Answer> answers = question.getAnswers();
 
-        if (answers.size() < questionsCount.getIntValue()) {
-            fillAnswerOptions(answers, categoryDto, questionsCount);
+        if (answers.size() < optionsCount) {
+            List<Answer> wrongAnswerOptions = fillAnswerOptions(answers, question.getCategory(), optionsCount);
+            answers.addAll(wrongAnswerOptions);
         }
     }
 
-    private void fillAnswerOptions(List<AnswerDto> answers, CategoryDto categoryDto, Property questionsCount) {
-        int answerAmountToAdd = questionsCount.getIntValue() - answers.size();
-        String options = getAnswerOptions(answers);
-        List<Long> glossaryIdList = getGlossaryIdList(answers);
+    private List<Answer> fillAnswerOptions(final List<Answer> answers, final Category category, int optionsCount) {
+        int optionsAmount = optionsCount - answers.size();
+        GlossaryType answerGlossaryType = getGlossaryTypeFor(answers);
+        List<Long> answerIdList = answers.stream().map(Answer::getAnsId).collect(Collectors.toList());
 
-        fetchWrongAnswerGlossaryList(categoryDto, options, answerAmountToAdd, glossaryIdList)
-                .forEach(glossary -> answers.add(AnswerDto.withGlossary(glossary)));
-    }
-
-    private List<GlossaryDto> fetchWrongAnswerGlossaryList(
-            final CategoryDto categoryDto, String options, int answerAmountToAdd, final List<Long> glossaryIdList) {
-        if (Objects.nonNull(options)) {
-            return glossaryService.getLimitedByOptionWithoutSelf(answerAmountToAdd, options, glossaryIdList);
+        if (Objects.nonNull(answerGlossaryType)) {
+            return answerService.getWrongOptionsByGlossaryTypeWithLimit(answerGlossaryType, answerIdList, optionsAmount);
         }
-        return glossaryService.getLimitedByCategoryIdWithoutSelf(answerAmountToAdd, categoryDto.getCatId(), glossaryIdList);
+        return answerService.getWrongOptionsByCategoryIdWithLimit(category.getCatId(), answerIdList, optionsAmount);
     }
 
-    private static List<Long> getGlossaryIdList(List<AnswerDto> answers) {
-        return answers.stream()
-                .map(AnswerDto::getGlossary)
-                .map(GlossaryDto::getTermId)
-                .collect(Collectors.toList());
-    }
-
-    private static String getAnswerOptions(List<AnswerDto> answers) {
+    private static GlossaryType getGlossaryTypeFor(final List<Answer> answers) {
         return answers.stream()
                 .findFirst()
-                .map(AnswerDto::getGlossary)
-                .map(GlossaryDto::getOptions)
+                .map(Answer::getGlossary)
+                .map(Glossary::getType)
                 .orElse(null);
     }
 }

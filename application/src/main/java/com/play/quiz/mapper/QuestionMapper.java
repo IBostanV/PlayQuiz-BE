@@ -53,11 +53,11 @@ public abstract class QuestionMapper {
     @Mapping(target = "answers", ignore = true)
     protected abstract QuestionDto withoutAnswers(Question question);
 
-    @Mapping(target = "question", ignore = true)
     protected abstract QuestionTranslationDto mapTranslationToDto(QuestionTranslation source);
 
-    @Mapping(target = "question", ignore = true)
-    @Mapping(source = "ansId", target = "id")
+    @Mapping(target = "id", source = "ansId")
+    @Mapping(target = "termId", source = "glossary.termId")
+    @Mapping(target = "glossaryAttachment", source = "glossary.attachment")
     protected abstract AnswerDto mapAnswersToDto(Answer source);
 
     protected Account getAccount() {
@@ -65,7 +65,7 @@ public abstract class QuestionMapper {
         return userService.findByEmail(emailAsUsername);
     }
 
-    protected QuestionType getQuestionType(final String content) {
+    protected QuestionType getQuestionType(String content) {
         if (content.contains("%s")) {
             return QuestionType.TEMPLATE;
         }

@@ -2,24 +2,34 @@ package com.play.quiz.dto;
 
 import java.util.List;
 
-import com.play.quiz.dto.translation.GlossaryTranslationDto;
 import com.play.quiz.domain.GlossaryType;
+import com.play.quiz.dto.translation.GlossaryTranslationDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GlossaryDto {
-    Long termId;
-    String value;
-    String options;
-    Boolean isActive;
-    byte[] attachment;
-    GlossaryType type;
-    GlossaryDto parent;
-    @NotBlank String key;
-    @NotNull CategoryDto category;
-    List<GlossaryTranslationDto> glossaryTranslations;
+    private Long termId;
+    private String value;
+    private Long parentId;
+    private String options;
+    private Boolean isActive;
+    private String parentKey;
+    private byte[] attachment;
+    private GlossaryType type;
+    private String parentValue;
+    private String categoryName;
+    private List<GlossaryTranslationDto> glossaryTranslations;
+
+    @NotBlank
+    private String key;
+    @NotNull
+    private Long categoryId;
 }

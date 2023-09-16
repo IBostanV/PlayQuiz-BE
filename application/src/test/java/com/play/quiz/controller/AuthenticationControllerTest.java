@@ -1,9 +1,25 @@
 package com.play.quiz.controller;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_AUTH;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Map;
+import java.util.Objects;
+
 import com.play.quiz.TestAppContextInitializer;
+import com.play.quiz.domain.Account;
 import com.play.quiz.fixtures.AccountFixture;
 import com.play.quiz.fixtures.VerificationTokenFixture;
-import com.play.quiz.domain.Account;
 import com.play.quiz.repository.VerificationTokenRepository;
 import com.play.quiz.security.jwt.JwtProvider;
 import org.junit.jupiter.api.Assertions;
@@ -27,22 +43,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-
-import java.util.Map;
-import java.util.Objects;
-
-import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_AUTH;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles("test")
 @WebMvcTest(AuthenticationController.class)
@@ -70,8 +70,8 @@ class AuthenticationControllerTest {
 
     @Test
     void given_valid_credentials_when_login_then_successful() throws Exception {
-        final String body = "{\"id\":1,\"email\":\"vanyok93@yahoo.com\",\"roles\":[],\"enabled\":false}";
-        final String content = "{\"email\":\"vanyok93@yahoo.com\",\"password\":\"password\"}";
+        String body = "{\"id\":1,\"email\":\"vanyok93@yahoo.com\",\"roles\":[],\"enabled\":false}";
+        String content = "{\"email\":\"vanyok93@yahoo.com\",\"password\":\"password\"}";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = any();
@@ -85,7 +85,7 @@ class AuthenticationControllerTest {
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .content(content))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(content().string(body))
+                .andExpect(content().json(body))
                 .andExpect(result -> assertNotNull(result.getResponse().getHeader(HttpHeaders.AUTHORIZATION)));
     }
 
@@ -115,8 +115,8 @@ class AuthenticationControllerTest {
 
     @Test
     void given_wrong_password_when_login_then_bad_credentials_exception(final CapturedOutput output) throws Exception {
-        final String content = "{\"email\":\"vanyok93@yahoo.com\",\"password\":\"no_password\"}";
-        final String passwordNotMatchMessage = "Failed to authenticate since password does not match stored value";
+        String content = "{\"email\":\"vanyok93@yahoo.com\",\"password\":\"no_password\"}";
+        String passwordNotMatchMessage = "Failed to authenticate since password does not match stored value";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = any();
@@ -137,7 +137,7 @@ class AuthenticationControllerTest {
 
     @Test
     void given_null_content_when_login_then_bad_credentials_exception(final CapturedOutput output) throws Exception {
-        final String missingBody = "Required request body is missing";
+        String missingBody = "Required request body is missing";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = any();
@@ -157,9 +157,9 @@ class AuthenticationControllerTest {
 
     @Test
     void given_valid_credentials_when_register_then_user_registered(final CapturedOutput output) throws Exception {
-        final String username = "vanyok93@yahoo.com";
-        final String content = "{\"email\":\"" + username + "\",\"password\":\"password\"}";
-        final String bodyMessage = "{\"id\":1,\"email\":\"vanyok93@yahoo.com\",\"roles\":[{\"roleId\":2,\"name\":\"ROLE_USER\"}],\"enabled\":false}";
+        String username = "vanyok93@yahoo.com";
+        String content = "{\"email\":\"" + username + "\",\"password\":\"password\"}";
+        String bodyMessage = "{\"id\":1,\"email\":\"vanyok93@yahoo.com\",\"roles\":[{\"roleId\":2,\"name\":\"ROLE_USER\"}],\"enabled\":false}";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = any();
@@ -175,7 +175,7 @@ class AuthenticationControllerTest {
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .content(content))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(content().string(bodyMessage))
+                .andExpect(content().json(bodyMessage))
                 .andExpect(result -> Assertions.assertTrue(output.getOut().contains("Authenticated user")))
                 .andExpect(result -> assertTrue(Objects.nonNull(result.getResponse().getHeader(HttpHeaders.AUTHORIZATION))))
                 .andExpect(result -> assertEquals(jwtProvider.getUsernameFromToken(result.getResponse().getHeader(HttpHeaders.AUTHORIZATION)), username));
@@ -183,7 +183,7 @@ class AuthenticationControllerTest {
 
     @Test
     void given_invalid_credentials_when_register_then_user_registered() throws Exception {
-        final String content = "{\"email\":\"\",\"password\":\"\"}";
+        String content = "{\"email\":\"\",\"password\":\"\"}";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = any();
@@ -209,7 +209,7 @@ class AuthenticationControllerTest {
 
     @Test
     void given_activation_toke_when_activateAccount_then_redirected_successfully() throws Exception {
-        final String token = "verification_token";
+        String token = "verification_token";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = any();

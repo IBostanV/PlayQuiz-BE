@@ -9,7 +9,7 @@ public interface VerificationTokenService {
 
     VerificationToken createVerificationToken(final Account account);
 
-    Optional<VerificationToken> findByToken(final String token);
+    Optional<VerificationToken> findByToken(String token);
 
     VerificationToken save(final VerificationToken verificationToken);
 }

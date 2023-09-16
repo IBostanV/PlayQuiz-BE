@@ -26,7 +26,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     }
 
     @Override
-    public Optional<VerificationToken> findByToken(final String token) {
+    public Optional<VerificationToken> findByToken(String token) {
         return Optional.ofNullable(verificationTokenRepository.findByToken(token));
     }
 

@@ -18,7 +18,7 @@ import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 @Entity
-@Table(name = "Q_MESSAGES")
+@Table(name = "Q_MESSAGE")
 @Getter
 @Builder
 @ToString

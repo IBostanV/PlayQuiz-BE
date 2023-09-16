@@ -1,7 +1,11 @@
 package com.play.quiz.controller;
 
-import com.play.quiz.dto.AccountDto;
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_AUTH;
+
+import java.io.IOException;
+
 import com.play.quiz.domain.helpers.AccountInfo;
+import com.play.quiz.dto.AccountDto;
 import com.play.quiz.service.AuthenticationService;
 import com.play.quiz.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,10 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-
-import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_AUTH;
-
 @Slf4j
 @RestController
 @RequestMapping(REQUEST_MAPPING_AUTH)
@@ -40,7 +40,7 @@ public class AuthenticationController {
     public ResponseEntity<AccountDto> login(@Valid @RequestBody final AccountDto accountDto) {
         AccountInfo accountInfo = authenticationService.login(accountDto);
         return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, accountInfo.getJwtToken().getValue())
+                .header(HttpHeaders.AUTHORIZATION, accountInfo.getJwtToken())
                 .body(accountInfo.getAccount());
     }
 
@@ -48,7 +48,7 @@ public class AuthenticationController {
     public ResponseEntity<AccountDto> register(@Valid @RequestBody final AccountDto accountDto) {
         AccountInfo accountInfo = authenticationService.register(accountDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header(HttpHeaders.AUTHORIZATION, accountInfo.getJwtToken().getValue())
+                .header(HttpHeaders.AUTHORIZATION, accountInfo.getJwtToken())
                 .body(accountInfo.getAccount());
     }
 
@@ -58,7 +58,7 @@ public class AuthenticationController {
     }
 
     @GetMapping(value = "/activate-account")
-    public void activateAccount(@RequestParam final String token, final HttpServletResponse response) throws IOException {
+    public void activateAccount(@RequestParam String token, final HttpServletResponse response) throws IOException {
         userService.activateAccount(token);
         response.sendRedirect(domainHostUrl);
     }

@@ -7,19 +7,26 @@ import java.util.Set;
 import com.play.quiz.enums.QuizType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
 @Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class QuizDto {
-    Long quizId;
-    Integer quizTime;
-    QuizType quizType;
-    Set<Long> questionIds;
-    LocalDateTime updatedDate;
-    LocalDateTime createdDate;
-    @NotNull CategoryDto category;
-    List<QuestionDto> questionList;
-    @PositiveOrZero int questionsCount;
+    private Long quizId;
+    private Integer quizTime;
+    private QuizType quizType;
+    private Set<Long> questionIds;
+    private LocalDateTime updatedDate;
+    private LocalDateTime createdDate;
+    private List<QuestionDto> questionList;
+
+    @PositiveOrZero
+    private int questionsCount;
+    @NotNull
+    private CategoryDto category;
 }

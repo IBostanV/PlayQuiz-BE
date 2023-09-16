@@ -6,7 +6,7 @@ import com.play.quiz.domain.Question;
 
 public class AnswerFixture {
 
-    public static Answer getAnswer(final Long id, final Question question, final String content) {
+    public static Answer getAnswer(final Long id, final Question question, String content) {
         return Answer.builder()
                 .ansId(id)
                 .question(question)
@@ -27,14 +27,16 @@ public class AnswerFixture {
         return AnswerDto.builder()
                 .id(1L)
                 .content("Power")
-                .glossary(GlossaryFixture.getGlossaryDto())
+                .termId(GlossaryFixture.getGlossaryDto().getTermId())
+                .glossaryAttachment(GlossaryFixture.getGlossaryDto().getAttachment())
                 .build();
     }
 
     public static AnswerDto getAnswerDtoNoQuestionNoId() {
         return AnswerDto.builder()
                 .content("What is the meaning of Life?")
-                .glossary(GlossaryFixture.getGlossaryDto())
+                .termId(GlossaryFixture.getGlossaryDto().getTermId())
+                .glossaryAttachment(GlossaryFixture.getGlossaryDto().getAttachment())
                 .build();
     }
 }

@@ -5,7 +5,7 @@ public class RecordNotFoundException extends RuntimeException {
         super();
     }
 
-    public RecordNotFoundException(final String message) {
+    public RecordNotFoundException(String message) {
         super(message);
     }
 }

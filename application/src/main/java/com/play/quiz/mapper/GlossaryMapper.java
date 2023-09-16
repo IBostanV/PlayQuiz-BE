@@ -1,11 +1,12 @@
 package com.play.quiz.mapper;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-import com.play.quiz.dto.GlossaryDto;
 import com.play.quiz.domain.Glossary;
+import com.play.quiz.dto.GlossaryDto;
+import lombok.SneakyThrows;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -14,25 +15,41 @@ import org.springframework.web.multipart.MultipartFile;
 @Mapper(componentModel = "spring")
 public interface GlossaryMapper {
 
-    @Mapping(target = "parent.attachment", ignore = true)
     @Mapping(source = "isActive", target = "isActive")
+    @Mapping(target = "parentKey", source = "parent.key")
+    @Mapping(target = "parentId", source = "parent.termId")
+    @Mapping(target = "parentValue", source = "parent.value")
+    @Mapping(target = "categoryId", source = "category.catId")
+    @Mapping(target = "categoryName", source = "category.name")
     GlossaryDto toDto(final Glossary glossary);
 
-    @Mapping(target = "parent.attachment", ignore = true)
-    @Mapping(source = "glossary.isActive", target = "isActive")
-    @Mapping(source = "attachment", target = "attachment", qualifiedByName = "handleAttachment")
-    GlossaryDto toDto(final Glossary glossary, final MultipartFile attachment);
+    @Mapping(source = "isActive", target = "isActive")
+    @Mapping(target = "parentKey", source = "parent.key")
+    @Mapping(target = "parentId", source = "parent.termId")
+    @Mapping(target = "parentValue", source = "parent.value")
+    @Mapping(target = "categoryId", source = "category.catId")
+    @Mapping(target = "categoryName", source = "category.name")
+    @Mapping(target = "attachment", expression = "java(handleAttachment(attachment))")
+    GlossaryDto toDto(final Glossary glossary, @Context final MultipartFile attachment);
 
-    @Mapping(target = "parent.attachment", ignore = true)
+    @Mapping(source = "isActive", target = "isActive")
     @Mapping(target = "glossaryTranslations", ignore = true)
-    @Mapping(source = "glossaryDto.isActive", target = "isActive")
-    @Mapping(source = "attachment", target = "attachment", qualifiedByName = "handleAttachment")
-    Glossary toEntity(final GlossaryDto glossaryDto, final MultipartFile attachment);
+    @Mapping(target = "category.catId", source = "categoryId")
+    @Mapping(target = "parent", source = "parentId", qualifiedByName = "handleParent")
+    @Mapping(target = "attachment", expression = "java(handleAttachment(attachment))")
+    Glossary toEntity(final GlossaryDto glossaryDto, @Context final MultipartFile attachment);
 
     List<GlossaryDto> toDto(final List<Glossary> glossaries);
 
+    @SneakyThrows
     @Named("handleAttachment")
-    default byte[] handleAttachment(final MultipartFile attachment) throws IOException {
+    default byte[] handleAttachment(final MultipartFile attachment) {
         return Objects.nonNull(attachment) ? attachment.getBytes() : null;
+    }
+
+    @Named("handleParent")
+    default Glossary handleParent(final Long parentId) {
+        if (Objects.isNull(parentId)) return null;
+        return Glossary.builder().termId(parentId).build();
     }
 }

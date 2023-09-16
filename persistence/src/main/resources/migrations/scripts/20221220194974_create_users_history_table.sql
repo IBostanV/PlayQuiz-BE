@@ -1,5 +1,5 @@
 -- // create_users_history_table
-CREATE TABLE Q_USER_HISTORIES (
+CREATE TABLE Q_USER_HISTORY (
                         HISTORY_ID NUMERIC(20,0) NOT NULL,
                         ACCOUNT_ID NUMERIC(20,0),
                         QUIZ_ID NUMERIC(20,0) NOT NULL,
@@ -10,12 +10,12 @@ CREATE TABLE Q_USER_HISTORIES (
 )
 /execute/
 
-ALTER TABLE Q_USER_HISTORIES
-    ADD CONSTRAINT Q_USER_HISTORIES_PK
+ALTER TABLE Q_USER_HISTORY
+    ADD CONSTRAINT Q_USER_HISTORY_PK
         PRIMARY KEY (HISTORY_ID)
 /execute/
 
 -- //@UNDO
 -- SQL to undo the change goes here.
-DROP TABLE Q_USER_HISTORIES
+DROP TABLE Q_USER_HISTORY
 /execute/

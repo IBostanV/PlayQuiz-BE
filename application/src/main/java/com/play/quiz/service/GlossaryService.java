@@ -13,19 +13,11 @@ public interface GlossaryService {
 
     GlossaryDto getById(final Long glossaryId);
 
-    GlossaryDto getByKey(final String glossaryKey);
+    GlossaryDto getByKey(String glossaryKey);
 
     List<GlossaryDto> getByCategoryId(final Long categoryId);
 
     Integer toggleGlossary(final Long glossaryId);
-
-    List<GlossaryDto> getLimitedByOptionWithoutSelf(int amount, String option, List<Long> rightAnswerIds);
-
-    List<GlossaryDto> getLimitedByOptions(int amount, String... options);
-
-    List<GlossaryDto> getLimitedByCategoryId(int amount, final Long catId);
-
-    List<GlossaryDto> getLimitedByCategoryIdWithoutSelf(int amount, final Long catId, List<Long> rightAnswerIds);
 
     GlossaryType saveGlossaryType(final GlossaryType glossaryType);
 

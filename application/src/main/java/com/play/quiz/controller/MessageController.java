@@ -33,18 +33,18 @@ public class MessageController {
     @MessageMapping("/public")
     @SendTo(WS_BROKER_PARTY + "/news")
     public Message sendPublicMessage(
-            @Payload final Message payload, @Header(SIMP_SESSION_ID) final String sessionId, final Principal principal) {
+            @Payload final Message payload, @Header(SIMP_SESSION_ID) String sessionId, final Principal principal) {
         return messageService.sendPublicMessage(payload, sessionId, principal);
     }
 
     @MessageMapping("/private")
     public void sendPrivateMessage(
-            @Payload final Message payload, @Header(SIMP_SESSION_ID) final String sessionId, final Principal principal) {
+            @Payload final Message payload, @Header(SIMP_SESSION_ID) String sessionId, final Principal principal) {
         messageService.sendPrivateMessage(payload, sessionId, principal);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Message>> fetchMessageHistory(@RequestParam final String destination, final Principal principal) {
+    public ResponseEntity<List<Message>> fetchMessageHistory(@RequestParam String destination, final Principal principal) {
         return ResponseEntity.ok(messageService.fetchMessageHistory(destination, principal));
     }
 }

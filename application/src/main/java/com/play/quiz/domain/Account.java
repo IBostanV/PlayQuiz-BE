@@ -23,7 +23,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "Q_USERS")
+@Table(name = "Q_USER")
 @Builder(toBuilder = true)
 @Setter
 @Getter
@@ -48,7 +48,7 @@ public class Account {
     private boolean isEnabled;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "Q_USERS_ROLES",
+    @JoinTable(name = "Q_USER_ROLES",
             joinColumns = @JoinColumn(name = "ACCOUNT_ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
     @ToString.Exclude

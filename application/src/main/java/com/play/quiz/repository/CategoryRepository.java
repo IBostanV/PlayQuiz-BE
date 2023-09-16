@@ -11,5 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    Optional<Category> findByNaturalId(final String naturalId);
+    Optional<Category> findByNaturalId(String naturalId);
 }

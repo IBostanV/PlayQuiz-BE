@@ -23,7 +23,7 @@ public class AttributeListConverter implements AttributeConverter<List<QuestionA
     }
 
     @Override
-    public List<QuestionAttribute> convertToEntityAttribute(final String attributesColumn) {
+    public List<QuestionAttribute> convertToEntityAttribute(String attributesColumn) {
         if (Objects.isNull(attributesColumn)) {
             return Collections.emptyList();
         }

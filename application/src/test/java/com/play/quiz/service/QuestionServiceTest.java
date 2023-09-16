@@ -9,16 +9,15 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 
+import com.play.quiz.domain.Glossary;
+import com.play.quiz.domain.Question;
 import com.play.quiz.dto.QuestionDto;
-import com.play.quiz.engine.QuestionGenerationEngine;
 import com.play.quiz.fixtures.AnswerFixture;
 import com.play.quiz.fixtures.GlossaryFixture;
 import com.play.quiz.fixtures.QuestionFixture;
 import com.play.quiz.fixtures.QuestionTranslationFixture;
 import com.play.quiz.mapper.QuestionMapper;
 import com.play.quiz.mapper.QuestionMapperImpl;
-import com.play.quiz.domain.Question;
-import com.play.quiz.repository.GlossaryRepository;
 import com.play.quiz.repository.QuestionRepository;
 import com.play.quiz.service.impl.QuestionServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -33,8 +32,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class QuestionServiceTest {
     @Mock private QuestionMapper questionMapper = new QuestionMapperImpl();
     @Mock private QuestionRepository questionRepository;
-    @Mock private QuestionGenerationEngine generationEngine;
-    @Mock private GlossaryRepository glossaryRepository;
+    @Mock private GlossaryService glossaryService;
 
     @InjectMocks
     private QuestionServiceImpl questionService;
@@ -51,8 +49,7 @@ class QuestionServiceTest {
         when(questionMapper.mapToEntity(any())).thenReturn(question);
         when(questionRepository.save(question)).thenReturn(question);
         when(questionMapper.mapToDto(question)).thenReturn(getQuestionDtoWithTranslations());
-        when(glossaryRepository.getReferenceById(GlossaryFixture.getGlossary().getTermId()))
-                .thenReturn(GlossaryFixture.getGlossary());
+        when(glossaryService.getEntityById(question.getQuestionId())).thenReturn(GlossaryFixture.getGlossary());
 
         // When
         QuestionDto result = questionService.save(questionDto);
@@ -69,15 +66,14 @@ class QuestionServiceTest {
     @Test
     void given_questionDto_when_save_then_question_answers_have_question_set() {
         // Given
-        String glossaryValue = "2FqPOr34G";
         QuestionDto questionDto = QuestionFixture.getQuestionDto();
         Question question = QuestionFixture.getQuestion();
+        Glossary glossary = GlossaryFixture.getGlossary();
 
         when(questionMapper.mapToEntity(any())).thenReturn(question);
         when(questionRepository.save(question)).thenReturn(question);
         when(questionMapper.mapToDto(question)).thenReturn(getQuestionDtoWithTranslations());
-        when(glossaryRepository.getReferenceById(GlossaryFixture.getGlossary().getTermId()))
-                .thenReturn(GlossaryFixture.defaultGlossary("Key", glossaryValue));
+        when(glossaryService.getEntityById(question.getQuestionId())).thenReturn(glossary);
 
         // When
         QuestionDto result = questionService.save(questionDto);
@@ -90,7 +86,7 @@ class QuestionServiceTest {
 
         captorValue.getAnswers().forEach(answer -> {
             assertNotNull(answer.getQuestion());
-            assertEquals(glossaryValue, answer.getContent());
+            assertEquals(glossary.getValue(), answer.getContent());
         });
     }
 }

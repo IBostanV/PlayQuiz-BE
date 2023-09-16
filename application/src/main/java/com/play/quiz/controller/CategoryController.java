@@ -27,8 +27,8 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryDto> getCategory(@RequestParam(required = false) final Long id,
-                                                   @RequestParam(required = false) final String naturalId) {
+    public ResponseEntity<CategoryDto> getCategory(@RequestParam(required = false) Long id,
+                                                   @RequestParam(required = false) String naturalId) {
         return ResponseEntity.ok(Objects.nonNull(id) ?
                 categoryService.getById(id) :
                 categoryService.getByNaturalId(naturalId));

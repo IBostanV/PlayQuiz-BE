@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface MessageService {
 
-    void sendPrivateMessage(final Message payload, final String sessionId, final Principal principal);
+    void sendPrivateMessage(final Message payload, String sessionId, final Principal principal);
 
-    Message sendPublicMessage(final Message payload, final String sessionId, final Principal principal);
+    Message sendPublicMessage(final Message payload, String sessionId, final Principal principal);
 
-    List<Message> fetchMessageHistory(final String destination, final Principal principal);
+    List<Message> fetchMessageHistory(String destination, final Principal principal);
 }

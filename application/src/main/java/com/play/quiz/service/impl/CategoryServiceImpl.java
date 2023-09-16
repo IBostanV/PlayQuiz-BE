@@ -47,7 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @NonNull
     @Override
-    public CategoryDto getByNaturalId(final String naturalId) {
+    public CategoryDto getByNaturalId(String naturalId) {
         Category category = categoryRepository.findByNaturalId(naturalId)
                 .orElseThrow(() -> new RecordNotFoundException("No records found by natural Id: " + naturalId));
         return categoryMapper.toDto(category);

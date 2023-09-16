@@ -33,7 +33,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 @Entity
-@Table(name = "Q_QUESTIONS")
+@Table(name = "Q_QUESTION")
 @Getter
 @Builder
 @ToString
@@ -97,11 +97,11 @@ public class Question {
     @ToString.Exclude
     private List<QuestionTranslation> translations;
 
-    public Question copy(final QuestionType questionType, final String content) {
+    public Question copy(final QuestionType questionType, String content) {
         return copy(questionType, content, Collections.emptyList());
     }
 
-    public Question copy(final QuestionType questionType, final String content, final List<QuestionAttribute> attributes) {
+    public Question copy(final QuestionType questionType, String content, final List<QuestionAttribute> attributes) {
         return new Question(null, this.account, questionType, this.tipId, this.category, this.isActive,
                 this.complexityLevel, content, this.createdDate, this.updatedDate, this.updatedAccount,
                 this.topic, this.priority, attributes, this.answers, this.translations);

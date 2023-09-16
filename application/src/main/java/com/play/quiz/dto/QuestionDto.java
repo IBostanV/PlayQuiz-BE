@@ -9,30 +9,37 @@ import com.play.quiz.enums.QuestionAttribute;
 import com.play.quiz.enums.QuestionType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Value;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(exclude = {"answers", "translations"})
 public class QuestionDto {
-    Long id;
-    Object tipId;
-    String topic;
-    int priority;
-    Boolean isActive;
-    QuestionType type;
-    int complexityLevel;
-    List<AnswerDto> answers;
-    @NotBlank String content;
-    AccountDto createdAccount;
-    LocalDateTime createdDate;
-    LocalDateTime updatedDate;
-    AccountDto updatedAccount;
-    @NotNull CategoryDto category;
+    private Long id;
+    private Object tipId;
+    private String topic;
+    private int priority;
+    private Boolean isActive;
+    private QuestionType type;
+    private int complexityLevel;
+    private String categoryName;
+    private List<AnswerDto> answers;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
+
+    @NotBlank
+    private String content;
+    @NotNull
+    private Long categoryId;
+
     @Builder.Default
-    List<QuestionAttribute> attributes = new ArrayList<>();
+    private List<QuestionAttribute> attributes = new ArrayList<>();
     @Builder.Default
-    List<QuestionTranslationDto> translations = new ArrayList<>();
+    private List<QuestionTranslationDto> translations = new ArrayList<>();
 }

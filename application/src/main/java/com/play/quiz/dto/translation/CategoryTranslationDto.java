@@ -1,23 +1,18 @@
 package com.play.quiz.dto.translation;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.play.quiz.dto.CategoryDto;
 import com.play.quiz.domain.Language;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
 @Builder(toBuilder = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryTranslationDto {
-
-    Long translId;
-
-    String name;
-
-    String description;
-
-    Language language;
-
-    CategoryDto category;
+    private String name;
+    private Long translId;
+    private Language language;
+    private String description;
 }

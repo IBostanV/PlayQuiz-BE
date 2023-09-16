@@ -1,5 +1,11 @@
 package com.play.quiz.aop;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.when;
+
+import java.lang.reflect.Method;
+
 import com.play.quiz.aop.annotation.Conditional;
 import lombok.SneakyThrows;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,12 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
-
-import java.lang.reflect.Method;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ConditionalAspectTest {
@@ -159,7 +159,7 @@ class ConditionalAspectTest {
         assertNotNull(result);
     }
 
-    private MethodSignature anonumousMethodSignature(final String methodName) {
+    private MethodSignature anonumousMethodSignature(String methodName) {
         return new MethodSignature() {
             @Override
             public String toShortString() {

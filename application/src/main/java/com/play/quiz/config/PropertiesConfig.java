@@ -19,7 +19,7 @@ public class PropertiesConfig {
     }
 
     private Resource[] retrieveResources() {
-        final String env = System.getProperties().getProperty("env");
+        String env = System.getProperties().getProperty("env");
         return new Resource[]{
                 new ClassPathResource("environments/" + env + "/credentials.properties"),
                 new ClassPathResource("environments/" + env + "/api-web-config.properties")};

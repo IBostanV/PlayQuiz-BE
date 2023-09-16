@@ -26,7 +26,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 @Entity
-@Table(name = "Q_USER_HISTORIES")
+@Table(name = "Q_USER_HISTORY")
 @Getter
 @ToString
 @NoArgsConstructor

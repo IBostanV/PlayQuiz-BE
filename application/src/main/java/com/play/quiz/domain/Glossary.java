@@ -25,9 +25,9 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 @Entity
-@Table(name = "Q_GLOSSARIES")
+@Table(name = "Q_GLOSSARY")
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -45,7 +45,8 @@ public class Glossary {
     @JoinColumn(name = "CAT_ID")
     private Category category;
 
-    @OneToOne(targetEntity = GlossaryType.class)
+    @OneToOne(targetEntity = GlossaryType.class,
+            cascade = CascadeType.PERSIST)
     @JoinColumn(name = "TYPE_ID")
     private GlossaryType type;
 

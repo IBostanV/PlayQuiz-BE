@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.play.quiz.domain.Category;
 import com.play.quiz.domain.Glossary;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,29 +28,9 @@ public interface GlossaryRepository extends JpaRepository<Glossary, Long> {
             " WHERE gl.termId = :#{#glossary.termId}")
     int saveWithoutAttachment(@Param("glossary") final Glossary glossary);
 
-    Optional<Glossary> findByKey(final String key);
+    Optional<Glossary> findByKey(String key);
 
     List<Glossary> findAllByCategory(final Category category);
 
     Optional<List<Glossary>> findByCategory_catId(final Long categoryId);
-
-    List<Glossary> findByCategory_catId(final Long categoryId, final Pageable pageable);
-
-    @Query("SELECT gl FROM Glossary gl WHERE gl.category.catId = :categoryId" +
-            " AND gl.termId NOT IN :rightAnswerIds")
-    List<Glossary> findNoRightAnswersByCategory_catId(final Long categoryId, final Pageable pageable, List<Long> rightAnswerIds);
-
-    @Query("SELECT gl FROM Glossary gl WHERE gl.options LIKE CONCAT('%', :option, '%')" +
-            " AND gl.termId NOT IN :rightAnswerIds")
-    List<Glossary> getByOption(final String option, final Pageable pageable, final List<Long> rightAnswerIds);
-
-    @Query("SELECT gl FROM Glossary gl WHERE gl.options LIKE CONCAT('%', :option1, '%')" +
-            " AND gl.options LIKE CONCAT('%', :option2, '%')")
-    List<Glossary> getByOptions(final Pageable pageable, final String option1, final String option2);
-
-    @Query("SELECT gl FROM Glossary gl" +
-            " WHERE gl.options LIKE CONCAT('%', :option1, '%')" +
-            " AND gl.options LIKE CONCAT('%', :option2, '%')" +
-            " AND gl.options LIKE CONCAT('%', :option3, '%')")
-    List<Glossary> getByOptions(final Pageable pageable, final String option1, final String option2, final String option3);
 }

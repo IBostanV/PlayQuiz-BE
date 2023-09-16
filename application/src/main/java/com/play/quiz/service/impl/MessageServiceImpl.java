@@ -21,25 +21,25 @@ public class MessageServiceImpl implements MessageService {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @Override
-    public List<Message> fetchMessageHistory(final String destination, final Principal principal) {
+    public List<Message> fetchMessageHistory(String destination, final Principal principal) {
         return messageRepository.findBySourceAndDestination(principal.getName(), destination);
     }
 
     @Override
-    public Message sendPublicMessage(final Message payload, final String sessionId, final Principal principal) {
+    public Message sendPublicMessage(final Message payload, String sessionId, final Principal principal) {
         Message message = builder(payload, sessionId, principal);
         return messageRepository.save(message);
     }
 
     @Override
-    public void sendPrivateMessage(final Message payload, final String sessionId, final Principal principal) {
+    public void sendPrivateMessage(final Message payload, String sessionId, final Principal principal) {
         Message message = builder(payload, sessionId, principal);
         messageRepository.save(message);
         simpMessagingTemplate.convertAndSendToUser(principal.getName(), WS_BROKER_SOLO, message);
         simpMessagingTemplate.convertAndSendToUser(message.getDestination(), WS_BROKER_SOLO, message);
     }
 
-    private Message builder(final Message payload, final String sessionId, final Principal principal) {
+    private Message builder(final Message payload, String sessionId, final Principal principal) {
         return Message.builder()
                 .sessionId(sessionId)
                 .source(principal.getName())

@@ -3,9 +3,9 @@ package com.play.quiz.repository;
 import java.util.List;
 import java.util.Set;
 
-import com.play.quiz.enums.QuestionType;
 import com.play.quiz.domain.Category;
 import com.play.quiz.domain.Question;
+import com.play.quiz.enums.QuestionType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

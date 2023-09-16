@@ -167,7 +167,7 @@ class QuestionGenerationEngineTest {
         assertEquals(expectedEntityForSave.getAttributes(), questionArgumentCaptorValue.getAttributes());
     }
 
-    private static List<Question> getGeneratedQuestionList(final Long end, final String placeholder) {
+    private static List<Question> getGeneratedQuestionList(final Long end, String placeholder) {
         return LongStream.range(1, end)
                 .mapToObj(id -> QuestionFixture.getGeneratedQuestion(id, placeholder))
                 .collect(Collectors.toList());

@@ -43,6 +43,8 @@ public class UserRepositoryImpl implements UserRepository {
     private final String userSequenceNextVal;
     private final NamedParameterJdbcTemplate namedJdbcTemplate;
 
+    public static final String ACCOUNT_ID = "accountId";
+
     @Override
     public Account save(final Account account) {
         return Objects.nonNull(account.getAccountId()) ? handleUpdate(account) : handleInsert(account);
@@ -62,14 +64,14 @@ public class UserRepositoryImpl implements UserRepository {
     private Account executeSave(final Long accountId, final Account account) {
         namedJdbcTemplate.update(saveUserSql, getProperties(accountId, account));
         account.getRoles().forEach(role -> namedJdbcTemplate.update(saveUserRoles,
-                Map.of("accountId", accountId, "roleId", role.getRoleId())));
+                Map.of(ACCOUNT_ID, accountId, "roleId", role.getRoleId())));
         log.info("User with id: " + accountId + " successfully saved");
         return new Account(account, accountId);
     }
 
     private Map<String, Object> getProperties(final Long accountId, final Account account) {
         Map<String, Object> propertyMap = new HashMap<>();
-        propertyMap.put("accountId", accountId);
+        propertyMap.put(ACCOUNT_ID, accountId);
         propertyMap.put("email", account.getEmail());
         propertyMap.put("isEnabled", account.isEnabled());
         propertyMap.put("password", String.copyValueOf((char[])mapNull().apply(account.getPassword())));
@@ -83,7 +85,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<Account> findUserByEmail(final String email) {
+    public Optional<Account> findUserByEmail(String email) {
         return executeQueryForObject(email).map(this::setAccountRoles);
     }
 
@@ -94,7 +96,7 @@ public class UserRepositoryImpl implements UserRepository {
         return account;
     }
 
-    private Optional<Account> executeQueryForObject(final String email) {
+    private Optional<Account> executeQueryForObject(String email) {
         try {
             BeanPropertyRowMapper<Account> rowMapper = new BeanPropertyRowMapper<>(Account.class);
             Account account = namedJdbcTemplate.queryForObject(findUserByEmailSql, Map.of("email", email), rowMapper);
@@ -108,7 +110,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private List<Role> handleRoles(final Account account) {
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource("accountId", account.getAccountId());
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource(ACCOUNT_ID, account.getAccountId());
         List<Map<String, Object>> rolesMap = namedJdbcTemplate.queryForList(findUserRolesSql, parameterSource);
         return getRoleList(rolesMap);
     }
@@ -134,7 +136,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void enableAccount(final Long accountId) {
-        namedJdbcTemplate.update(activateAccountSql, Map.of("accountId", accountId));
+        namedJdbcTemplate.update(activateAccountSql, Map.of(ACCOUNT_ID, accountId));
     }
 
     private List<Account> mapResultSetRows(final List<Map<String, Object>> accountMap) {

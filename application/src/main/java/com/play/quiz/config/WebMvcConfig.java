@@ -1,5 +1,8 @@
 package com.play.quiz.config;
 
+import java.util.Locale;
+
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,8 +12,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-
-import java.util.Locale;
 
 @Configuration
 public class WebMvcConfig {
@@ -35,12 +36,12 @@ public class WebMvcConfig {
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(final CorsRegistry registry) {
+            public void addCorsMappings(@NotNull final CorsRegistry registry) {
                 registry.addMapping("/**").allowedOrigins(domainHostUrl);
             }
 
             @Override
-            public void addInterceptors(InterceptorRegistry registry) {
+            public void addInterceptors(@NotNull final InterceptorRegistry registry) {
                 registry.addInterceptor(localeChangeInterceptor());
             }
         };

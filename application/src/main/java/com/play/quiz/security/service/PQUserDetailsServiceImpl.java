@@ -23,12 +23,12 @@ import org.springframework.util.CollectionUtils;
 @Slf4j
 @Service("quizUserDetailsService")
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class PQUserDetailsServiceImpl implements PQUserDetailsService {
 
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadByEmail(final String userEmail) {
+    public UserDetails loadByEmail(String userEmail) {
         final Account account = userRepository.findUserByEmail(userEmail)
                 .orElseThrow(() -> new UserNotFoundException("No user found with email: " + userEmail));
         return buildUserDetails(account);
@@ -58,7 +58,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(final String emailAsUsername) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String emailAsUsername) throws UsernameNotFoundException {
         return loadByEmail(emailAsUsername);
     }
 }

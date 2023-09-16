@@ -22,7 +22,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 @Entity
-@Table(name = "Q_CATEGORIES")
+@Table(name = "Q_CATEGORY")
 @Getter
 @Builder
 @ToString
