@@ -1,5 +1,5 @@
 -- // create_user_table
-CREATE TABLE Q_USERS (
+CREATE TABLE Q_USER (
                       ACCOUNT_ID NUMERIC(20,0) NOT NULL,
                       NAME VARCHAR(100) DEFAULT '',
                       EMAIL VARCHAR(100) NOT NULL,
@@ -9,13 +9,13 @@ CREATE TABLE Q_USERS (
 )
 /execute/
 
-ALTER TABLE Q_USERS
-    ADD CONSTRAINT Q_USERS_PK
+ALTER TABLE Q_USER
+    ADD CONSTRAINT Q_USER_PK
         PRIMARY KEY (ACCOUNT_ID)
 /execute/
 
 -- //@UNDO
-DROP TABLE Q_USERS
+DROP TABLE Q_USER
 /execute/
 
 

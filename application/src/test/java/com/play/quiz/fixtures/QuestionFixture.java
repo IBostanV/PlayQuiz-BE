@@ -15,7 +15,7 @@ import com.play.quiz.domain.Question;
 
 public class QuestionFixture {
 
-    public static Question getNoAnswerQuestion(final Long id, final String placeholder) {
+    public static Question getNoAnswerQuestion(final Long id, String placeholder) {
         return Question.builder()
                 .questionId(id)
                 .type(QuestionType.GENERATED)
@@ -26,7 +26,7 @@ public class QuestionFixture {
                 .build();
     }
 
-    public static Question getGeneratedQuestion(final Long id, final String placeholder) {
+    public static Question getGeneratedQuestion(final Long id, String placeholder) {
         Question.QuestionBuilder questionBuilder = Question.builder()
                 .questionId(id)
                 .type(QuestionType.GENERATED)
@@ -48,7 +48,8 @@ public class QuestionFixture {
                 .type(QuestionType.GENERATED)
                 .attributes(Collections.emptyList())
                 .content("What is the meaning of Life?")
-                .category(CategoryFixture.getCategoryDto())
+                .categoryId(CategoryFixture.getCategoryDto().getCatId())
+                .categoryName(CategoryFixture.getCategoryDto().getName())
                 .answers(Collections.singletonList(AnswerFixture.getAnswerDtoNoQuestion()))
                 .build();
     }
@@ -58,7 +59,8 @@ public class QuestionFixture {
                 .type(QuestionType.GENERATED)
                 .attributes(Collections.emptyList())
                 .content("What is the meaning of Life?")
-                .category(CategoryFixture.getCategoryDto())
+                .categoryId(CategoryFixture.getCategoryDto().getCatId())
+                .categoryName(CategoryFixture.getCategoryDto().getName())
                 .answers(Collections.singletonList(AnswerFixture.getAnswerDtoNoQuestion()))
                 .translations(Collections.singletonList(QuestionTranslationFixture.getQuestionTranslationDto()))
                 .build();
@@ -66,7 +68,7 @@ public class QuestionFixture {
 
     public static Question getQuestion() {
         return Question.builder()
-                .questionId(2L)
+                .questionId(1L)
                 .isActive(Boolean.TRUE)
                 .type(QuestionType.CREATED)
                 .attributes(Collections.emptyList())

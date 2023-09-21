@@ -10,7 +10,7 @@ public interface CategoryService {
 
     CategoryDto getById(final Long categoryId);
 
-    CategoryDto getByNaturalId(final String categoryName);
+    CategoryDto getByNaturalId(String categoryName);
 
     void deleteById(final Long categoryId);
 

@@ -20,7 +20,7 @@ public class GlossaryFixture {
         return Arrays.asList(glossary1, glossary2, glossary3);
     }
 
-    public static Glossary defaultGlossary(final String key, final String value) {
+    public static Glossary defaultGlossary(String key, String value) {
         return Glossary.builder()
                 .termId(1L)
                 .key(key)
@@ -34,7 +34,8 @@ public class GlossaryFixture {
                 .termId(1L)
                 .key("Life")
                 .value("Power")
-                .category(CategoryFixture.getCategoryDto())
+                .categoryId(CategoryFixture.getCategoryDto().getCatId())
+                .categoryName(CategoryFixture.getCategoryDto().getName())
                 .build();
     }
 }

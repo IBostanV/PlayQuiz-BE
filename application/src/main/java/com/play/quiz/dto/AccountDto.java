@@ -13,31 +13,35 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.Value;
 
-@Value
+@Data
 @Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ToString(exclude = "password")
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccountDto {
-    Long id;
-    String name;
-    boolean isEnabled;
+    private Long id;
+    private String name;
+    private boolean isEnabled;
 
     @NotBlank
     @Email(regexp = ".+@.+\\..+", message="Please provide a valid email address")
-    String email;
+    private String email;
 
     @NotEmpty
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    char[] password;
+    private char[] password;
 
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
-    LocalDate birthday;
+    private LocalDate birthday;
 
     @Builder.Default
-    List<RoleDto> roles = Collections.emptyList();
+    private List<RoleDto> roles = Collections.emptyList();
 }

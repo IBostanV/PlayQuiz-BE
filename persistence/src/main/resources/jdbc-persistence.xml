@@ -6,7 +6,7 @@
     <bean id="saveUserSql" class="java.lang.String">
         <constructor-arg>
             <value>
-                MERGE INTO Q_USERS
+                MERGE INTO Q_USER
                 USING DUAL ON (ACCOUNT_ID = :accountId)
                 WHEN MATCHED THEN
                 UPDATE SET NAME = :name,
@@ -24,7 +24,7 @@
         <constructor-arg>
             <value>
                 <![CDATA[
-                     INSERT INTO Q_USERS_ROLES(ACCOUNT_ID, ROLE_ID) VALUES (:accountId, :roleId)
+                     INSERT INTO Q_USER_ROLES(ACCOUNT_ID, ROLE_ID) VALUES (:accountId, :roleId)
                 ]]>
             </value>
         </constructor-arg>
@@ -51,7 +51,7 @@
                         ,u.is_enabled
                         ,u.birthday
                         ,u.name
-                     FROM Q_USERS u
+                     FROM Q_USER u
                      WHERE u.email = :email
                 ]]>
             </value>
@@ -65,8 +65,8 @@
                      SELECT
                          r.role_id
                         ,r.name
-                     FROM Q_ROLES r
-                     LEFT JOIN Q_USERS_ROLES ur ON r.role_id = ur.role_id
+                     FROM Q_USER_ROLE r
+                     LEFT JOIN Q_USER_ROLES ur ON r.role_id = ur.role_id
                      WHERE ur.account_id = :accountId
                 ]]>
             </value>
@@ -86,9 +86,9 @@
                         ,u.name
                         ,r.role_id
                         ,r.name as ROLE_NAME
-                     FROM Q_USERS u
-                     LEFT JOIN Q_USERS_ROLES ur ON u.account_id = ur.account_id
-                     LEFT JOIN Q_ROLES r ON ur.role_id = r.role_id
+                     FROM Q_USER u
+                     LEFT JOIN Q_USER_ROLES ur ON u.account_id = ur.account_id
+                     LEFT JOIN Q_USER_ROLE r ON ur.role_id = r.role_id
                 ]]>
             </value>
         </constructor-arg>
@@ -98,7 +98,7 @@
         <constructor-arg>
             <value>
                 <![CDATA[
-                     UPDATE Q_USERS SET IS_ENABLED = 1 WHERE ACCOUNT_ID = :accountId
+                     UPDATE Q_USER SET IS_ENABLED = 1 WHERE ACCOUNT_ID = :accountId
                 ]]>
             </value>
         </constructor-arg>

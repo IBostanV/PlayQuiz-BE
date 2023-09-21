@@ -18,7 +18,6 @@ public class QuestionTranslationFixture {
         return QuestionTranslationDto.builder()
                 .translId(1L)
                 .name("What is the meaning of Life?")
-                .question(QuestionFixture.getQuestionDto())
                 .description("What is the meaning of Life?")
                 .language(Language.builder().langId(1L).langCode("EN").name("English").build())
                 .build();

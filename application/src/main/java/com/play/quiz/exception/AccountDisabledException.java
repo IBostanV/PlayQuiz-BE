@@ -5,7 +5,7 @@ public class AccountDisabledException extends RuntimeException{
         super();
     }
 
-    public AccountDisabledException(final String message) {
+    public AccountDisabledException(String message) {
         super(message);
     }
 }

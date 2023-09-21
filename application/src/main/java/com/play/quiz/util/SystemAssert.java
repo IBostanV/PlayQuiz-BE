@@ -10,13 +10,13 @@ import org.springframework.util.Assert;
 import java.util.Objects;
 
 public abstract class SystemAssert extends Assert {
-    public static void isAccountEnabled(boolean isEnabled, final String userEmail) {
+    public static void isAccountEnabled(boolean isEnabled, String userEmail) {
         if (!isEnabled) {
             throw new AccountDisabledException("Account "+ userEmail +" is disabled");
         }
     }
 
-    public static void isAccountUnique(boolean userExists, final String userEmail) {
+    public static void isAccountUnique(boolean userExists, String userEmail) {
         if (userExists) {
             throw new DuplicateUserException("User "+ userEmail +" already exists");
         }

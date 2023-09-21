@@ -19,7 +19,7 @@ public class QuestionIdsConverter implements AttributeConverter<Set<Long>, Strin
     }
 
     @Override
-    public Set<Long> convertToEntityAttribute(final String databaseIds) {
+    public Set<Long> convertToEntityAttribute(String databaseIds) {
         List<String> stringList = Arrays.asList(databaseIds.split(SPLIT_CHAR));
         return stringList.stream().map(String::trim).map(Long::parseLong).collect(Collectors.toSet());
     }

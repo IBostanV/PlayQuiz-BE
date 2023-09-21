@@ -14,8 +14,18 @@ public class CategoryFixture {
     public static Category getCategory() {
         return Category.builder()
                 .catId(7L)
+                .visible(true)
                 .name("Continent")
+                .parent(getParent())
                 .naturalId("CONTINENT")
+                .build();
+    }
+
+    public static Category getParent() {
+        return Category.builder()
+                .catId(1L)
+                .name("Earth")
+                .naturalId("EARTH")
                 .build();
     }
 
@@ -23,6 +33,9 @@ public class CategoryFixture {
         return CategoryDto.builder()
                 .catId(7L)
                 .name("Continent")
+                .visible(true)
+                .parentId(1L)
+                .parentName("Earth")
                 .naturalId("CONTINENT")
                 .build();
     }

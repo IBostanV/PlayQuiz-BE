@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.play.quiz.TestAppContextInitializer;
+import com.play.quiz.domain.Category;
 import com.play.quiz.exception.RecordNotFoundException;
 import com.play.quiz.fixtures.AccountFixture;
 import com.play.quiz.fixtures.CategoryFixture;
@@ -46,53 +47,52 @@ class CategoryControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private CategoryRepository categoryRepository;
 
     @MockBean
-    private CategoryRepository categoryRepository;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void given_categoryId_when_get_category_then_return_category() throws Exception {
-        final Long categoryId = 7L;
-        final String body = "{\"catId\":"+ categoryId +",\"visible\":null,\"naturalId\":\"CONTINENT\",\"parent\":null,\"name\":\"Continent\",\"categoryTranslations\":null}";
+        String body = "{\"catId\":7,\"parentId\":1,\"visible\":true,\"naturalId\":\"CONTINENT\",\"parentName\":\"Earth\",\"name\":\"Continent\"}";
 
+        Category category = CategoryFixture.getCategory();
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = ArgumentMatchers.any();
 
         when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper))
                 .thenReturn(AccountFixture.getAdminAccount());
-        when(categoryRepository.findById(categoryId))
-                .thenReturn(Optional.ofNullable(CategoryFixture.getCategory()));
+        when(categoryRepository.findById(category.getCatId())).thenReturn(Optional.of(category));
 
         mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_CATEGORY)
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                        .param("id", categoryId.toString()))
+                        .param("id", category.getCatId().toString()))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.catId").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.catId").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.naturalId").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.parent").isEmpty())
-                .andExpect(content().string(body));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.catId").value(category.getCatId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(category.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.naturalId").value(category.getNaturalId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.parentId").value(category.getParent().getCatId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.parentName").value(category.getParent().getName()))
+                .andExpect(content().json(body));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void given_naturalId_when_get_category_then_return_category() throws Exception {
-        final long categoryId = 7L;
-        final String naturalId = "COUNTRY";
-        final String body = "{\"catId\":"+ categoryId +",\"visible\":null,\"naturalId\":\"CONTINENT\",\"parent\":null,\"name\":\"Continent\",\"categoryTranslations\":null}";
+        String naturalId = "COUNTRY";
+        String body = "{\"catId\":7,\"parentId\":1,\"visible\":true,\"naturalId\":\"CONTINENT\",\"parentName\":\"Earth\",\"name\":\"Continent\"}";
 
+        Category category = CategoryFixture.getCategory();
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = ArgumentMatchers.any();
 
         when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper))
                 .thenReturn(AccountFixture.getAdminAccount());
-        when(categoryRepository.findByNaturalId(naturalId))
-                .thenReturn(Optional.ofNullable(CategoryFixture.getCategory()));
+        when(categoryRepository.findByNaturalId(naturalId)).thenReturn(Optional.of(category));
 
         mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_CATEGORY)
                         .accept(APPLICATION_JSON_VALUE)
@@ -101,17 +101,18 @@ class CategoryControllerTest {
                         .param("naturalId", naturalId))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.catId").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.catId").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.naturalId").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.parent").isEmpty())
-                .andExpect(content().string(body));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.catId").value(category.getCatId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(category.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.naturalId").value(category.getNaturalId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.parentId").value(category.getParent().getCatId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.parentName").value(category.getParent().getName()))
+                .andExpect(content().json(body));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void given_null_categoryId_when_get_category_then_return_category() throws Exception {
-        final String body = "No records found by natural Id: null";
+        String body = "No records found by natural Id: null";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();
         BeanPropertyRowMapper<Account> rowMapper = ArgumentMatchers.any();

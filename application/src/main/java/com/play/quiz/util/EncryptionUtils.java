@@ -23,7 +23,7 @@ public class EncryptionUtils {
 
     @SneakyThrows
     @Transactional
-    public String encryptData(final String data) {
+    public String encryptData(String data) {
         Property encryptionSecretKey = propertyRepository.findByName(ENCRYPTION_SECRET_KEY);
         Property encryptionAlgorithm = propertyRepository.findByName(ENCRYPTION_ALGORITHM);
 

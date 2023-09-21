@@ -1,6 +1,7 @@
 package com.play.quiz.config;
 
 import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_AUTH;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 import java.util.List;
 
@@ -50,8 +51,8 @@ public class WebSecurity {
 
     @Bean
     protected SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
-        return http.cors()
-                .and().logout(logout -> logout.deleteCookies(HttpHeaders.AUTHORIZATION.toLowerCase())
+        return http.cors(withDefaults())
+                .logout(logout -> logout.deleteCookies(HttpHeaders.AUTHORIZATION.toLowerCase())
                         .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler()))
                 .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(customCsrfTokenRequestAttributeHandler))
@@ -60,9 +61,18 @@ public class WebSecurity {
                         .requestMatchers(REQUEST_MAPPING_AUTH + "/**").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
-                .exceptionHandling()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling
+                                .accessDeniedPage("/errors/access-denied")
+                )
+                .sessionManagement(sessionManagement ->
+                        sessionManagement
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                                .sessionConcurrency(sessionConcurrency ->
+                                        sessionConcurrency.expiredUrl("/login?expired")
+                                )
+                )
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(authenticationFilter, LogoutFilter.class)
                 .build();
     }

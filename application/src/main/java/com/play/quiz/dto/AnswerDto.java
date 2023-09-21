@@ -3,19 +3,19 @@ package com.play.quiz.dto;
 import java.util.List;
 
 import com.play.quiz.dto.translation.AnswerTranslationDto;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class AnswerDto {
     private Long id;
+    private Long termId;
     private String content;
-    private GlossaryDto glossary;
-    private QuestionDto question;
+    private byte[] glossaryAttachment;
     private List<AnswerTranslationDto> answerTranslations;
-
-    public static AnswerDto withGlossary(final GlossaryDto glossaryDto) {
-        return new AnswerDto(null, glossaryDto.getValue(), glossaryDto, null, null);
-    }
 }

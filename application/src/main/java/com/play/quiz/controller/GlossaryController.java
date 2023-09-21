@@ -36,7 +36,7 @@ public class GlossaryController {
     }
 
     @GetMapping(value = "/key/{glossaryKey}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GlossaryDto> getGlossaryByKey(@PathVariable final String glossaryKey) {
+    public ResponseEntity<GlossaryDto> getGlossaryByKey(@PathVariable String glossaryKey) {
         return ResponseEntity.ok().body(glossaryService.getByKey(glossaryKey));
     }
 

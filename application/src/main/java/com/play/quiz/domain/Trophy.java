@@ -1,5 +1,7 @@
 package com.play.quiz.domain;
 
+import java.util.Objects;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,10 +16,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import java.util.Objects;
-
 @Entity
-@Table(name = "Q_TROPHIES")
+@Table(name = "Q_TROPHY")
 @Getter
 @Builder
 @ToString

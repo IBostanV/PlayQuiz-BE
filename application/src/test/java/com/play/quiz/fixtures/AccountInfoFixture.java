@@ -1,9 +1,8 @@
 package com.play.quiz.fixtures;
 
-import com.play.quiz.domain.helpers.AccountInfo;
-import com.play.quiz.security.jwt.JwtToken;
-
 import java.util.UUID;
+
+import com.play.quiz.domain.helpers.AccountInfo;
 
 public class AccountInfoFixture {
     public static AccountInfo getAccountInfo() {
@@ -26,6 +25,6 @@ public class AccountInfoFixture {
 
     private static AccountInfo.AccountInfoBuilder defaultBuilder() {
         return AccountInfo.builder()
-                .jwtToken(new JwtToken(UUID.randomUUID().toString()));
+                .jwtToken(UUID.randomUUID().toString());
     }
 }

@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserQuizQuizHistoryServiceImpl implements UserQuizHistoryService {
+public class UserQuizHistoryServiceImpl implements UserQuizHistoryService {
 
     private final QuestionService questionService;
     private final GlossaryService glossaryService;
@@ -112,7 +112,7 @@ public class UserQuizQuizHistoryServiceImpl implements UserQuizHistoryService {
         Long glossaryId = getJsonElementValue(keyValue, "answer").getAsLong();
         double time = getJsonElementValue(keyValue, "time").getAsDouble();
 
-        if (Objects.equals(answer.getGlossary().getTermId(), glossaryId)) {
+        if (Objects.equals(answer.getTermId(), glossaryId)) {
             log.debug("User answered right. Glossary id: " + glossaryId);
             return new HistoryAnswer(time, question.getContent(), answer.getContent(), null);
         }
@@ -122,7 +122,7 @@ public class UserQuizQuizHistoryServiceImpl implements UserQuizHistoryService {
         return new HistoryAnswer(time, question.getContent(), glossaryDto.getValue(), answer.getContent());
     }
 
-    private static JsonElement getJsonElementValue(final JsonObject keyValue, final String key) {
+    private static JsonElement getJsonElementValue(final JsonObject keyValue, String key) {
         return Objects.requireNonNull(keyValue.entrySet().stream()
                 .filter(entry -> Objects.equals(entry.getKey(), key))
                 .map(Map.Entry::getValue)

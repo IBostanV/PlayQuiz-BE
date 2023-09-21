@@ -6,8 +6,8 @@ import com.play.quiz.fixtures.AccountFixture;
 import com.play.quiz.fixtures.UserDetailsFixture;
 import com.play.quiz.domain.Account;
 import com.play.quiz.repository.UserRepository;
-import com.play.quiz.security.service.UserDetailsService;
-import com.play.quiz.security.service.UserDetailsServiceImpl;
+import com.play.quiz.security.service.PQUserDetailsService;
+import com.play.quiz.security.service.PQUserDetailsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,8 +30,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class UserDetailsServiceTest {
-    private UserDetailsService userDetailsService;
+class PQUserDetailsServiceTest {
+    private PQUserDetailsService PQUserDetailsService;
 
     @Mock
     private UserRepository userRepository;
@@ -41,18 +41,18 @@ class UserDetailsServiceTest {
 
     @BeforeEach
     public void init() {
-        userDetailsService = new UserDetailsServiceImpl(userRepository);
+        PQUserDetailsService = new PQUserDetailsServiceImpl(userRepository);
     }
 
     @Test
     void give_userEmail_when_loadByEmail_then_return_userDetails() {
-        final String userEmail = "vanyok93@yahoo.com";
+        String userEmail = "vanyok93@yahoo.com";
         final Account adminAccount = AccountFixture.getAdminAccount();
         final UserDetails adminUserDetails = UserDetailsFixture.getAdminUserDetails();
 
         when(userRepository.findUserByEmail(userEmail)).thenReturn(Optional.of(adminAccount));
 
-        UserDetails userDetails = userDetailsService.loadByEmail(userEmail);
+        UserDetails userDetails = PQUserDetailsService.loadByEmail(userEmail);
 
         Mockito.verify(userRepository).findUserByEmail(emailCaptor.capture());
         String emailCaptureValue = emailCaptor.getValue();
@@ -65,7 +65,7 @@ class UserDetailsServiceTest {
 
     @Test
     void give_no_roles_account_when_loadByEmail_then_return_userDetails_with_role_user() {
-        final String userEmail = "vanyok93@yahoo.com";
+        String userEmail = "vanyok93@yahoo.com";
         final Account adminAccount = AccountFixture.getNoRolesAccount();
         final UserDetails adminUserDetails = UserDetailsFixture.getAdminUserDetails();
         final SimpleGrantedAuthority userRole = new SimpleGrantedAuthority(UserRole.ROLE_USER.name());
@@ -73,7 +73,7 @@ class UserDetailsServiceTest {
 
         when(userRepository.findUserByEmail(userEmail)).thenReturn(Optional.of(adminAccount));
 
-        UserDetails userDetails = userDetailsService.loadByEmail(userEmail);
+        UserDetails userDetails = PQUserDetailsService.loadByEmail(userEmail);
 
         Mockito.verify(userRepository).findUserByEmail(emailCaptor.capture());
         String emailCaptureValue = emailCaptor.getValue();
@@ -89,7 +89,7 @@ class UserDetailsServiceTest {
     @Test
     void give_no_email_when_loadByEmail_then_UserNotFoundException_thrown() {
         UserNotFoundException userNotFoundException = assertThrows(UserNotFoundException.class,
-                () -> userDetailsService.loadByEmail(null),
+                () -> PQUserDetailsService.loadByEmail(null),
                 "Expected authenticationService.login() to throw UserNotFoundException."
         );
 

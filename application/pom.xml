@@ -6,28 +6,28 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.0</version>
+        <version>3.1.2</version>
         <relativePath/>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <jjwt.version>0.9.1</jjwt.version>
-        <quartz.version>2.3.2</quartz.version>
-        <mockito.version>4.11.0</mockito.version>
-        <mapstruct.version>1.5.3.Final</mapstruct.version>
-        <junit-jupiter.version>5.9.2</junit-jupiter.version>
         <javax-servlet.version>4.0.1</javax-servlet.version>
-        <junit.jupiter.version>5.9.2</junit.jupiter.version>
+        <junit-jupiter.version>5.9.2</junit-jupiter.version>
+        <mapstruct.version>1.5.3.Final</mapstruct.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <mockito.jupiter.version>4.11.0</mockito.jupiter.version>
+        <mockito.version>4.11.0</mockito.version>
+        <mybatis.spring-boot.version>3.0.1</mybatis.spring-boot.version>
+        <nimbus-jose.version>9.31</nimbus-jose.version>
+        <quartz.version>2.3.2</quartz.version>
         <spring.boot.test.version>3.0.1</spring.boot.test.version>
         <sping-security-test.version>6.0.1</sping-security-test.version>
-        <mybatis.spring-boot.version>3.0.1</mybatis.spring-boot.version>
-        <thymleaf-spring5.version>3.1.1.RELEASE</thymleaf-spring5.version>
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <spring-security-messaging.version>6.0.1</spring-security-messaging.version>
+        <spring-security-messaging.version>6.0.2</spring-security-messaging.version>
         <springdoc-openapi-starter-webmvc.version>2.0.2</springdoc-openapi-starter-webmvc.version>
+        <thymleaf-spring5.version>3.1.1.RELEASE</thymleaf-spring5.version>
+
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
     </properties>
@@ -118,9 +118,9 @@
             <version>${quartz.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>${jjwt.version}</version>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>${nimbus-jose.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -152,7 +152,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.jupiter.version}</version>
+            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -4,16 +4,23 @@ import java.util.List;
 
 import com.play.quiz.dto.translation.CategoryTranslationDto;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryDto {
-   Long catId;
-   Boolean visible;
-   String naturalId;
-   CategoryDto parent;
-   @NotBlank String name;
-   List<CategoryTranslationDto> categoryTranslations;
+   private Long catId;
+   private Long parentId;
+   private Boolean visible;
+   private String naturalId;
+   private String parentName;
+   private List<CategoryTranslationDto> categoryTranslations;
+
+   @NotBlank
+   private String name;
 }

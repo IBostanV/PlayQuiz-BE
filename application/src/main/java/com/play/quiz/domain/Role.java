@@ -1,5 +1,7 @@
 package com.play.quiz.domain;
 
+import java.util.Objects;
+
 import com.play.quiz.enums.UserRole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,10 +18,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import java.util.Objects;
-
 @Entity
-@Table(name = "Q_ROLES")
+@Table(name = "Q_USER_ROLE")
 @Getter
 @Builder
 @ToString

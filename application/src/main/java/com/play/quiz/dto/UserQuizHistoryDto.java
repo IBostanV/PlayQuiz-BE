@@ -7,18 +7,24 @@ import java.util.Set;
 
 import com.play.quiz.domain.Trophy;
 import com.play.quiz.dto.wrapper.HistoryAnswer;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserQuizHistoryDto {
-    QuizDto quiz;
-    Long historyId;
-    Double spentTime;
-    String answersJson;
-    AccountDto account;
-    Set<Trophy> trophies;
-    LocalDateTime completedDate;
-    List<HistoryAnswer> answers = new ArrayList<>();
+    private QuizDto quiz;
+    private Long historyId;
+    private Double spentTime;
+    private String answersJson;
+    private AccountDto account;
+    private Set<Trophy> trophies;
+    private LocalDateTime completedDate;
+
+    @Builder.Default
+    private List<HistoryAnswer> answers = new ArrayList<>();
 }
