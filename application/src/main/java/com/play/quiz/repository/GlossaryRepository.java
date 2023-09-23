@@ -20,6 +20,7 @@ public interface GlossaryRepository extends JpaRepository<Glossary, Long> {
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE Glossary gl " +
             " SET gl.key = :#{#glossary.key}" +
+            ", gl.type = :#{#glossary.type}" +
             ", gl.value = :#{#glossary.value}" +
             ", gl.parent = :#{#glossary.parent}" +
             ", gl.options = :#{#glossary.options}" +

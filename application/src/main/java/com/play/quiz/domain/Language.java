@@ -27,9 +27,7 @@ public class Language {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "language_generator")
     @SequenceGenerator(name = "language_generator", sequenceName = "languages_seq", allocationSize = 1)
     private Long langId;
-
     private String langCode;
-
     private String name;
 
     @Override

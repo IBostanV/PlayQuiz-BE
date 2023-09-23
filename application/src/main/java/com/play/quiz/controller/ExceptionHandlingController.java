@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import com.play.quiz.exception.EmailSendFailedException;
 import com.play.quiz.exception.RecordNotFoundException;
 import com.play.quiz.exception.UserNotFoundException;
-import com.play.quiz.domain.helpers.FieldMessagePair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,16 +71,15 @@ public class ExceptionHandlingController {
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<List<FieldMessagePair<String, String>>> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
+    public ResponseEntity<List<String>> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
         final List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-
         return ResponseEntity.badRequest().body(getViolatedFields(fieldErrors));
     }
 
-    private static List<FieldMessagePair<String, String>> getViolatedFields(List<FieldError> fieldErrors) {
+    private static List<String> getViolatedFields(List<FieldError> fieldErrors) {
         return fieldErrors.stream()
                 .filter(fieldError -> Objects.nonNull(fieldError.getDefaultMessage()))
-                .map(fieldError -> FieldMessagePair.of(fieldError.getField(), fieldError.getDefaultMessage()))
+                .map(fieldError -> "Field " + fieldError.getField() + " " + fieldError.getDefaultMessage())
                 .collect(Collectors.toList());
     }
 }

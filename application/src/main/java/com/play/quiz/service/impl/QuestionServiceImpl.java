@@ -49,21 +49,22 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     public QuestionDto save(final QuestionDto questionDto) {
         Question question = questionMapper.mapToEntity(questionDto);
-        Question savedQuestion = questionRepository.save(
-                processQuestion(question));
+        Question savedQuestion = questionRepository.save(processQuestion(question));
+
         return questionMapper.mapToDto(savedQuestion);
     }
 
     private Question processQuestion(final Question question) {
-        question.handleAnswersParent();
-        question.handleTranslationsParent();
-        return handleAnswersContent(question);
+        question.fillAnswersParent();
+        question.fillTranslationsParent();
+        handleAnswersContent(question);
+
+        return question;
     }
 
-    private Question handleAnswersContent(final Question question) {
+    private void handleAnswersContent(final Question question) {
         question.getAnswers().forEach(answer -> Optional.ofNullable(answer.getGlossary())
                 .ifPresent(glossary -> answer.setContent(processAnswerByGlossary(question.getAttributes(), glossary))));
-        return question;
     }
 
     private String processAnswerByGlossary(final List<QuestionAttribute> attributes, final Glossary answerGlossary) {

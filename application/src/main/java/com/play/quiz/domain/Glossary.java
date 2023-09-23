@@ -36,24 +36,21 @@ public class Glossary {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "glossary_generator")
     @SequenceGenerator(name = "glossary_generator", sequenceName = "glossaries_seq", allocationSize = 1)
     private Long termId;
-
     private String key;
-
     private String value;
+    private String options;
 
     @OneToOne(targetEntity = Category.class)
     @JoinColumn(name = "CAT_ID")
     private Category category;
 
     @OneToOne(targetEntity = GlossaryType.class,
-            cascade = CascadeType.PERSIST)
+            cascade = CascadeType.REFRESH)
     @JoinColumn(name = "TYPE_ID")
     private GlossaryType type;
 
     @Lob
     private byte[] attachment;
-
-    private String options;
 
     @ToString.Exclude
     @OneToOne(targetEntity = Glossary.class, fetch = FetchType.LAZY)

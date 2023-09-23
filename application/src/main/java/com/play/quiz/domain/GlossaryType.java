@@ -24,10 +24,7 @@ public class GlossaryType {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "glossary_type_generator")
     @SequenceGenerator(name = "glossary_type_generator", sequenceName = "glossary_type_seq", allocationSize = 1)
     private Long id;
-
     private String name;
-
     private String options;
-
     private Boolean isActive;
 }

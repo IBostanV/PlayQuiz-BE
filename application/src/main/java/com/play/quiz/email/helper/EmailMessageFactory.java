@@ -1,16 +1,16 @@
 package com.play.quiz.email.helper;
 
-import com.play.quiz.domain.Account;
-import com.play.quiz.domain.VerificationToken;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_AUTH;
 
 import java.util.Map;
 
-import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_AUTH;
+import com.play.quiz.domain.Account;
+import com.play.quiz.domain.VerificationToken;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-@Slf4j
+@Log4j2
 @Component
 public class EmailMessageFactory {
     @Value("${application.server.host.url}")
@@ -18,9 +18,9 @@ public class EmailMessageFactory {
     @Value("${application.email.sending-address}")
     private String defaultSenderEmailAddress;
 
-    private static final String ACTIVATE_ACCOUNT_PATH = REQUEST_MAPPING_AUTH + "/activate-account";
     private static final String ACCOUNT_ACTIVATION_SUBJECT = "Activate your account";
     private static final String ACCOUNT_ACTIVATION_EMAIL_TEMPLATE = "confirmation-email.html";
+    private static final String ACTIVATE_ACCOUNT_PATH = REQUEST_MAPPING_AUTH + "/activate-account";
 
     public EmailMessage createAccountVerificationEmailMessage(final Account account, final VerificationToken verificationToken) {
         Map<String, Object> properties = Map.of(

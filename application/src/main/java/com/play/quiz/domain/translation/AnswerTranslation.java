@@ -1,5 +1,7 @@
 package com.play.quiz.domain.translation;
 
+import java.util.Objects;
+
 import com.play.quiz.domain.Answer;
 import com.play.quiz.domain.Language;
 import jakarta.persistence.Entity;
@@ -14,10 +16,10 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.proxy.HibernateProxy;
 
 @Entity
 @Table(name = "Q_ANSWER_TRANSLATIONS")
@@ -26,7 +28,6 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 public class AnswerTranslation {
 
     @Id
@@ -44,5 +45,26 @@ public class AnswerTranslation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ANS_ID")
+    @ToString.Exclude
     private Answer answer;
+
+    public void setAnswer(Answer answer) {
+        this.answer = answer;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        AnswerTranslation that = (AnswerTranslation) o;
+        return getTranslId() != null && Objects.equals(getTranslId(), that.getTranslId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }

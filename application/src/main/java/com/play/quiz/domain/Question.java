@@ -76,9 +76,7 @@ public class Question {
     @OneToOne(targetEntity = Account.class)
     @JoinColumn(name = "UPDATE_ACCOUNT_ID")
     private Account updatedAccount;
-
     private String topic;
-
     private int priority;
 
     @Convert(converter = AttributeListConverter.class)
@@ -107,11 +105,11 @@ public class Question {
                 this.topic, this.priority, attributes, this.answers, this.translations);
     }
 
-    public void handleTranslationsParent() {
+    public void fillTranslationsParent() {
         this.translations.forEach(translation -> translation.setQuestion(this));
     }
 
-    public void handleAnswersParent() {
+    public void fillAnswersParent() {
         this.answers.forEach(answer -> answer.setQuestion(this));
     }
 
