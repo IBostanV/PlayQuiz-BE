@@ -28,6 +28,8 @@ public abstract class QuestionMapper {
     @Autowired private AuthenticationFacade authenticationFacade;
 
     @Mapping(target = "id", source = "questionId")
+    @Mapping(target = "categoryId", source = "category.catId")
+    @Mapping(target = "categoryName", source = "category.name")
     public abstract QuestionDto mapToDto(final Question question);
 
     public List<QuestionDto> mapToDtoList(final List<Question> questionList) {
@@ -43,10 +45,15 @@ public abstract class QuestionMapper {
     public abstract List<QuestionDto> mapDtoNoAnswerList(final List<Question> questionList);
 
     @Mapping(target = "questionId", source = "id")
+    @Mapping(target = "category.catId", source = "categoryId")
+    @Mapping(target = "category.name", source = "categoryName")
     @Mapping(target = "account", expression = "java(getAccount())")
     @Mapping(target = "createdDate", expression = "java(LocalDateTime.now())")
     @Mapping(target = "type", expression = "java(getQuestionType(questionDto.getContent()))")
     public abstract Question mapToEntity(final QuestionDto questionDto);
+
+    @Mapping(target = "glossary.termId", source = "termId")
+    protected abstract Answer answerDtoToAnswer(AnswerDto answerDto);
 
     @Named("withoutAnswers")
     @Mapping(target = "id", source = "questionId")
@@ -66,10 +73,7 @@ public abstract class QuestionMapper {
     }
 
     protected QuestionType getQuestionType(String content) {
-        if (content.contains("%s")) {
-            return QuestionType.TEMPLATE;
-        }
-        return QuestionType.CREATED;
+        return content.contains("%s") ? QuestionType.TEMPLATE : QuestionType.CREATED;
     }
 
     public abstract List<Question> mapToEntityList(final List<QuestionDto> quizQuestions);

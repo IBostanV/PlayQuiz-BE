@@ -25,6 +25,7 @@ import org.springframework.util.Assert;
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
+
     @Value("${application.security.jwt.secret}")
     private String jwtSecret;
 
@@ -73,11 +74,11 @@ public class JwtProvider {
     }
 
     private static JWTClaimsSet getJwtClaimsSet(final User principal) {
-        Date expirationTime = new Date(new Date().getTime() + 3600 * 1000);
+        Date expirationTimeOneHour = new Date(new Date().getTime() + 3600 * 1000);
         return new JWTClaimsSet.Builder()
                 .issuer("play-quiz")
-                .expirationTime(expirationTime)
                 .subject(principal.getUsername())
+                .expirationTime(expirationTimeOneHour)
                 .build();
     }
 }

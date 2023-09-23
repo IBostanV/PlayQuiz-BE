@@ -28,9 +28,7 @@ public class Property {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prop_generator")
     @SequenceGenerator(name = "prop_generator", sequenceName = "prop_sequence", allocationSize = 1)
     private Long propertyId;
-
     private String name;
-
     private String value;
 
     @Column(name = "OLD_VALUE")

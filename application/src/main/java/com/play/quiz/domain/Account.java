@@ -35,13 +35,9 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
     @SequenceGenerator(name = "user_generator", sequenceName = "users_seq", allocationSize = 1)
     private Long accountId;
-
     private String name;
-
     private String email;
-
     private char[] password;
-
     private LocalDate birthday;
 
     @Column(name = "IS_ENABLED")

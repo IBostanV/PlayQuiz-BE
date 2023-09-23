@@ -28,13 +28,11 @@ public class Trophy {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trophy_generator")
     @SequenceGenerator(name = "trophy_generator", sequenceName = "trophies_seq", allocationSize = 1)
     private Long trophyId;
-
     private String name;
+    private String options;
 
     @Lob
     private byte[] attachment;
-
-    private String options;
 
     @Override
     public boolean equals(Object o) {

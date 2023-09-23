@@ -31,6 +31,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
     @Value("${application.security.jwt.token.prefix:Bearer}")
     private String jwtTokenPrefix;
 

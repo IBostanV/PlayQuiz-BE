@@ -30,10 +30,7 @@ public abstract class AccountMapper {
 
     @Named("handlePassword")
     protected char[] handlePassword(final char[] password) {
-        if (Objects.isNull(password)) {
-            return null;
-        }
-        return passwordEncoder.encode(new String(password)).toCharArray();
+        return Objects.nonNull(password) ? passwordEncoder.encode(new String(password)).toCharArray() : null;
     }
 
     @Named("mappingFields")

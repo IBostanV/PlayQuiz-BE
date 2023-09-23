@@ -10,7 +10,6 @@ import org.springframework.util.Assert;
 @EqualsAndHashCode
 public final class FieldMessagePair<S, T> {
         private final S field;
-
         private final T message;
 
         private FieldMessagePair(S field, T message) {

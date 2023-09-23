@@ -5,14 +5,12 @@ import static com.play.quiz.util.Constant.SAVE_OPERATION_SUCCESSFULLY;
 import java.util.List;
 import java.util.Objects;
 
-import com.play.quiz.domain.Category;
 import com.play.quiz.domain.Glossary;
 import com.play.quiz.domain.GlossaryType;
 import com.play.quiz.dto.GlossaryDto;
 import com.play.quiz.exception.EntityNotUpdatedException;
 import com.play.quiz.exception.RecordNotFoundException;
 import com.play.quiz.mapper.GlossaryMapper;
-import com.play.quiz.repository.CategoryRepository;
 import com.play.quiz.repository.GlossaryRepository;
 import com.play.quiz.repository.GlossaryTypeRepository;
 import com.play.quiz.service.GlossaryService;
@@ -28,17 +26,17 @@ public class GlossaryServiceImpl implements GlossaryService {
 
     private final GlossaryMapper glossaryMapper;
     private final GlossaryRepository glossaryRepository;
-    private final CategoryRepository categoryRepository;
     private final GlossaryTypeRepository glossaryTypeRepository;
 
     @Transactional
     public GlossaryDto save(final GlossaryDto glossaryDto, final MultipartFile attachment) {
         Glossary glossary = glossaryMapper.toEntity(glossaryDto, attachment);
-        Glossary entity = glossaryRepository.save(glossary);
 
         if (Objects.nonNull(attachment) || Objects.isNull(glossaryDto.getTermId())) {
+            Glossary entity = glossaryRepository.save(glossary);
             return glossaryMapper.toDto(entity);
         }
+
         return saveWithoutAttachment(glossary);
     }
 
@@ -49,9 +47,7 @@ public class GlossaryServiceImpl implements GlossaryService {
             throw new EntityNotUpdatedException("Exception during glossary saving");
         }
 
-        Category category = categoryRepository.getReferenceById(glossary.getCategory().getCatId());
-        Glossary entity = glossary.toBuilder().category(category).build();
-        return glossaryMapper.toDto(entity, null);
+        return glossaryMapper.toDto(glossaryRepository.getReferenceById(glossary.getTermId()));
     }
 
     @Override
