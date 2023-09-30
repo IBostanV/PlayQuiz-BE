@@ -79,7 +79,7 @@ public class ExceptionHandlingController {
     private static List<String> getViolatedFields(List<FieldError> fieldErrors) {
         return fieldErrors.stream()
                 .filter(fieldError -> Objects.nonNull(fieldError.getDefaultMessage()))
-                .map(fieldError -> "Field " + fieldError.getField() + " " + fieldError.getDefaultMessage())
+                .map(fieldError -> fieldError.getField() + " " + fieldError.getDefaultMessage())
                 .collect(Collectors.toList());
     }
 }
