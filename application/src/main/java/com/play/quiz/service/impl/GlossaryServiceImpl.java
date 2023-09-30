@@ -67,7 +67,7 @@ public class GlossaryServiceImpl implements GlossaryService {
     @Override
     @Transactional
     public List<GlossaryDto> getByCategoryId(final Long categoryId) {
-        List<Glossary> glossaryList = glossaryRepository.findByCategory_catId(categoryId)
+        List<Glossary> glossaryList = glossaryRepository.findHierarchicalByCategoryId(categoryId)
                 .orElseThrow(() -> new RecordNotFoundException("No glossary found by category id: " + categoryId));
         return glossaryMapper.toDto(glossaryList);
     }

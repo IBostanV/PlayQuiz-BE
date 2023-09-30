@@ -33,5 +33,12 @@ public interface GlossaryRepository extends JpaRepository<Glossary, Long> {
 
     List<Glossary> findAllByCategory(final Category category);
 
-    Optional<List<Glossary>> findByCategory_catId(final Long categoryId);
+    @Query(value = "SELECT qg.*" +
+            " FROM q_glossary qg" +
+            " WHERE cat_id IN (SELECT cat_id " +
+            "                  FROM q_category " +
+            "                  START WITH cat_id = :categoryId" +
+            "                  CONNECT BY PRIOR cat_id = subcategory_id)",
+            nativeQuery = true)
+    Optional<List<Glossary>> findHierarchicalByCategoryId(final Long categoryId);
 }
