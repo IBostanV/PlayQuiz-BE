@@ -9,4 +9,6 @@ public interface QuizService {
     QuizDto getById(final Long quizId);
 
     QuizDto getExpressQuiz();
+
+    QuizDto getQuizByCategory(Long catId);
 }

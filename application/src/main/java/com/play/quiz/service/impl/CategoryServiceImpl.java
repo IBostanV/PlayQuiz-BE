@@ -2,10 +2,10 @@ package com.play.quiz.service.impl;
 
 import java.util.List;
 
+import com.play.quiz.domain.Category;
 import com.play.quiz.dto.CategoryDto;
 import com.play.quiz.exception.RecordNotFoundException;
 import com.play.quiz.mapper.CategoryMapper;
-import com.play.quiz.domain.Category;
 import com.play.quiz.repository.CategoryRepository;
 import com.play.quiz.service.CategoryService;
 import lombok.NonNull;
@@ -41,7 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDto> getCategories() {
         Sort sort = Sort.by(Sort.Direction.ASC, CAT_ID);
-        List<Category> categories = categoryRepository.findAll(sort);
+        List<Category> categories = categoryRepository.findAllActive(sort);
         return categoryMapper.toDtoList(categories);
     }
 

@@ -1,6 +1,7 @@
 package com.play.quiz.service.impl;
 
 import static com.play.quiz.util.Constant.DEFAULT_EXPRESS_QUESTIONS_COUNT;
+import static com.play.quiz.util.Constant.DEFAULT_QUIZ_QUESTIONS_COUNT;
 import static com.play.quiz.util.Constant.EXPRESS;
 import static com.play.quiz.util.Constant.EXPRESS_QUIZ_DEFAULT_TIME_SECONDS;
 
@@ -93,20 +94,31 @@ public class QuizServiceImpl implements QuizService {
     @Transactional
     public QuizDto getExpressQuiz() {
         Property questionsCount = propertyRepository.findByName(DEFAULT_EXPRESS_QUESTIONS_COUNT);
+        int quizTime = propertyRepository.findByName(EXPRESS_QUIZ_DEFAULT_TIME_SECONDS).getIntValue();
         CategoryDto category = categoryService.getByNaturalId(EXPRESS);
         List<Question> questions = questionService.getGeneralKnowledgeQuestions(questionsCount.getIntValue());
 
-        return createQuiz(questionsCount.getIntValue(), category, questions);
+        return createQuiz(quizTime, questionsCount.getIntValue(), category, questions);
     }
 
-    private QuizDto createQuiz(int questionCount, final CategoryDto category, final List<Question> questionList) {
-        Property quizTime = propertyRepository.findByName(EXPRESS_QUIZ_DEFAULT_TIME_SECONDS);
+    @Override
+    public QuizDto getQuizByCategory(Long catId) {
+        int questionsCount = propertyRepository.findByName(DEFAULT_QUIZ_QUESTIONS_COUNT).getIntValue();
+        List<Question> questionList = questionService.getByCategoryId(catId, questionsCount);
+        CategoryDto categoryDto = categoryService.getById(catId);
 
+        return createQuiz(0, questionsCount, categoryDto, questionList);
+    }
+
+    private QuizDto createQuiz(int quizTime,
+                               int questionCount,
+                               final CategoryDto category,
+                               final List<Question> questionList) {
         return QuizDto.builder()
                 .category(category)
+                .quizTime(quizTime)
                 .questionsCount(questionCount)
                 .createdDate(LocalDateTime.now())
-                .quizTime(quizTime.getIntValue())
                 .questionIds(getQuestionIds(questionList))
                 .build();
     }

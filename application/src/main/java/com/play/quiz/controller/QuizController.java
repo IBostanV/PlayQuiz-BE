@@ -34,4 +34,9 @@ public class QuizController {
     public ResponseEntity<QuizDto> getExpressQuiz() {
         return ResponseEntity.ok(quizService.getExpressQuiz());
     }
+
+    @GetMapping(value = "/categorized/{catId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<QuizDto> getExpressQuiz(@PathVariable Long catId) {
+        return ResponseEntity.ok(quizService.getQuizByCategory(catId));
+    }
 }
