@@ -122,6 +122,12 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public List<Question> getByCategoryId(Long catId, int questionCount) {
+        Pageable pageable = PageRequest.of(0, questionCount);
+        return questionRepository.getByCategory_catId(catId, pageable);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public QuestionDto getQuestionWithOptions(final Long questionId) {
         Question question = questionRepository.getReferenceById(questionId);

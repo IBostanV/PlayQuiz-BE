@@ -29,4 +29,6 @@ public interface QuestionService {
     List<AnswerDto> getAnswers(final Long questionId);
 
     QuestionDto getQuestionWithOptions(final Long questionId);
+
+    List<Question> getByCategoryId(Long catId, int questionCount);
 }

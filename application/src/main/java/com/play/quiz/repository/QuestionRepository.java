@@ -6,6 +6,7 @@ import java.util.Set;
 import com.play.quiz.domain.Category;
 import com.play.quiz.domain.Question;
 import com.play.quiz.enums.QuestionType;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     void deactivate(final Long questionId);
 
     List<Question> findAllByQuestionIdIn(final Set<Long> idList);
+
+    List<Question> getByCategory_catId(Long catId, Pageable pageable);
 }
