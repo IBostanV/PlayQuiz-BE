@@ -2,7 +2,9 @@ package com.play.quiz.dto;
 
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.play.quiz.domain.Category;
+import com.play.quiz.domain.Language;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -28,7 +32,15 @@ import lombok.ToString;
 public class AccountDto {
     private Long id;
     private String name;
+    private String theme;
+    private byte[] avatar;
+    private String surname;
+    private String username;
     private boolean isEnabled;
+    private Integer experience;
+    private Language language;
+
+    private Set<Category> favoriteCategories = new HashSet<>();
 
     @NotBlank
     @Email(regexp = ".+@.+\\..+", message="Please provide a valid email address")

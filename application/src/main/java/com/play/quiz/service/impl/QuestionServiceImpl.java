@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.play.quiz.domain.Answer;
 import com.play.quiz.domain.Category;
@@ -149,7 +148,7 @@ public class QuestionServiceImpl implements QuestionService {
     private List<Answer> fillAnswerOptions(final List<Answer> answers, final Category category, int optionsCount) {
         int optionsAmount = optionsCount - answers.size();
         GlossaryType answerGlossaryType = getGlossaryTypeFor(answers);
-        List<Long> answerIdList = answers.stream().map(Answer::getAnsId).collect(Collectors.toList());
+        List<Long> answerIdList = answers.stream().map(Answer::getAnsId).toList();
 
         if (Objects.nonNull(answerGlossaryType)) {
             return answerService.getWrongOptionsByGlossaryTypeWithLimit(answerGlossaryType, answerIdList, optionsAmount);

@@ -70,7 +70,7 @@ class AuthenticationControllerTest {
 
     @Test
     void given_valid_credentials_when_login_then_successful() throws Exception {
-        String body = "{\"id\":1,\"email\":\"vanyok93@yahoo.com\",\"roles\":[],\"enabled\":false}";
+        String body = "{\"id\":1,\"email\":\"vanyok93@yahoo.com\",\"roles\":[],\"enabled\":true}";
         String content = "{\"email\":\"vanyok93@yahoo.com\",\"password\":\"password\"}";
 
         Map<String, Object> anyMap = ArgumentMatchers.any();

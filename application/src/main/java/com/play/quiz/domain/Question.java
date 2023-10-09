@@ -15,6 +15,7 @@ import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -45,8 +46,9 @@ public class Question {
     @SequenceGenerator(name = "qstn_generator", sequenceName = "questions_seq", allocationSize = 1)
     private Long questionId;
 
-    @OneToOne(targetEntity = Account.class)
+    @OneToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_ID")
+    @ToString.Exclude
     private Account account;
 
     @Enumerated(EnumType.STRING)
@@ -73,8 +75,9 @@ public class Question {
     @Column(name = "UPDATED_DATE")
     private LocalDateTime updatedDate;
 
-    @OneToOne(targetEntity = Account.class)
+    @OneToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "UPDATE_ACCOUNT_ID")
+    @ToString.Exclude
     private Account updatedAccount;
     private String topic;
     private int priority;
@@ -94,6 +97,14 @@ public class Question {
             orphanRemoval = true)
     @ToString.Exclude
     private List<QuestionTranslation> translations;
+
+    public void setUpdatedAccount(Account updatedAccount) {
+        this.updatedAccount = updatedAccount;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 
     public Question copy(final QuestionType questionType, String content) {
         return copy(questionType, content, Collections.emptyList());

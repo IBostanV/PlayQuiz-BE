@@ -2,6 +2,7 @@ package com.play.quiz.dto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.play.quiz.dto.translation.QuestionTranslationDto;
@@ -42,4 +43,8 @@ public class QuestionDto {
     private List<QuestionAttribute> attributes = new ArrayList<>();
     @Builder.Default
     private List<QuestionTranslationDto> translations = new ArrayList<>();
+
+    public void setAttributes(List<QuestionAttribute> attributes) {
+        this.attributes = (!attributes.isEmpty()) ? attributes : Collections.singletonList(QuestionAttribute.NONE);
+    }
 }

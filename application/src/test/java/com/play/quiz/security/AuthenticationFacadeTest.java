@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.util.Set;
 
 import com.play.quiz.enums.UserRole;
-import com.play.quiz.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,13 +20,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 class AuthenticationFacadeTest {
-    @Mock
-    private UserService userService;
+
     private AuthenticationFacade authenticationFacade;
 
     @BeforeEach
     void init() {
-        authenticationFacade = new AuthenticationFacadeImpl(userService);
+        authenticationFacade = new AuthenticationFacadeImpl();
     }
 
     @Test

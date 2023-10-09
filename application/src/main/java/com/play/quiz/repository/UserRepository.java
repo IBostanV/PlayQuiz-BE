@@ -1,9 +1,9 @@
 package com.play.quiz.repository;
 
-import com.play.quiz.domain.Account;
-
 import java.util.List;
 import java.util.Optional;
+
+import com.play.quiz.domain.Account;
 
 public interface UserRepository {
 
@@ -14,4 +14,6 @@ public interface UserRepository {
     List<Account> findAll();
 
     void enableAccount(final Long accountId);
+
+    int updateUserPassword(String userEmail, char[] password);
 }

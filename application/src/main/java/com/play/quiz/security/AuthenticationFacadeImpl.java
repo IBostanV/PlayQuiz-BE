@@ -1,7 +1,5 @@
 package com.play.quiz.security;
 
-import com.play.quiz.domain.Account;
-import com.play.quiz.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,8 +10,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AuthenticationFacadeImpl implements AuthenticationFacade {
 
-    private final UserService userService;
-
     @Override
     public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
@@ -23,10 +19,5 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
     public User getPrincipal() {
         Authentication authentication = getAuthentication();
         return (User)authentication.getPrincipal();
-    }
-
-    @Override
-    public Account getAccount() {
-        return userService.findByEmail(getPrincipal().getUsername());
     }
 }

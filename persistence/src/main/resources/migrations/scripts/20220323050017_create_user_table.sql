@@ -1,7 +1,14 @@
 -- // create_user_table
 CREATE TABLE Q_USER (
                       ACCOUNT_ID NUMERIC(20,0) NOT NULL,
+                      USERNAME VARCHAR(200) DEFAULT '',
                       NAME VARCHAR(100) DEFAULT '',
+                      SURNAME VARCHAR(100) DEFAULT '',
+                      AVATAR BLOB,
+                      TROPHY_ID NUMERIC(20, 0),
+                      EXPERIENCE NUMERIC(20, 0),
+                      LANG_ID NUMERIC(1, 0),
+                      THEME VARCHAR(20),
                       EMAIL VARCHAR(100) NOT NULL,
                       PASSWORD VARCHAR(100) NOT NULL,
                       BIRTHDAY DATE,
@@ -17,6 +24,3 @@ ALTER TABLE Q_USER
 -- //@UNDO
 DROP TABLE Q_USER
 /execute/
-
-
-
