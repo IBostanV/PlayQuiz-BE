@@ -18,8 +18,8 @@ import org.hibernate.proxy.HibernateProxy;
 @Entity
 @Table(name = "Q_LANGUAGE")
 @Getter
-@Builder
 @ToString
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Language {

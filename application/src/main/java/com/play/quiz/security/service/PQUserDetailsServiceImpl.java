@@ -2,7 +2,6 @@ package com.play.quiz.security.service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.play.quiz.domain.Account;
 import com.play.quiz.domain.Role;
@@ -53,7 +52,7 @@ public class PQUserDetailsServiceImpl implements PQUserDetailsService {
                 .map(Role::getName)
                 .map(Enum::name)
                 .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

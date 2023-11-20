@@ -45,6 +45,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .name(UserRole.ROLE_USER)
                 .roleId(UserRole.ROLE_USER.getRoleId())
                 .build();
+
         return accountDto.toBuilder()
                 .roles(Collections.singletonList(roleDto))
                 .build();

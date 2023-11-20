@@ -19,7 +19,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 @Entity
-@Table(name = "Q_USER_ROLE")
+@Table(name = "Q_ROLE")
 @Getter
 @Builder
 @ToString

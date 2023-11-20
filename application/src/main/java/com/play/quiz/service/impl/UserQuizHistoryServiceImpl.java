@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -28,6 +27,7 @@ import com.play.quiz.security.AuthenticationFacade;
 import com.play.quiz.service.GlossaryService;
 import com.play.quiz.service.QuestionService;
 import com.play.quiz.service.UserQuizHistoryService;
+import com.play.quiz.service.UserService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserQuizHistoryServiceImpl implements UserQuizHistoryService {
 
+    private final UserService userService;
     private final QuestionService questionService;
     private final GlossaryService glossaryService;
     private final UserQuizHistoryMapper userQuizHistoryMapper;
@@ -52,9 +53,11 @@ public class UserQuizHistoryServiceImpl implements UserQuizHistoryService {
     }
 
     private UserQuizHistory saveUserHistory(final UserQuizHistory userQuizHistory) {
+        String username = authenticationFacade.getPrincipal().getUsername();
+
         return userQuizHistoryRepository.save(userQuizHistory.toBuilder()
                 .completedDate(LocalDateTime.now())
-                .account(authenticationFacade.getAccount())
+                .account(userService.findByEmail(username))
                 .build());
     }
 
@@ -99,7 +102,7 @@ public class UserQuizHistoryServiceImpl implements UserQuizHistoryService {
             if (questionIds.contains(question.getId().toString())) {
                 log.info("User answered the question: " + question.getId());
                 return userAnswer.getAsJsonObject().entrySet()
-                        .stream().map(createAnswer).collect(Collectors.toList());
+                        .stream().map(createAnswer).toList();
             }
         }
 

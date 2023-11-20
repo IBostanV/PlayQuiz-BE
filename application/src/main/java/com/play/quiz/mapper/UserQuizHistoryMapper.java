@@ -1,7 +1,6 @@
 package com.play.quiz.mapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.play.quiz.domain.Answer;
 import com.play.quiz.domain.Question;
@@ -31,7 +30,7 @@ public interface UserQuizHistoryMapper {
     default List<AnswerDto> answersToAnswersDto(final List<Answer> answerList) {
         return answerList.stream()
                 .map(this::answerToAnswerDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     default QuestionDto questionToQuestionDto(final Question question) {

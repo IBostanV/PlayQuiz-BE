@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="saveUserSql" class="java.lang.String">
+    <bean id="saveSql" class="java.lang.String">
         <constructor-arg>
             <value>
                 MERGE INTO Q_USER
@@ -11,8 +11,34 @@
                 WHEN MATCHED THEN
                 UPDATE SET NAME = :name,
                 EMAIL = :email,
-                PASSWORD = :password,
-                IS_ENABLED = :isEnabled
+                IS_ENABLED = :isEnabled,
+                SURNAME = :surname,
+                USERNAME = :username,
+                LANG_ID = :language,
+                BIRTHDAY = :birthday,
+                THEME = :theme,
+                AVATAR = :avatar
+                WHEN NOT MATCHED THEN
+                INSERT (ACCOUNT_ID, NAME, EMAIL, PASSWORD, BIRTHDAY, IS_ENABLED)
+                VALUES (:accountId, :name, :email, :password, :birthday, :isEnabled)
+            </value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="saveNoAvatarSql" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                MERGE INTO Q_USER
+                USING DUAL ON (ACCOUNT_ID = :accountId)
+                WHEN MATCHED THEN
+                UPDATE SET NAME = :name,
+                EMAIL = :email,
+                IS_ENABLED = :isEnabled,
+                SURNAME = :surname,
+                USERNAME = :username,
+                LANG_ID = :language,
+                BIRTHDAY = :birthday,
+                THEME = :theme
                 WHEN NOT MATCHED THEN
                 INSERT (ACCOUNT_ID, NAME, EMAIL, PASSWORD, BIRTHDAY, IS_ENABLED)
                 VALUES (:accountId, :name, :email, :password, :birthday, :isEnabled)
@@ -30,6 +56,16 @@
         </constructor-arg>
     </bean>
 
+    <bean id="updateUserPasswordSql" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+                     UPDATE Q_USER SET password = :password WHERE email = :email
+                ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
     <bean id="userSequenceNextVal" class="java.lang.String">
         <constructor-arg>
             <value>
@@ -40,7 +76,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="findUserByEmailSql" class="java.lang.String">
+    <bean id="findByEmailSql" class="java.lang.String">
         <constructor-arg>
             <value>
                 <![CDATA[
@@ -51,7 +87,15 @@
                         ,u.is_enabled
                         ,u.birthday
                         ,u.name
+                        ,u.surname
+                        ,u.theme
+                        ,u.username
+                        ,u.avatar
+                        ,l.lang_id
+                        ,l.name as lang_name
+                        ,l.lang_code
                      FROM Q_USER u
+                     LEFT JOIN Q_LANGUAGE l ON l.lang_id = u.lang_id
                      WHERE u.email = :email
                 ]]>
             </value>
@@ -65,7 +109,7 @@
                      SELECT
                          r.role_id
                         ,r.name
-                     FROM Q_USER_ROLE r
+                     FROM Q_ROLE r
                      LEFT JOIN Q_USER_ROLES ur ON r.role_id = ur.role_id
                      WHERE ur.account_id = :accountId
                 ]]>
@@ -73,7 +117,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="findAllUsersSql" class="java.lang.String">
+    <bean id="findAllSql" class="java.lang.String">
         <constructor-arg>
             <value>
                 <![CDATA[
@@ -88,7 +132,7 @@
                         ,r.name as ROLE_NAME
                      FROM Q_USER u
                      LEFT JOIN Q_USER_ROLES ur ON u.account_id = ur.account_id
-                     LEFT JOIN Q_USER_ROLE r ON ur.role_id = r.role_id
+                     LEFT JOIN Q_ROLE r ON ur.role_id = r.role_id
                 ]]>
             </value>
         </constructor-arg>

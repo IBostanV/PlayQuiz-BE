@@ -1,22 +1,21 @@
 package com.play.quiz.engine;
 
-import com.play.quiz.enums.QuestionType;
+import static com.play.quiz.enums.QuestionAttribute.ANSWER_BY_KEY;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
 import com.play.quiz.domain.Answer;
 import com.play.quiz.domain.Glossary;
 import com.play.quiz.domain.Question;
+import com.play.quiz.enums.QuestionType;
 import com.play.quiz.repository.GlossaryRepository;
 import com.play.quiz.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import static com.play.quiz.enums.QuestionAttribute.ANSWER_BY_KEY;
 
 @Slf4j
 @Component
@@ -34,7 +33,7 @@ public class QuestionGenerationEngine {
 
         return templateQuestionList.stream()
                 .map(templateQuestion -> createQuestion(templateQuestion, glossary))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional
@@ -43,7 +42,7 @@ public class QuestionGenerationEngine {
         List<Glossary> categoryGlossaries = glossaryRepository.findAllByCategory(template.getCategory());
         return categoryGlossaries.stream().distinct()
                 .map(glossary -> createQuestion(template, glossary))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private Question createQuestion(final Question templateQuestion, final Glossary glossary) {

@@ -1,14 +1,13 @@
 package com.play.quiz.converter;
 
-import com.play.quiz.enums.QuestionAttribute;
-import jakarta.persistence.AttributeConverter;
-import jakarta.persistence.Converter;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+
+import com.play.quiz.enums.QuestionAttribute;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 @Converter
 public class AttributeListConverter implements AttributeConverter<List<QuestionAttribute>, String> {
@@ -18,7 +17,7 @@ public class AttributeListConverter implements AttributeConverter<List<QuestionA
     public String convertToDatabaseColumn(final List<QuestionAttribute> attributes) {
         List<String> attributesStringList = attributes.stream()
                 .map(Enum::name)
-                .collect(Collectors.toList());
+                .toList();
         return String.join(SPLIT_CHAR, attributesStringList);
     }
 
@@ -31,6 +30,6 @@ public class AttributeListConverter implements AttributeConverter<List<QuestionA
         List<String> stringList = Arrays.asList(attributesColumn.split(SPLIT_CHAR));
         return stringList.stream()
                 .map(QuestionAttribute::valueOf)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
