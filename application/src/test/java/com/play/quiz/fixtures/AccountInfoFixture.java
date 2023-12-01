@@ -7,7 +7,7 @@ import com.play.quiz.domain.helpers.AccountInfo;
 public class AccountInfoFixture {
     public static AccountInfo getAccountInfo() {
         return defaultBuilder()
-                .account(AccountDtoFixture.getAccountDto())
+                .account(AccountDtoFixture.getEnabledAccountDto())
                 .build();
     }
 

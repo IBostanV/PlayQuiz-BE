@@ -26,7 +26,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 @Entity
-@Table(name = "Q_QUESTIONZES")
+@Table(name = "Q_QUIZ")
 @Getter
 @Builder(toBuilder = true)
 @ToString
@@ -35,7 +35,7 @@ import org.hibernate.Hibernate;
 public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "quiz_generator")
-    @SequenceGenerator(name = "quiz_generator", sequenceName = "quizzes_seq", allocationSize = 1)
+    @SequenceGenerator(name = "quiz_generator", sequenceName = "quiz_seq", allocationSize = 1)
     private Long quizId;
 
     @OneToOne(targetEntity = Category.class)

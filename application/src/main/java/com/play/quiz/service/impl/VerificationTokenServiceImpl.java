@@ -1,5 +1,9 @@
 package com.play.quiz.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
+
 import com.play.quiz.domain.Account;
 import com.play.quiz.domain.VerificationToken;
 import com.play.quiz.repository.VerificationTokenRepository;
@@ -8,13 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class VerificationTokenServiceImpl implements VerificationTokenService {
+
     @Value("${application.email.token.validity.period}")
     private Integer verificationTokenValidityPeriod;
 

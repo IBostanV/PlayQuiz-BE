@@ -8,6 +8,7 @@ import com.play.quiz.domain.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import org.springframework.util.Assert;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
@@ -26,6 +27,7 @@ public interface CategoryMapper {
 
     @Named("upperCase")
     default String upperCase(String naturalId) {
+        Assert.notNull(naturalId, "Natural id of category cannot be null");
         return naturalId.toUpperCase().replace(" ", "_");
     }
 

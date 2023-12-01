@@ -51,8 +51,7 @@ public class Answer {
     private Glossary glossary;
 
     @OneToMany(mappedBy = "answer",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            orphanRemoval = true)
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @ToString.Exclude
     private List<AnswerTranslation> answerTranslations;
 

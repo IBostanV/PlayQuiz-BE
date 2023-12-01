@@ -21,6 +21,7 @@ public interface GlossaryMapper {
     @Mapping(target = "parentValue", source = "parent.value")
     @Mapping(target = "categoryId", source = "category.catId")
     @Mapping(target = "categoryName", source = "category.name")
+    @Mapping(target = "glossaryTranslations", ignore = true)
     GlossaryDto toDto(final Glossary glossary);
 
     @Mapping(source = "isActive", target = "isActive")
