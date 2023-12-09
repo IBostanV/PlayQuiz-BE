@@ -3,6 +3,7 @@ package com.play.quiz.fixtures;
 import java.util.Arrays;
 import java.util.List;
 
+import com.play.quiz.dto.CategoryDto;
 import com.play.quiz.dto.GlossaryDto;
 import com.play.quiz.domain.Glossary;
 
@@ -36,6 +37,16 @@ public class GlossaryFixture {
                 .value("Power")
                 .categoryId(CategoryFixture.getCategoryDto().getCatId())
                 .categoryName(CategoryFixture.getCategoryDto().getName())
+                .build();
+    }
+
+    public static GlossaryDto getActiveGlossaryNoIdWithCategoryDto(CategoryDto categoryDto) {
+        return GlossaryDto.builder()
+                .key("Australia")
+                .value("Canberra")
+                .isActive(true)
+                .categoryId(categoryDto.getCatId())
+                .categoryName(categoryDto.getName())
                 .build();
     }
 }

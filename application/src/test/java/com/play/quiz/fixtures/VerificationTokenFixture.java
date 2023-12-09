@@ -1,14 +1,16 @@
 package com.play.quiz.fixtures;
 
-import com.play.quiz.domain.VerificationToken;
+import java.time.LocalDateTime;
 
-import java.util.UUID;
+import com.play.quiz.domain.Account;
+import com.play.quiz.domain.VerificationToken;
 
 public class VerificationTokenFixture {
     public static VerificationToken getVerificationToken() {
         return VerificationToken.builder()
-                .token(UUID.randomUUID().toString())
-                .account(AccountFixture.getAdminAccount())
+                .token("verification_token")
+                .issuedDate(LocalDateTime.of(2023, 12, 31, 10, 0))
+                .account(Account.builder().accountId(2L).build())
                 .build();
     }
 }

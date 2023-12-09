@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RestEndpoint {
+
     public static final String CONTEXT_PATH = "/api";
 
     public static final String WS_BROKER_SOLO = "/solo";

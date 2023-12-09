@@ -1,5 +1,5 @@
--- // create_quizzes_sequence
-CREATE SEQUENCE quizzes_seq
+-- // create_quiz_sequence
+CREATE SEQUENCE quiz_seq
     START WITH     1
     INCREMENT BY   1
     NOCACHE
@@ -8,7 +8,7 @@ CREATE SEQUENCE quizzes_seq
 
 
 -- //@UNDO
-DROP SEQUENCE quizzes_seq
+DROP SEQUENCE quiz_seq
 /execute/
 
 

@@ -60,7 +60,7 @@ public class GlossaryServiceImpl implements GlossaryService {
     @Override
     public GlossaryDto getByKey(String glossaryKey) {
         Glossary glossary = glossaryRepository.findByKey(glossaryKey)
-                .orElseThrow(() -> new RecordNotFoundException("No records found by category id: " + glossaryKey));
+                .orElseThrow(() -> new RecordNotFoundException("No records found by key: " + glossaryKey));
         return glossaryMapper.toDto(glossary);
     }
 

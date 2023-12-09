@@ -3,9 +3,8 @@ package com.play.quiz.controller;
 import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_AUTH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -13,43 +12,42 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Map;
+import java.util.Collections;
 import java.util.Objects;
 
+import com.play.quiz.ApiWebServer;
 import com.play.quiz.TestAppContextInitializer;
-import com.play.quiz.domain.Account;
-import com.play.quiz.fixtures.AccountFixture;
+import com.play.quiz.exception.DuplicateUserException;
 import com.play.quiz.fixtures.VerificationTokenFixture;
-import com.play.quiz.repository.VerificationTokenRepository;
 import com.play.quiz.security.jwt.JwtProvider;
+import com.play.quiz.service.VerificationTokenService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @ActiveProfiles("test")
-@WebMvcTest(AuthenticationController.class)
-@ComponentScan(basePackages = {"com.play.quiz"})
+@SpringBootTest(classes = ApiWebServer.class)
+@AutoConfigureMockMvc
 @ContextConfiguration(initializers = {TestAppContextInitializer.class})
 @ExtendWith(OutputCaptureExtension.class)
-class AuthenticationControllerTest {
+class AuthenticationControllerIT {
+
     @Value("${application.domain.host.url}")
     private String redirectedURL;
 
@@ -59,25 +57,23 @@ class AuthenticationControllerTest {
     @Autowired
     private JwtProvider jwtProvider;
 
-    @MockBean
-    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private VerificationTokenService verificationTokenService;
 
-    @MockBean
-    private VerificationTokenRepository verificationTokenRepository;
-
-    @MockBean
+    @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    @AfterEach
+    void tearDown() {
+        namedParameterJdbcTemplate.update("DELETE FROM Q_USER WHERE ACCOUNT_ID IS NOT NULL", Collections.emptyMap());
+        namedParameterJdbcTemplate.update("ALTER SEQUENCE USERS_SEQ RESTART", Collections.emptyMap());
+    }
+
     @Test
+    @Sql("/scripts/add_users.sql")
     void given_valid_credentials_when_login_then_successful() throws Exception {
-        String body = "{\"id\":1,\"email\":\"vanyok93@yahoo.com\",\"roles\":[],\"enabled\":true}";
-        String content = "{\"email\":\"vanyok93@yahoo.com\",\"password\":\"password\"}";
-
-        Map<String, Object> anyMap = ArgumentMatchers.any();
-        BeanPropertyRowMapper<Account> rowMapper = any();
-
-        when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper))
-                .thenReturn(AccountFixture.getAdminAccount());
+        String body = "{\"id\":1,\"email\":\"email@gmail.com\",\"roles\":[{\"roleId\":2,\"name\":\"ROLE_USER\"}],\"enabled\":true}";
+        String content = "{\"email\":\"email@gmail.com\",\"password\":\"admin\"}";
 
         mockMvc.perform(post(REQUEST_MAPPING_AUTH + "/login")
                         .with(csrf())
@@ -92,11 +88,6 @@ class AuthenticationControllerTest {
     @Test
     void given_invalid_credentials_when_login_then_validation_exception() throws Exception {
         String content = "{\"email\":\"\",\"password\":\"\"}";
-        Map<String, Object> anyMap = ArgumentMatchers.any();
-        BeanPropertyRowMapper<Account> rowMapper = any();
-
-        when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper))
-                .thenReturn(AccountFixture.getAdminAccount());
 
         mockMvc.perform(post(REQUEST_MAPPING_AUTH + "/login")
                         .with(csrf())
@@ -114,15 +105,10 @@ class AuthenticationControllerTest {
     }
 
     @Test
+    @Sql("/scripts/add_users.sql")
     void given_wrong_password_when_login_then_bad_credentials_exception(final CapturedOutput output) throws Exception {
-        String content = "{\"email\":\"vanyok93@yahoo.com\",\"password\":\"no_password\"}";
+        String content = "{\"email\":\"email@gmail.com\",\"password\":\"no_password\"}";
         String passwordNotMatchMessage = "Failed to authenticate since password does not match stored value";
-
-        Map<String, Object> anyMap = ArgumentMatchers.any();
-        BeanPropertyRowMapper<Account> rowMapper = any();
-
-        when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper))
-                .thenReturn(AccountFixture.getAdminAccount());
 
         mockMvc.perform(post(REQUEST_MAPPING_AUTH + "/login")
                         .with(csrf())
@@ -139,12 +125,6 @@ class AuthenticationControllerTest {
     void given_null_content_when_login_then_bad_credentials_exception(final CapturedOutput output) throws Exception {
         String missingBody = "Required request body is missing";
 
-        Map<String, Object> anyMap = ArgumentMatchers.any();
-        BeanPropertyRowMapper<Account> rowMapper = any();
-
-        when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper))
-                .thenReturn(AccountFixture.getAdminAccount());
-
         mockMvc.perform(post(REQUEST_MAPPING_AUTH + "/login")
                         .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
@@ -158,16 +138,8 @@ class AuthenticationControllerTest {
     @Test
     void given_valid_credentials_when_register_then_user_registered(final CapturedOutput output) throws Exception {
         String username = "vanyok93@yahoo.com";
-        String content = "{\"email\":\"" + username + "\",\"password\":\"password\"}";
+        String content = "{\"email\":\"" + username + "\",\"password\":\"Qwerty123\"}";
         String bodyMessage = "{\"id\":1,\"email\":\"vanyok93@yahoo.com\",\"roles\":[{\"roleId\":2,\"name\":\"ROLE_USER\"}],\"enabled\":false}";
-
-        Map<String, Object> anyMap = ArgumentMatchers.any();
-        BeanPropertyRowMapper<Account> rowMapper = any();
-
-        when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper)).thenReturn(null, AccountFixture.getAdminAccount());
-        when(jdbcTemplate.queryForObject(any(), ArgumentMatchers.eq(Long.class))).thenReturn(1L);
-        when(namedParameterJdbcTemplate.update(any(), any(), any())).thenReturn(1);
-        when(verificationTokenRepository.save(any())).thenReturn(VerificationTokenFixture.getVerificationToken());
 
         mockMvc.perform(post(REQUEST_MAPPING_AUTH + "/register")
                         .with(csrf())
@@ -182,16 +154,8 @@ class AuthenticationControllerTest {
     }
 
     @Test
-    void given_invalid_credentials_when_register_then_user_registered() throws Exception {
+    void given_invalid_credentials_when_register_then_validation_exception_thrown() throws Exception {
         String content = "{\"email\":\"\",\"password\":\"\"}";
-
-        Map<String, Object> anyMap = ArgumentMatchers.any();
-        BeanPropertyRowMapper<Account> rowMapper = any();
-
-        when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper)).thenReturn(null, AccountFixture.getAdminAccount());
-        when(jdbcTemplate.queryForObject(any(), ArgumentMatchers.eq(Long.class))).thenReturn(1L);
-        when(namedParameterJdbcTemplate.update(any(), any(), any())).thenReturn(1);
-        when(verificationTokenRepository.save(any())).thenReturn(VerificationTokenFixture.getVerificationToken());
 
         mockMvc.perform(post(REQUEST_MAPPING_AUTH + "/register")
                         .with(csrf())
@@ -208,15 +172,26 @@ class AuthenticationControllerTest {
     }
 
     @Test
-    void given_activation_toke_when_activateAccount_then_redirected_successfully() throws Exception {
+    @Sql("/scripts/add_users.sql")
+    void given_same_email_when_register_then_validation_exception_thrown() throws Exception {
+        String content = "{\"email\":\"email@gmail.com\",\"password\":\"Qwerty999\"}";
+
+        mockMvc.perform(post(REQUEST_MAPPING_AUTH + "/register")
+                        .with(csrf())
+                        .accept(APPLICATION_JSON_VALUE)
+                        .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                        .content(content))
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof DuplicateUserException))
+                .andExpect(result -> assertEquals("User email@gmail.com already exists", Objects.requireNonNull(result.getResolvedException())
+                        .getMessage()));
+    }
+
+    @Test
+    @Sql("/scripts/add_users.sql")
+    void given_activation_token_when_activateAccount_then_redirected_successfully() throws Exception {
         String token = "verification_token";
 
-        Map<String, Object> anyMap = ArgumentMatchers.any();
-        BeanPropertyRowMapper<Account> rowMapper = any();
-
-        when(namedParameterJdbcTemplate.queryForObject(any(), anyMap, rowMapper)).thenReturn(AccountFixture.getAdminAccount());
-        when(jdbcTemplate.queryForObject(any(), ArgumentMatchers.eq(Long.class))).thenReturn(1L);
-        when(verificationTokenRepository.findByToken(token)).thenReturn(VerificationTokenFixture.getVerificationToken());
+        verificationTokenService.save(VerificationTokenFixture.getVerificationToken());
 
         mockMvc.perform(get(REQUEST_MAPPING_AUTH + "/activate-account")
                         .accept(APPLICATION_JSON_VALUE)
@@ -226,5 +201,32 @@ class AuthenticationControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(result -> assertEquals(result.getResponse().getHeader("Location"), redirectedURL))
                 .andExpect(result -> assertEquals(result.getResponse().getRedirectedUrl(), redirectedURL));
+    }
+
+    @Test
+    void given_invalid_activation_token_when_activateAccount_then_redirected_fails() throws Exception {
+        String token = "invalid_verification_token";
+
+        mockMvc.perform(get(REQUEST_MAPPING_AUTH + "/activate-account")
+                        .accept(APPLICATION_JSON_VALUE)
+                        .header(HttpHeaders.AUTHORIZATION, token)
+                        .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                        .param("token", token))
+                .andExpect(status().is4xxClientError())
+                .andExpect(result -> assertNull(result.getResponse().getHeader("Location")))
+                .andExpect(result -> assertNull(result.getResponse().getRedirectedUrl()));
+    }
+
+    @Test
+    void when_createToken_then_return_new_token() throws Exception {
+        mockMvc.perform(get(REQUEST_MAPPING_AUTH + "/create-token")
+                        .accept(APPLICATION_JSON_VALUE)
+                        .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(result -> {
+                    assertTrue(result.getResponse().getContentAsString().contains("token\""));
+                    assertTrue(result.getResponse().getContentAsString().contains("\"headerName\" : \"X-CSRF-TOKEN\""));
+                    assertTrue(result.getResponse().getContentAsString().contains("\"parameterName\" : \"_csrf\""));
+                });
     }
 }

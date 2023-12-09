@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(REQUEST_MAPPING_AUTH)
 @RequiredArgsConstructor
 public class AuthenticationController {
+
     @Value("${application.domain.host.url}")
     private String domainHostUrl;
 

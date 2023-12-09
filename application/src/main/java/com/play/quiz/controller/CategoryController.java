@@ -29,9 +29,9 @@ public class CategoryController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDto> getCategory(@RequestParam(required = false) Long id,
                                                    @RequestParam(required = false) String naturalId) {
-        return ResponseEntity.ok(Objects.nonNull(id) ?
-                categoryService.getById(id) :
-                categoryService.getByNaturalId(naturalId));
+        return ResponseEntity.ok(Objects.nonNull(id)
+                ? categoryService.getById(id)
+                : categoryService.getByNaturalId(naturalId));
     }
 
     @GetMapping(value = "/get-all-categories", produces = MediaType.APPLICATION_JSON_VALUE)

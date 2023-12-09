@@ -39,13 +39,17 @@ public class Category {
 
     @OneToOne(targetEntity = Category.class)
     @JoinColumn(name = "SUBCATEGORY_ID")
+    @ToString.Exclude
     private Category parent;
 
     @OneToMany(mappedBy = "category",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            orphanRemoval = true)
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @ToString.Exclude
     private List<CategoryTranslation> categoryTranslations;
+
+    public void setParent(Category parent) {
+        this.parent = parent;
+    }
 
     @Override
     public boolean equals(Object o) {

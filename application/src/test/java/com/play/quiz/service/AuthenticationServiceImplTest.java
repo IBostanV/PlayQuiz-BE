@@ -1,13 +1,24 @@
 package com.play.quiz.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import com.play.quiz.domain.Account;
+import com.play.quiz.domain.helpers.AccountInfo;
 import com.play.quiz.dto.AccountDto;
 import com.play.quiz.exception.AccountDisabledException;
 import com.play.quiz.exception.DuplicateUserException;
 import com.play.quiz.fixtures.AccountFixture;
 import com.play.quiz.fixtures.AccountInfoFixture;
 import com.play.quiz.mapper.AccountMapper;
-import com.play.quiz.domain.Account;
-import com.play.quiz.domain.helpers.AccountInfo;
 import com.play.quiz.security.jwt.JwtProvider;
 import com.play.quiz.service.impl.AuthenticationServiceImpl;
 import lombok.AllArgsConstructor;
@@ -23,17 +34,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AuthenticationServiceImplTest {
@@ -100,22 +100,24 @@ class AuthenticationServiceImplTest {
 
     @Test
     void given_disabled_account_when_login_then_AccountDisabledException_thrown() {
-        final AccountInfo accountInfo = AccountInfoFixture.getAccountInfoWithDisabledAccount();
+        final AccountDto account = AccountInfoFixture
+                .getAccountInfoWithDisabledAccount()
+                .getAccount();
         final Account adminAccount = AccountFixture.getDisabledAdminAccount();
         final Authentication authentication = new UsernamePasswordAuthenticationToken(
-                accountInfo.getAccount().getEmail(),
-                accountInfo.getAccount().getPassword());
+                account.getEmail(),
+                account.getPassword());
 
-        when(userService.findByEmail(accountInfo.getAccount().getEmail())).thenReturn(adminAccount);
+        when(userService.findByEmail(account.getEmail())).thenReturn(adminAccount);
 
         AccountDisabledException accountDisabledException = assertThrows(AccountDisabledException.class,
-                () -> authenticationService.login(accountInfo.getAccount()),
+                () -> authenticationService.login(account),
                 "Expected authenticationService.login() to throw AccountDisabledException."
         );
 
         assertTrue(accountDisabledException.getMessage().contains("Account " + adminAccount.getEmail() + " is disabled"));
 
-        verify(userService, only()).findByEmail(accountInfo.getAccount().getEmail());
+        verify(userService, only()).findByEmail(account.getEmail());
         verify(jwtProvider, never()).generate(authentication);
         verify(accountMapper, never()).toDto(adminAccount);
         verify(authenticationManager, never()).authenticate(any());
@@ -123,20 +125,21 @@ class AuthenticationServiceImplTest {
 
     @Test
     void given_account_no_email_when_login_then_exception() {
-        final AccountInfo accountInfo = AccountInfoFixture.getAccountInfoWithNoEmailAccount();
+        final AccountDto account = AccountInfoFixture
+                .getAccountInfoWithNoEmailAccount()
+                .getAccount();
         final Account adminAccount = AccountFixture.getDisabledAdminAccount();
         final Authentication authentication = new UsernamePasswordAuthenticationToken(
-                accountInfo.getAccount().getEmail(),
-                accountInfo.getAccount().getPassword());
+                account.getEmail(), account.getPassword());
 
         NullPointerException nullPointerException = assertThrows(NullPointerException.class,
-                () -> authenticationService.login(accountInfo.getAccount()),
+                () -> authenticationService.login(account),
                 "Expected authenticationService.login() to throw NullPointerException."
         );
 
         assertTrue(nullPointerException.getMessage().contains("\"account\" is null"));
 
-        verify(userService, only()).findByEmail(accountInfo.getAccount().getEmail());
+        verify(userService, only()).findByEmail(account.getEmail());
         verify(jwtProvider, never()).generate(authentication);
         verify(accountMapper, never()).toDto(adminAccount);
         verify(authenticationManager, never()).authenticate(any());

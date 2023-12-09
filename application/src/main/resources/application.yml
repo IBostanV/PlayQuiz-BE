@@ -37,7 +37,7 @@ application:
       validity:
         period: 60
     sending:
-      enabled: true
+      enabled: false
 
 # Trace @Transaction behavior
 logging:

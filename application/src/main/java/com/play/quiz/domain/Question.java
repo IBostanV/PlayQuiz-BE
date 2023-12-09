@@ -87,14 +87,12 @@ public class Question {
 
     @Setter
     @OneToMany(mappedBy = "question",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH},
-            orphanRemoval = true)
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH})
     @ToString.Exclude
     private List<Answer> answers;
 
     @OneToMany(mappedBy = "question",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            orphanRemoval = true)
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @ToString.Exclude
     private List<QuestionTranslation> translations;
 

@@ -27,7 +27,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto save(final CategoryDto categoryDto) {
         Category category = categoryMapper.toEntity(categoryDto);
-        return categoryMapper.toDto(categoryRepository.save(category));
+        Category entity = categoryRepository.save(category);
+        return categoryMapper.toDto(entity);
     }
 
     @NonNull
@@ -55,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteById(final Long categoryId) {
-        log.info("Deleting category with id: "+ categoryId);
+        log.info("Deleting category with id: " + categoryId);
         categoryRepository.deleteById(categoryId);
     }
 }
