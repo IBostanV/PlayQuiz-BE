@@ -7,13 +7,16 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.EntityModel;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDto {
+@EqualsAndHashCode(callSuper = false)
+public class CategoryDto extends EntityModel<CategoryDto> {
    private Long catId;
    private Long parentId;
    private Boolean visible;

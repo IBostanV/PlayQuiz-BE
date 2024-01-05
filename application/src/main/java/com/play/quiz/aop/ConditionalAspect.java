@@ -1,8 +1,11 @@
 package com.play.quiz.aop;
 
+import java.lang.reflect.Method;
+import java.util.Objects;
+
 import com.play.quiz.aop.annotation.Conditional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,10 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.lang.reflect.Method;
-import java.util.Objects;
-
-@Slf4j
+@Log4j2
 @Aspect
 @Component
 @RequiredArgsConstructor

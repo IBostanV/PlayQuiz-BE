@@ -1,9 +1,15 @@
 package com.play.quiz.controller;
 
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_MESSAGE;
+import static com.play.quiz.controller.RestEndpoint.WS_BROKER_PARTY;
+
+import java.security.Principal;
+import java.util.List;
+
 import com.play.quiz.domain.Message;
 import com.play.quiz.service.MessageService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.Header;
@@ -15,13 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-import java.util.List;
-
-import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_MESSAGE;
-import static com.play.quiz.controller.RestEndpoint.WS_BROKER_PARTY;
-
-@Slf4j
+@Log4j2
 @RestController
 @RequestMapping(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_MESSAGE)
 @RequiredArgsConstructor

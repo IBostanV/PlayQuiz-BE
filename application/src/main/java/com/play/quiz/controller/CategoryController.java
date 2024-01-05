@@ -1,6 +1,8 @@
 package com.play.quiz.controller;
 
 import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_CATEGORY;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,11 +36,6 @@ public class CategoryController {
                 : categoryService.getByNaturalId(naturalId));
     }
 
-    @GetMapping(value = "/get-all-categories", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CategoryDto>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.getCategories());
-    }
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDto> saveCategory(@Valid @RequestBody final CategoryDto requestCategory) {
         return ResponseEntity.ok(categoryService.save(requestCategory));
@@ -48,5 +45,26 @@ public class CategoryController {
     public ResponseEntity<Void> deleteCategory(@PathVariable final Long categoryId) {
         categoryService.deleteById(categoryId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/get-all-categories", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CategoryDto>> getAllCategories() {
+        List<CategoryDto> categories = categoryService.getCategories();
+        return ResponseEntity.ok(addRefLinks(categories));
+    }
+
+    private List<CategoryDto> addRefLinks(List<CategoryDto> categories) {
+        categories.forEach(this::addRefLink);
+        return categories;
+    }
+
+    private void addRefLink(CategoryDto categoryDto) {
+        categoryDto
+                .add(linkTo(methodOn(this.getClass())
+                        .getCategory(categoryDto.getCatId(), categoryDto.getNaturalId()))
+                        .withSelfRel())
+                .add(linkTo(methodOn(this.getClass())
+                        .deleteCategory(categoryDto.getCatId()))
+                        .withRel("delete"));
     }
 }

@@ -24,7 +24,7 @@ import com.play.quiz.enums.UserRole;
 import com.play.quiz.exception.UserNotFoundException;
 import com.play.quiz.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,7 +33,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-@Slf4j
+@Log4j2
 @Repository
 @AllArgsConstructor
 public class UserRepositoryImpl implements UserRepository {

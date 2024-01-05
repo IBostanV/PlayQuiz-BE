@@ -2,25 +2,25 @@ package com.play.quiz.service.impl;
 
 import java.util.Collections;
 
+import com.play.quiz.domain.Account;
+import com.play.quiz.domain.helpers.AccountInfo;
 import com.play.quiz.dto.AccountDto;
 import com.play.quiz.dto.RoleDto;
 import com.play.quiz.enums.UserRole;
 import com.play.quiz.mapper.AccountMapper;
-import com.play.quiz.domain.Account;
-import com.play.quiz.domain.helpers.AccountInfo;
 import com.play.quiz.security.jwt.JwtProvider;
 import com.play.quiz.service.AuthenticationService;
 import com.play.quiz.service.UserService;
 import com.play.quiz.util.SystemAssert;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-@Slf4j
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {

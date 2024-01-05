@@ -10,11 +10,11 @@ import com.play.quiz.repository.CategoryRepository;
 import com.play.quiz.service.CategoryService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-@Slf4j
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
