@@ -23,18 +23,6 @@
             </Policies>
             <DefaultRolloverStrategy max="30"/>
         </RollingFile>
-
-        <SMTP name="Mail"
-              subject="crm-rest Error Log" to="ganag.dev2@gmail.com" from="no-reply@thecloud.eu"
-              smtpHost="smtp.gmail.com" smtpPort="25" smtpUsername="ganag.dev2@gmail.com"
-              smtpPassword="ktqtdjxrqigdvfzb"
-              bufferSize="512"
-        >
-            <filters>
-                <MarkerFilter marker="SMTP_NEUTR" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
-                <MarkerFilter marker="SMTP_DENY" onMatch="ACCEPT" onMismatch="DENY"/>
-            </filters>
-        </SMTP>
     </Appenders>
 
     <Loggers>

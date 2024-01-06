@@ -46,6 +46,7 @@ public class Question {
     @SequenceGenerator(name = "qstn_generator", sequenceName = "questions_seq", allocationSize = 1)
     private Long questionId;
 
+    @Setter
     @OneToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_ID")
     @ToString.Exclude
@@ -75,6 +76,7 @@ public class Question {
     @Column(name = "UPDATED_DATE")
     private LocalDateTime updatedDate;
 
+    @Setter
     @OneToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "UPDATE_ACCOUNT_ID")
     @ToString.Exclude
@@ -95,14 +97,6 @@ public class Question {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @ToString.Exclude
     private List<QuestionTranslation> translations;
-
-    public void setUpdatedAccount(Account updatedAccount) {
-        this.updatedAccount = updatedAccount;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
 
     public Question copy(final QuestionType questionType, String content) {
         return copy(questionType, content, Collections.emptyList());

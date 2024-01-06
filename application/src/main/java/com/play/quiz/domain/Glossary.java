@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
@@ -52,6 +53,7 @@ public class Glossary {
     @Lob
     private byte[] attachment;
 
+    @Setter
     @ToString.Exclude
     @OneToOne(targetEntity = Glossary.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_ID")
@@ -64,10 +66,6 @@ public class Glossary {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @ToString.Exclude
     private List<GlossaryTranslation> glossaryTranslations;
-
-    public void setParent(Glossary parent) {
-        this.parent = parent;
-    }
 
     @Override
     public boolean equals(Object o) {

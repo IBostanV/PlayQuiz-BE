@@ -1,6 +1,7 @@
 package com.play.quiz.controller;
 
 import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_GLOSSARY;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -72,7 +73,7 @@ class GlossaryControllerIT {
         long glossaryId = 1L;
         String body = "{\"termId\":1,\"value\":\"Canberra\",\"isActive\":true,\"categoryName\":\"Continent\",\"key\":\"Australia\",\"categoryId\":1}";
 
-        CategoryDto categoryDto = categoryService.save(CategoryFixture.getNoIdCategoryDto());
+        CategoryDto categoryDto = categoryService.save(CategoryFixture.getNoIdCategoryDto(), null);
         glossaryService.save(GlossaryFixture.getActiveGlossaryNoIdWithCategoryDto(categoryDto), null);
 
         mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_GLOSSARY + "/id/" + glossaryId)
@@ -118,7 +119,7 @@ class GlossaryControllerIT {
         String key = "Australia";
         String body = "{\"termId\":1,\"value\":\"Canberra\",\"isActive\":true,\"categoryName\":\"Continent\",\"key\":\"Australia\",\"categoryId\":1}";
 
-        CategoryDto categoryDto = categoryService.save(CategoryFixture.getNoIdCategoryDto());
+        CategoryDto categoryDto = categoryService.save(CategoryFixture.getNoIdCategoryDto(), null);
         glossaryService.save(GlossaryFixture.getActiveGlossaryNoIdWithCategoryDto(categoryDto), null);
 
         mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_GLOSSARY + "/key/" + key)
@@ -164,8 +165,8 @@ class GlossaryControllerIT {
         long categoryId = 1;
         String body = "[{\"termId\":1,\"value\":\"Canberra\",\"isActive\":true,\"categoryName\":\"Continent\",\"key\":\"Australia\",\"categoryId\":2}]";
 
-        categoryService.save(CategoryFixture.getParentNoIdDto());
-        CategoryDto categoryDto = categoryService.save(CategoryFixture.getNoIdParentCategoryDto());
+        categoryService.save(CategoryFixture.getParentNoIdDto(), null);
+        CategoryDto categoryDto = categoryService.save(CategoryFixture.getNoIdParentCategoryDto(), null);
         glossaryService.save(GlossaryFixture.getActiveGlossaryNoIdWithCategoryDto(categoryDto), null);
 
         mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_GLOSSARY + "/category/" + categoryId)
@@ -180,7 +181,7 @@ class GlossaryControllerIT {
     @WithMockUser(roles = "ADMIN")
     @Sql({"/scripts/add_users.sql"})
     void given_null_when_getGlossaryByCategoryId_then_throw_MethodArgumentTypeMismatchException() throws Exception {
-        CategoryDto categoryDto = categoryService.save(CategoryFixture.getNoIdCategoryDto());
+        CategoryDto categoryDto = categoryService.save(CategoryFixture.getNoIdCategoryDto(), null);
         glossaryService.save(GlossaryFixture.getActiveGlossaryNoIdWithCategoryDto(categoryDto), null);
 
         mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_GLOSSARY + "/category/" + null)
@@ -188,7 +189,7 @@ class GlossaryControllerIT {
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE))
                 .andExpect(status().is5xxServerError())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentTypeMismatchException))
+                .andExpect(result -> assertInstanceOf(MethodArgumentTypeMismatchException.class, result.getResolvedException()))
                 .andExpect(content().string("Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: \"null\""));
     }
 

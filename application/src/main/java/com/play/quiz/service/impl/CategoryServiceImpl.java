@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Log4j2
 @Service
@@ -25,8 +26,8 @@ public class CategoryServiceImpl implements CategoryService {
     public static final String CAT_ID = "catId";
 
     @Override
-    public CategoryDto save(final CategoryDto categoryDto) {
-        Category category = categoryMapper.toEntity(categoryDto);
+    public CategoryDto save(final CategoryDto categoryDto, MultipartFile attachment) {
+        Category category = categoryMapper.toEntity(categoryDto, attachment);
         Category entity = categoryRepository.save(category);
         return categoryMapper.toDto(entity);
     }
