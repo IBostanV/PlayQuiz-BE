@@ -5,10 +5,13 @@ import java.util.Objects;
 
 import com.play.quiz.dto.CategoryDto;
 import com.play.quiz.domain.Category;
+import lombok.SneakyThrows;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
@@ -23,7 +26,8 @@ public interface CategoryMapper {
 
     @Mapping(target = "naturalId", source = "name", qualifiedByName = "upperCase")
     @Mapping(target = "parent", source = "parentId", qualifiedByName = "handleParent")
-    Category toEntity(final CategoryDto categoryDto);
+    @Mapping(target = "attachment", expression = "java(handleAttachment(attachment))")
+    Category toEntity(final CategoryDto categoryDto, @Context final MultipartFile attachment);
 
     @Named("upperCase")
     default String upperCase(String naturalId) {
@@ -37,5 +41,11 @@ public interface CategoryMapper {
             return Category.builder().catId(catId).build();
         }
         return null;
+    }
+
+    @SneakyThrows
+    @Named("handleAttachment")
+    default byte[] handleAttachment(final MultipartFile attachment) {
+        return Objects.nonNull(attachment) ? attachment.getBytes() : null;
     }
 }

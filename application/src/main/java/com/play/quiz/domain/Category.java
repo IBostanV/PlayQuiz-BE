@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
@@ -18,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
@@ -36,7 +38,10 @@ public class Category {
     private String name;
     private String naturalId;
     private Boolean visible;
+    @Lob
+    private byte[] attachment;
 
+    @Setter
     @OneToOne(targetEntity = Category.class)
     @JoinColumn(name = "SUBCATEGORY_ID")
     @ToString.Exclude
@@ -46,10 +51,6 @@ public class Category {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @ToString.Exclude
     private List<CategoryTranslation> categoryTranslations;
-
-    public void setParent(Category parent) {
-        this.parent = parent;
-    }
 
     @Override
     public boolean equals(Object o) {

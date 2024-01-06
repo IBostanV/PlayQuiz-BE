@@ -1,5 +1,5 @@
 -- // add_express_constants
-INSERT INTO Q_CATEGORY VALUES (1, 'Express', 'EXPRESS', null, 0)/execute/
+INSERT INTO Q_CATEGORY VALUES (1, 'Express', 'EXPRESS', null, null, 0)/execute/
 
 INSERT INTO Q_PROPERTY VALUES (1, 'DEFAULT_EXPRESS_QUESTIONS_COUNT', 10, null)/execute/
 INSERT INTO Q_PROPERTY VALUES (2, 'EXPRESS_QUIZ_DEFAULT_OPTIONS_COUNT', 4, null)/execute/

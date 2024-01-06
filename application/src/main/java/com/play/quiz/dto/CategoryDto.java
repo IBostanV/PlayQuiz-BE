@@ -21,6 +21,7 @@ public class CategoryDto extends EntityModel<CategoryDto> {
    private Long parentId;
    private Boolean visible;
    private String naturalId;
+   private byte[] attachment;
    private String parentName;
    private List<CategoryTranslationDto> categoryTranslations;
 
