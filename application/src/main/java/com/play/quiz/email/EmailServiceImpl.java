@@ -1,10 +1,13 @@
 package com.play.quiz.email;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+
 import com.play.quiz.email.helper.EmailMessage;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -12,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
-
-@Slf4j
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {

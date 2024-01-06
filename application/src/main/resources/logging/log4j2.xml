@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG" monitorInterval="1000">
+
+    <Properties>
+        <Property name="LOG1">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} [%-6p] %c{1}:%L - %m%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="SOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG1}"/>
+        </Console>
+
+        <RollingFile name="RollingFileAppender"
+                     bufferedIO="true"
+                     bufferSize="16384"
+                     fileName="${sys:ROLLING_FILE_HOME:-./logs/}play-quiz.log"
+                     filePattern="${sys:ROLLING_FILE_HOME:-./logs/}play-quiz.%d{yyyy-MM-dd}.%i.log">
+            <PatternLayout pattern="${LOG1}"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="20MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+
+        <SMTP name="Mail"
+              subject="crm-rest Error Log" to="ganag.dev2@gmail.com" from="no-reply@thecloud.eu"
+              smtpHost="smtp.gmail.com" smtpPort="25" smtpUsername="ganag.dev2@gmail.com"
+              smtpPassword="ktqtdjxrqigdvfzb"
+              bufferSize="512"
+        >
+            <filters>
+                <MarkerFilter marker="SMTP_NEUTR" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+                <MarkerFilter marker="SMTP_DENY" onMatch="ACCEPT" onMismatch="DENY"/>
+            </filters>
+        </SMTP>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="org.springframework" level="DEBUG" additivity="false">
+            <AppenderRef ref="SOUT"/>
+            <AppenderRef ref="RollingFileAppender"/>
+        </Logger>
+
+        <Root level="${env:PQ_LOG_ROOT:-INFO}">
+            <AppenderRef ref="SOUT"/>
+            <AppenderRef ref="RollingFileAppender"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

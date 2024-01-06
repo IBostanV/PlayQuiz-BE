@@ -39,12 +39,12 @@ application:
     sending:
       enabled: false
 
-# Trace @Transaction behavior
 logging:
   level:
     org:
-      springframework: DEBUG
+      springframework: INFO
       springframework.transaction:
           interceptor: TRACE
       springframework.security: DEBUG
       springframework.web: DEBUG
+  config: classpath:logging/log4j2.xml

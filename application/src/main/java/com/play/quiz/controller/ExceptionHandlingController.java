@@ -7,7 +7,7 @@ import java.util.Objects;
 import com.play.quiz.exception.EmailSendFailedException;
 import com.play.quiz.exception.RecordNotFoundException;
 import com.play.quiz.exception.UserNotFoundException;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@Slf4j
+@Log4j2
 @RestControllerAdvice
 public class ExceptionHandlingController {
 

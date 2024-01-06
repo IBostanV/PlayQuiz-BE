@@ -9,7 +9,7 @@ import com.play.quiz.enums.UserRole;
 import com.play.quiz.exception.UserNotFoundException;
 import com.play.quiz.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-@Slf4j
+@Log4j2
 @Service("quizUserDetailsService")
 @RequiredArgsConstructor
 public class PQUserDetailsServiceImpl implements PQUserDetailsService {

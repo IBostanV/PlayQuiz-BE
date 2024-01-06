@@ -13,11 +13,11 @@ import com.play.quiz.enums.QuestionType;
 import com.play.quiz.repository.GlossaryRepository;
 import com.play.quiz.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
+@Log4j2
 @Component
 @RequiredArgsConstructor
 public class QuestionGenerationEngine {
