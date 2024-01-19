@@ -40,13 +40,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
 
+    private static final String ACTUATOR_PATH = "/actuator";
     private static final String ACTIVATE_ACCOUNT_LINK = "/activate-account";
 
     @Override
     protected boolean shouldNotFilter(final HttpServletRequest request) {
-        return !request.getRequestURI().startsWith(RestEndpoint.CONTEXT_PATH)
+        return (!request.getRequestURI().startsWith(RestEndpoint.CONTEXT_PATH)
                 || request.getRequestURI().startsWith(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_CATEGORY)
-                || request.getRequestURI().endsWith(ACTIVATE_ACCOUNT_LINK);
+                || request.getRequestURI().endsWith(ACTIVATE_ACCOUNT_LINK))
+                && !request.getRequestURI().startsWith(ACTUATOR_PATH);
     }
 
     @Override

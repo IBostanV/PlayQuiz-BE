@@ -49,7 +49,7 @@ public class CategoryController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/get-all-categories", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all-categories", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CategoryDto>> getAllCategories() {
         List<CategoryDto> categories = categoryService.getCategories();
         return ResponseEntity.ok(addRefLinks(categories));

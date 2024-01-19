@@ -1,4 +1,8 @@
 spring:
+  security:
+    user:
+      name: admin@mail.com
+      password: admin
   servlet:
     multipart:
       max-file-size: 2MB
@@ -48,3 +52,9 @@ logging:
       springframework.security: DEBUG
       springframework.web: DEBUG
   config: classpath:logging/log4j2.xml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

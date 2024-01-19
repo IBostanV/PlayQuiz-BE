@@ -3,6 +3,7 @@ package com.play.quiz.controller;
 import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_CATEGORY;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -117,7 +119,7 @@ class CategoryControllerIT {
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .param("id", (String) null))
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof RecordNotFoundException))
+                .andExpect(result -> assertInstanceOf(RecordNotFoundException.class, result.getResolvedException()))
                 .andExpect(content().string(body));
     }
 
@@ -125,7 +127,7 @@ class CategoryControllerIT {
     @WithMockUser(roles = "ADMIN")
     @Sql("/scripts/add_category.sql")
     void when_getAllCategories_then_return_all_categories() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_CATEGORY + "/get-all-categories")
+        mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_CATEGORY + "/all-categories")
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE))
@@ -152,7 +154,7 @@ class CategoryControllerIT {
     @Test
     @WithMockUser(roles = "ADMIN")
     void given_no_categories_when_getAllCategories_then_return_all_categories() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_CATEGORY + "/get-all-categories")
+        mockMvc.perform(MockMvcRequestBuilders.get(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_CATEGORY + "/all-categories")
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE))
@@ -191,7 +193,7 @@ class CategoryControllerIT {
                         .with(csrf())
                         .accept(APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.AUTHORIZATION, token)
-                        .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE)
                         .content(content))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(result -> {
