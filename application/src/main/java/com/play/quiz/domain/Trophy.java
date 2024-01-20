@@ -2,6 +2,7 @@ package com.play.quiz.domain;
 
 import java.util.Objects;
 
+import com.play.quiz.domain.helpers.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,20 +11,20 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 @Entity
 @Table(name = "Q_TROPHY")
 @Getter
-@Builder
+@SuperBuilder(toBuilder = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Trophy {
+public class Trophy extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trophy_generator")
     @SequenceGenerator(name = "trophy_generator", sequenceName = "trophies_seq", allocationSize = 1)
@@ -45,5 +46,10 @@ public class Trophy {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return this.trophyId;
     }
 }

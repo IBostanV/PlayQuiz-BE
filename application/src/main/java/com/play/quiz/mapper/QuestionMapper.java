@@ -53,6 +53,7 @@ public abstract class QuestionMapper {
     public abstract Question mapToEntity(final QuestionDto questionDto);
 
     @Mapping(target = "glossary.termId", source = "termId")
+    @Mapping(target = "createdDate", expression = "java(LocalDateTime.now())")
     protected abstract Answer answerDtoToAnswer(AnswerDto answerDto);
 
     @Named("withoutAnswers")

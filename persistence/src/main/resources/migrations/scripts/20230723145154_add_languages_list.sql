@@ -1,8 +1,8 @@
 -- // name_of_the_migration
-INSERT INTO Q_LANGUAGE VALUES(1, 'EN', 'English')/execute/
-INSERT INTO Q_LANGUAGE VALUES(2, 'RU', 'Русский')/execute/
-INSERT INTO Q_LANGUAGE VALUES(3, 'DE', 'Deutsch')/execute/
-INSERT INTO Q_LANGUAGE VALUES(4, 'RO', 'Română')/execute/
+INSERT INTO Q_LANGUAGE VALUES(1, 'EN', 'English',null, null, trunc(SYSDATE), null)/execute/
+INSERT INTO Q_LANGUAGE VALUES(2, 'RU', 'Русский',null, null, trunc(SYSDATE), null)/execute/
+INSERT INTO Q_LANGUAGE VALUES(3, 'DE', 'Deutsch',null, null, trunc(SYSDATE), null)/execute/
+INSERT INTO Q_LANGUAGE VALUES(4, 'RO', 'Română',null, null, trunc(SYSDATE), null)/execute/
 
 -- //@UNDO
 DELETE FROM Q_LANGUAGE WHERE LANG_ID = 1/execute/

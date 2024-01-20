@@ -23,6 +23,10 @@ public abstract class AccountMapper {
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "id", source = "accountId")
     @Mapping(target = "isEnabled", source = "enabled")
+    @Mapping(target = "createdById", source = "createdBy.accountId")
+    @Mapping(target = "updatedById", source = "updatedBy.accountId")
+    @Mapping(target = "updatedByName", source = "updatedBy.username")
+    @Mapping(target = "createdByName", source = "createdBy.username")
     public abstract AccountDto toDto(final Account account);
 
     @IterableMapping(qualifiedByName = "mappingFields")
@@ -30,12 +34,16 @@ public abstract class AccountMapper {
 
     @Mapping(target = "accountId", source = "id")
     @Mapping(target = "password", source = "password", qualifiedByName = "handlePassword")
+    @Mapping(target = "createdBy.accountId", source = "createdById")
+    @Mapping(target = "updatedBy.accountId", source = "updatedById")
     public abstract Account toEntity(final AccountDto accountDto);
 
     @Mapping(target = "accountId", source = "id")
     @Mapping(target = "password", source = "password", qualifiedByName = "handlePassword")
     @Mapping(target = "avatar", expression = "java(handleAvatar(avatar))")
     @Mapping(target = "isEnabled", source = "enabled")
+    @Mapping(target = "createdBy.accountId", source = "createdById")
+    @Mapping(target = "updatedBy.accountId", source = "updatedById")
     public abstract Account toEntity(final AccountDto accountDto, @Context final MultipartFile avatar);
 
     @Named("handlePassword")

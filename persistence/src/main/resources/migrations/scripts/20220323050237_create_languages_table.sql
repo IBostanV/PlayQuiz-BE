@@ -2,7 +2,11 @@
 CREATE TABLE Q_LANGUAGE (
                          LANG_ID NUMERIC(20,0) NOT NULL,
                          LANG_CODE VARCHAR(20),
-                         NAME VARCHAR(100) NOT NULL
+                         NAME VARCHAR(100) NOT NULL,
+                         CREATED_BY NUMERIC(20, 0),
+                         UPDATED_BY NUMERIC(20, 0),
+                         CREATED_DATE DATE NOT NULL,
+                         UPDATED_DATE DATE
 )
     /execute/
 

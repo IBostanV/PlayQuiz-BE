@@ -2,6 +2,7 @@ package com.play.quiz.domain;
 
 import java.util.Objects;
 
+import com.play.quiz.domain.helpers.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,20 +10,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.proxy.HibernateProxy;
 
 @Entity
 @Table(name = "Q_LANGUAGE")
 @Getter
 @ToString
-@Builder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Language {
+public class Language extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "language_generator")
     @SequenceGenerator(name = "language_generator", sequenceName = "languages_seq", allocationSize = 1)
@@ -44,5 +45,10 @@ public class Language {
     @Override
     public final int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return this.langId;
     }
 }

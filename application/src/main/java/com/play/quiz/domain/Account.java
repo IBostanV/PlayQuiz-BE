@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.play.quiz.domain.helpers.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,21 +20,21 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "Q_USER")
-@Builder(toBuilder = true)
-@Setter
+@SuperBuilder(toBuilder = true)
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account {
+public class Account extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
     @SequenceGenerator(name = "user_generator", sequenceName = "users_seq", allocationSize = 1)
@@ -80,4 +81,7 @@ public class Account {
     public void setIsEnabled(final boolean isEnabled) {
         this.isEnabled = isEnabled;
     }
+
+    @Override
+    public Long getId() { return this.accountId; }
 }

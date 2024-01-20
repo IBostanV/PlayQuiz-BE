@@ -6,6 +6,10 @@ CREATE TABLE Q_USER_HISTORY (
                         ANSWERS_JSON CLOB,
                         COMPLETED_DATE DATE,
                         SPENT_TIME NUMERIC(20,0) DEFAULT 0,
+                        CREATED_BY NUMERIC(20, 0),
+                        UPDATED_BY NUMERIC(20, 0),
+                        CREATED_DATE DATE NOT NULL,
+                        UPDATED_DATE DATE,
                         CONSTRAINT ENFORCE_HISTORY_JSON CHECK (ANSWERS_JSON IS JSON)
 )
 /execute/

@@ -1,16 +1,13 @@
 package com.play.quiz.service.impl;
 
-import static com.play.quiz.util.Constant.SAVE_OPERATION_SUCCESSFULLY;
-
-import java.util.List;
-import java.util.Objects;
-
 import com.play.quiz.domain.Glossary;
 import com.play.quiz.domain.GlossaryType;
 import com.play.quiz.dto.GlossaryDto;
+import com.play.quiz.dto.GlossaryTypeDto;
 import com.play.quiz.exception.EntityNotUpdatedException;
 import com.play.quiz.exception.RecordNotFoundException;
 import com.play.quiz.mapper.GlossaryMapper;
+import com.play.quiz.mapper.GlossaryTypeMapper;
 import com.play.quiz.repository.GlossaryRepository;
 import com.play.quiz.repository.GlossaryTypeRepository;
 import com.play.quiz.service.GlossaryService;
@@ -20,12 +17,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.util.Objects;
+
+import static com.play.quiz.util.Constant.SAVE_OPERATION_SUCCESSFULLY;
+
 @Service
 @RequiredArgsConstructor
 public class GlossaryServiceImpl implements GlossaryService {
 
     private final GlossaryMapper glossaryMapper;
     private final GlossaryRepository glossaryRepository;
+    private final GlossaryTypeMapper glossaryTypeMapper;
     private final GlossaryTypeRepository glossaryTypeRepository;
 
     @Transactional
@@ -85,8 +88,9 @@ public class GlossaryServiceImpl implements GlossaryService {
     }
 
     @Override
-    public List<GlossaryType> getGlossaryTypes() {
-        return glossaryTypeRepository.findAll();
+    public List<GlossaryTypeDto> getGlossaryTypes() {
+        List<GlossaryType> glossaryTypeList = glossaryTypeRepository.findAll();
+        return glossaryTypeMapper.toDtoList(glossaryTypeList);
     }
 
     @Override

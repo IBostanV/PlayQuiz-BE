@@ -17,10 +17,12 @@
                 LANG_ID = :language,
                 BIRTHDAY = :birthday,
                 THEME = :theme,
-                AVATAR = :avatar
+                AVATAR = :avatar,
+                UPDATED_BY = :updatedBy,
+                UPDATED_DATE = :updatedDate
                 WHEN NOT MATCHED THEN
-                INSERT (ACCOUNT_ID, NAME, EMAIL, PASSWORD, BIRTHDAY, IS_ENABLED)
-                VALUES (:accountId, :name, :email, :password, :birthday, :isEnabled)
+                INSERT (ACCOUNT_ID, NAME, EMAIL, PASSWORD, BIRTHDAY, IS_ENABLED, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE)
+                VALUES (:accountId, :name, :email, :password, :birthday, :isEnabled, :createdBy, :createdDate, :updatedBy, :updatedDate)
             </value>
         </constructor-arg>
     </bean>
@@ -38,10 +40,12 @@
                 USERNAME = :username,
                 LANG_ID = :language,
                 BIRTHDAY = :birthday,
-                THEME = :theme
+                THEME = :theme,
+                UPDATED_BY = :updatedBy,
+                UPDATED_DATE = :updatedDate
                 WHEN NOT MATCHED THEN
-                INSERT (ACCOUNT_ID, NAME, EMAIL, PASSWORD, BIRTHDAY, IS_ENABLED)
-                VALUES (:accountId, :name, :email, :password, :birthday, :isEnabled)
+                INSERT (ACCOUNT_ID, NAME, EMAIL, PASSWORD, BIRTHDAY, IS_ENABLED, CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE)
+                VALUES (:accountId, :name, :email, :password, :birthday, :isEnabled, :createdBy, :createdDate, :updatedBy, :updatedDate)
             </value>
         </constructor-arg>
     </bean>
@@ -91,6 +95,8 @@
                         ,u.theme
                         ,u.username
                         ,u.avatar
+                        ,u.created_date
+                        ,u.updated_date
                         ,l.lang_id
                         ,l.name as lang_name
                         ,l.lang_code

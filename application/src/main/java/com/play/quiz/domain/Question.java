@@ -1,46 +1,27 @@
 package com.play.quiz.domain;
 
-import java.time.LocalDateTime;
+import com.play.quiz.converter.AttributeListConverter;
+import com.play.quiz.domain.helpers.BaseEntity;
+import com.play.quiz.domain.translation.QuestionTranslation;
+import com.play.quiz.enums.QuestionAttribute;
+import com.play.quiz.enums.QuestionType;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.Hibernate;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import com.play.quiz.converter.AttributeListConverter;
-import com.play.quiz.enums.QuestionAttribute;
-import com.play.quiz.enums.QuestionType;
-import com.play.quiz.domain.translation.QuestionTranslation;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.Hibernate;
-
 @Entity
 @Table(name = "Q_QUESTION")
 @Getter
-@Builder
+@SuperBuilder(toBuilder = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Question {
+public class Question extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "qstn_generator")
     @SequenceGenerator(name = "qstn_generator", sequenceName = "questions_seq", allocationSize = 1)
@@ -58,6 +39,9 @@ public class Question {
     @Transient
     private Object tipId;
 
+    private String topic;
+    private int priority;
+
     @OneToOne(targetEntity = Category.class)
     @JoinColumn(name = "CAT_ID")
     private Category category;
@@ -69,20 +53,6 @@ public class Question {
     private int complexityLevel;
 
     private String content;
-
-    @Column(name = "CREATED_DATE")
-    private LocalDateTime createdDate;
-
-    @Column(name = "UPDATED_DATE")
-    private LocalDateTime updatedDate;
-
-    @Setter
-    @OneToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "UPDATE_ACCOUNT_ID")
-    @ToString.Exclude
-    private Account updatedAccount;
-    private String topic;
-    private int priority;
 
     @Convert(converter = AttributeListConverter.class)
     private List<QuestionAttribute> attributes;
@@ -103,9 +73,8 @@ public class Question {
     }
 
     public Question copy(final QuestionType questionType, String content, final List<QuestionAttribute> attributes) {
-        return new Question(null, this.account, questionType, this.tipId, this.category, this.isActive,
-                this.complexityLevel, content, this.createdDate, this.updatedDate, this.updatedAccount,
-                this.topic, this.priority, attributes, this.answers, this.translations);
+        return new Question(null, this.account, questionType, this.tipId, this.topic, this.priority, this.category, this.isActive,
+                this.complexityLevel, content, attributes, this.answers, this.translations);
     }
 
     public void fillTranslationsParent() {
@@ -127,5 +96,10 @@ public class Question {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return this.questionId;
     }
 }

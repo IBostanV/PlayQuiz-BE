@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.play.quiz.converter.QuestionIdsConverter;
+import com.play.quiz.domain.helpers.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -19,20 +20,20 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 @Entity
 @Table(name = "Q_QUIZ")
 @Getter
-@Builder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Quiz {
+public class Quiz extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "quiz_generator")
     @SequenceGenerator(name = "quiz_generator", sequenceName = "quiz_seq", allocationSize = 1)
@@ -69,5 +70,10 @@ public class Quiz {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return this.quizId;
     }
 }

@@ -1,11 +1,8 @@
 package com.play.quiz.controller;
 
-import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_GLOSSARY;
-
-import java.util.List;
-
-import com.play.quiz.dto.GlossaryDto;
 import com.play.quiz.domain.GlossaryType;
+import com.play.quiz.dto.GlossaryDto;
+import com.play.quiz.dto.GlossaryTypeDto;
 import com.play.quiz.service.GlossaryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_GLOSSARY;
 
 @RestController
 @RequestMapping(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_GLOSSARY)
@@ -62,7 +63,7 @@ public class GlossaryController {
     }
 
     @GetMapping(value = "/types", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GlossaryType>> getGlossaryTypes() {
+    public ResponseEntity<List<GlossaryTypeDto>> getGlossaryTypes() {
         return ResponseEntity.ok(glossaryService.getGlossaryTypes());
     }
 }

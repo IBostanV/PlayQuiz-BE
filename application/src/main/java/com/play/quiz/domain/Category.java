@@ -3,6 +3,7 @@ package com.play.quiz.domain;
 import java.util.List;
 import java.util.Objects;
 
+import com.play.quiz.domain.helpers.BaseEntity;
 import com.play.quiz.domain.translation.CategoryTranslation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -16,21 +17,21 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 @Entity
 @Table(name = "Q_CATEGORY")
 @Getter
-@Builder
+@SuperBuilder(toBuilder = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+public class Category extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
     @SequenceGenerator(name = "category_generator", sequenceName = "categories_seq", allocationSize = 1)
@@ -63,5 +64,10 @@ public class Category {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return this.catId;
     }
 }
