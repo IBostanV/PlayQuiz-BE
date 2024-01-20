@@ -2,7 +2,6 @@ package com.play.quiz.controller;
 
 import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_GLOSSARY;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -93,7 +92,7 @@ class GlossaryControllerIT {
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE))
                 .andExpect(status().is5xxServerError())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentTypeMismatchException))
+                .andExpect(result -> assertInstanceOf(MethodArgumentTypeMismatchException.class, result.getResolvedException()))
                 .andExpect(content().string("Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: \"null\""));
     }
 
@@ -108,7 +107,7 @@ class GlossaryControllerIT {
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE))
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof RecordNotFoundException))
+                .andExpect(result -> assertInstanceOf(RecordNotFoundException.class, result.getResolvedException()))
                 .andExpect(content().string("No records found by glossary id: 2"));
     }
 
@@ -139,7 +138,7 @@ class GlossaryControllerIT {
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE))
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof RecordNotFoundException))
+                .andExpect(result -> assertInstanceOf(RecordNotFoundException.class, result.getResolvedException()))
                 .andExpect(content().string("No records found by key: null"));
     }
 
@@ -154,7 +153,7 @@ class GlossaryControllerIT {
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE))
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof RecordNotFoundException))
+                .andExpect(result -> assertInstanceOf(RecordNotFoundException.class, result.getResolvedException()))
                 .andExpect(content().string("No records found by key: SUA"));
     }
 

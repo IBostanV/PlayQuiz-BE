@@ -19,4 +19,5 @@ public class RestEndpoint {
     public static final String REQUEST_MAPPING_CATEGORY = "/category";
     public static final String REQUEST_MAPPING_QUESTION = "/question";
     public static final String REQUEST_MAPPING_USER_HISTORY = "/user-history";
+    public static final String REQUEST_MAPPING_KNOWLEDGE_BASE = "/knowledge-base";
 }

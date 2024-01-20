@@ -53,7 +53,7 @@ public class QuizServiceImpl implements QuizService {
     private static void handleQuestionDiscrepancy(final QuizDto quizDto, final List<Question> questions) {
         while (questions.size() < quizDto.getQuestionsCount()) {
             Collections.shuffle(questions);
-            questions.add(questions.get(0));
+            questions.add(questions.getFirst());
         }
     }
 
