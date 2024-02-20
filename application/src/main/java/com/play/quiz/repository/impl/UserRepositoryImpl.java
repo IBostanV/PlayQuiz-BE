@@ -98,6 +98,16 @@ public class UserRepositoryImpl implements UserRepository {
         propertyMap.put("surname", mapNull().apply(account.getSurname()));
         propertyMap.put("birthday", mapNull().apply(account.getBirthday()));
         propertyMap.put("username", mapNull().apply(account.getUsername()));
+        propertyMap.put("createdDate", account.getCreatedDate());
+        propertyMap.put("updatedDate", account.getUpdatedDate());
+
+        propertyMap.put("createdBy", Optional.ofNullable(account.getCreatedBy())
+                .map(Account::getAccountId)
+                        .orElse(null));
+
+        propertyMap.put("updatedBy", Optional.ofNullable(account.getUpdatedBy())
+                .map(Account::getAccountId)
+                .orElse(null));
 
         propertyMap.put("language", Optional.ofNullable(account.getLanguage())
                 .map(Language::getLangId)

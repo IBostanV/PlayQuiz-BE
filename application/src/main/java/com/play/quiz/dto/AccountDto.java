@@ -1,6 +1,7 @@
 package com.play.quiz.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +40,12 @@ public class AccountDto {
     private boolean isEnabled;
     private Integer experience;
     private Language language;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
+    private Long updatedById;
+    private String updatedByName;
+    private Long createdById;
+    private String createdByName;
 
     private Set<Category> favoriteCategories = new HashSet<>();
 

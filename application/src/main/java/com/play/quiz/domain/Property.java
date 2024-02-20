@@ -2,6 +2,7 @@ package com.play.quiz.domain;
 
 import java.util.Objects;
 
+import com.play.quiz.domain.helpers.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,20 +11,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 @Entity
 @Table(name = "Q_PROPERTY")
 @Getter
-@Builder
+@SuperBuilder(toBuilder = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Property {
+public class Property extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prop_generator")
     @SequenceGenerator(name = "prop_generator", sequenceName = "prop_sequence", allocationSize = 1)
@@ -53,5 +54,10 @@ public class Property {
 
     public Integer getIntValue() {
         return Integer.parseInt(this.value);
+    }
+
+    @Override
+    public Long getId() {
+        return this.propertyId;
     }
 }

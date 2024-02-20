@@ -3,6 +3,7 @@ package com.play.quiz.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.play.quiz.domain.helpers.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,20 +12,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.proxy.HibernateProxy;
 
 @Entity
 @Table(name = "Q_MESSAGE")
 @Getter
-@Builder
+@SuperBuilder(toBuilder = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Message {
+public class Message extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "message_generator")
     @SequenceGenerator(name = "message_generator", sequenceName = "message_seq", allocationSize = 1)
@@ -52,5 +53,10 @@ public class Message {
     @Override
     public final int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return this.messageId;
     }
 }

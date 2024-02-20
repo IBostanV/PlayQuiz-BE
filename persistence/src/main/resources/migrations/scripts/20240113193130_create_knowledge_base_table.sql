@@ -11,7 +11,11 @@ CREATE TABLE Q_KNOWLEDGE_BASE (
                             UPVOTES NUMERIC(20, 0),
                             DOWNVOTES NUMERIC(20, 0),
                             TAGS VARCHAR(300),
-                            STATUS VARCHAR(20)
+                            STATUS VARCHAR(20),
+                            CREATED_BY NUMERIC(20, 0),
+                            UPDATED_BY NUMERIC(20, 0),
+                            CREATED_DATE DATE NOT NULL,
+                            UPDATED_DATE DATE
 )
 /execute/
 

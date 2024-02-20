@@ -12,7 +12,11 @@ CREATE TABLE Q_USER (
                       EMAIL VARCHAR(100) NOT NULL,
                       PASSWORD VARCHAR(100) NOT NULL,
                       BIRTHDAY DATE,
-                      IS_ENABLED NUMBER(1,0) DEFAULT 0 NOT NULL
+                      IS_ENABLED NUMBER(1,0) DEFAULT 0 NOT NULL,
+                      CREATED_BY NUMERIC(20, 0),
+                      UPDATED_BY NUMERIC(20, 0),
+                      CREATED_DATE DATE NOT NULL,
+                      UPDATED_DATE DATE
 )
 /execute/
 

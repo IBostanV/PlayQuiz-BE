@@ -3,6 +3,7 @@ package com.play.quiz.domain;
 import java.util.List;
 import java.util.Objects;
 
+import com.play.quiz.domain.helpers.BaseEntity;
 import com.play.quiz.domain.translation.AnswerTranslation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -17,21 +18,21 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 @Entity
 @Table(name = "Q_ANSWER")
 @Getter
-@Builder
+@SuperBuilder(toBuilder = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Answer {
+public class Answer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answer_generator")
     @SequenceGenerator(name = "answer_generator", sequenceName = "answers_seq", allocationSize = 1)
@@ -66,5 +67,10 @@ public class Answer {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return this.ansId;
     }
 }

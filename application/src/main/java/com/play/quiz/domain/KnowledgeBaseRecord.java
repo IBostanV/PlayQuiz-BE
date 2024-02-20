@@ -1,5 +1,6 @@
 package com.play.quiz.domain;
 
+import com.play.quiz.domain.helpers.BaseEntity;
 import com.play.quiz.enums.KnowledgeBaseRecordStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,20 +14,20 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "Q_KNOWLEDGE_BASE")
 @Getter
-@Builder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class KnowledgeBaseRecord {
+public class KnowledgeBaseRecord extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "knowledge_base_generator")
     @SequenceGenerator(name = "knowledge_base_generator", sequenceName = "knowledge_base_seq", allocationSize = 1)

@@ -3,6 +3,7 @@ package com.play.quiz.domain;
 import java.util.List;
 import java.util.Objects;
 
+import com.play.quiz.domain.helpers.BaseEntity;
 import com.play.quiz.domain.translation.GlossaryTranslation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -18,21 +19,21 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 @Entity
 @Table(name = "Q_GLOSSARY")
 @Getter
-@Builder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Glossary {
+public class Glossary extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "glossary_generator")
     @SequenceGenerator(name = "glossary_generator", sequenceName = "glossaries_seq", allocationSize = 1)
@@ -80,5 +81,10 @@ public class Glossary {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return this.termId;
     }
 }
