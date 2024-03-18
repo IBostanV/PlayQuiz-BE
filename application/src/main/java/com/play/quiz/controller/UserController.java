@@ -1,14 +1,11 @@
 package com.play.quiz.controller;
 
-import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_USER;
-
-import java.security.Principal;
-import java.util.List;
-
 import com.play.quiz.domain.Account;
 import com.play.quiz.dto.AccountDto;
+import com.play.quiz.dto.UserOccupationDto;
 import com.play.quiz.mapper.AccountMapper;
 import com.play.quiz.record.PasswordInput;
+import com.play.quiz.service.UserOccupationService;
 import com.play.quiz.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -21,12 +18,18 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
+import java.util.List;
+
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_USER;
+
 @RestController
 @RequestMapping(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_USER)
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
     private final AccountMapper accountMapper;
+    private final UserOccupationService userOccupationService;
 
     @GetMapping(value = "/get-current-user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountDto> getUser(Principal principal) {
@@ -37,6 +40,11 @@ public class UserController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AccountDto>> getAccountList() {
         return ResponseEntity.ok(userService.getAccountList());
+    }
+
+    @GetMapping(value = "/occupations", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<UserOccupationDto>> getOccupationList() {
+        return ResponseEntity.ok(userOccupationService.getAllOccupations());
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

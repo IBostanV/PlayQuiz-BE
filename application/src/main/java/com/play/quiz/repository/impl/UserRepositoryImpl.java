@@ -1,27 +1,14 @@
 package com.play.quiz.repository.impl;
 
-import static java.math.BigDecimal.ONE;
-import static java.util.stream.Collectors.groupingBy;
-
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Function;
-
 import com.play.quiz.domain.Account;
+import com.play.quiz.domain.Category;
 import com.play.quiz.domain.Language;
 import com.play.quiz.domain.Role;
+import com.play.quiz.domain.UserOccupation;
+import com.play.quiz.domain.helpers.BaseEntity;
 import com.play.quiz.enums.UserRole;
 import com.play.quiz.exception.UserNotFoundException;
+import com.play.quiz.record.UserAdditionalInfo;
 import com.play.quiz.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -33,21 +20,42 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+
+import static java.math.BigDecimal.ONE;
+import static java.util.stream.Collectors.groupingBy;
+
 @Log4j2
 @Repository
 @AllArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
-    private final String findAllSql;
-    private final String saveSql;
-    private final String saveUserRoles;
-    private final String findByEmailSql;
-    private final String saveNoAvatarSql;
-    private final String findUserRolesSql;
-    private final JdbcTemplate jdbcTemplate;
     private final String activateAccountSql;
+    private final String findAllSql;
+    private final String findByEmailSql;
+    private final String findUserRolesSql;
+    private final String saveSql;
+    private final String saveFavoriteCategorySql;
+    private final String saveUserRolesSql;
+    private final String saveUserOccupationSql;
+    private final String saveNoAvatarSql;
     private final String userSequenceNextVal;
     private final String updateUserPasswordSql;
+
+    private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedJdbcTemplate;
 
     public static final String EMAIL = "email";
@@ -77,14 +85,29 @@ public class UserRepositoryImpl implements UserRepository {
                 getProperties(accountId, account));
 
         if (Objects.isNull(account.getAccountId())) {
-            account.getRoles().forEach(role -> namedJdbcTemplate.update(saveUserRoles,
-                    Map.of(ACCOUNT_ID, accountId, "roleId", role.getRoleId())));
+            Function<Role, Long> roleIdFunction = Role::getRoleId;
+            saveUserAdditionalInfo(new UserAdditionalInfo<>(
+                    account.getRoles(), saveUserRolesSql, accountId, "roleId", roleIdFunction));
+        } else {
+            Function<Category, Long> categoryIdFunction = Category::getCatId;
+            saveUserAdditionalInfo(new UserAdditionalInfo<>(
+                    account.getFavoriteCategories(), saveFavoriteCategorySql, accountId, "catId", categoryIdFunction));
+
+            Function<UserOccupation, Long> occupationIdFunction = UserOccupation::getId;
+            saveUserAdditionalInfo(new UserAdditionalInfo<>(
+                    account.getFavoriteCategories(), saveUserOccupationSql, accountId, "occupationId", occupationIdFunction));
         }
 
         log.info("User with id: " + accountId + " successfully saved");
         return account.toBuilder()
                 .accountId(accountId)
                 .build();
+    }
+
+    private <T extends Collection<?>, E extends BaseEntity> void saveUserAdditionalInfo(UserAdditionalInfo<T, E> info) {
+        info.collection().forEach(object -> namedJdbcTemplate.update(
+                info.sql(),
+                Map.of(ACCOUNT_ID, info.accountId(), info.key(), info.entityIdFunction().apply((E) object))));
     }
 
     private Map<String, Object> getProperties(final Long accountId, final Account account) {
