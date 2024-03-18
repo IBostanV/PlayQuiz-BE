@@ -1,19 +1,11 @@
 package com.play.quiz.dto;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.play.quiz.domain.Category;
 import com.play.quiz.domain.Language;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -23,6 +15,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder(toBuilder = true)
@@ -47,7 +45,8 @@ public class AccountDto {
     private Long createdById;
     private String createdByName;
 
-    private Set<Category> favoriteCategories = new HashSet<>();
+    private Set<UserOccupationDto> occupations = Collections.emptySet();
+    private Set<CategoryDto> favoriteCategories = Collections.emptySet();
 
     @NotBlank
     @Email(regexp = ".+@.+\\..+", message="Please provide a valid email address")

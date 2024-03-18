@@ -76,6 +76,13 @@ public class Account extends BaseEntity {
     @ToString.Exclude
     private Set<Category> favoriteCategories = new HashSet<>();
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "Q_USER_OCCUPATION",
+            joinColumns = @JoinColumn(name = "ACCOUNT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "OCCUPATION_ID"))
+    @ToString.Exclude
+    private Set<UserOccupation> occupations = new HashSet<>();
+
     public void enable() { this.isEnabled = true; }
 
     public void setIsEnabled(final boolean isEnabled) {

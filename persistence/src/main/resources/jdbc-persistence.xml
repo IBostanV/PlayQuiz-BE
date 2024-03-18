@@ -50,11 +50,31 @@
         </constructor-arg>
     </bean>
 
-    <bean id="saveUserRoles" class="java.lang.String">
+    <bean id="saveUserRolesSql" class="java.lang.String">
         <constructor-arg>
             <value>
                 <![CDATA[
                      INSERT INTO Q_USER_ROLES(ACCOUNT_ID, ROLE_ID) VALUES (:accountId, :roleId)
+                ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="saveFavoriteCategorySql" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+                     INSERT INTO Q_USER_CATEGORY(ACCOUNT_ID, CAT_ID) VALUES (:accountId, :catId)
+                ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="saveUserOccupationSql" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+                     INSERT INTO Q_USER_OCCUPATION(ACCOUNT_ID, OCCUPATION_ID) VALUES (:accountId, :occupationId)
                 ]]>
             </value>
         </constructor-arg>
