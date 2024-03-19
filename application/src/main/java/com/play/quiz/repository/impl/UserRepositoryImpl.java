@@ -33,7 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static java.math.BigDecimal.ONE;
 import static java.util.stream.Collectors.groupingBy;
@@ -47,6 +49,8 @@ public class UserRepositoryImpl implements UserRepository {
     private final String findAllSql;
     private final String findByEmailSql;
     private final String findUserRolesSql;
+    private final String findUserFavoriteCategoriesSql;
+    private final String findUserOccupationsSql;
     private final String saveSql;
     private final String saveFavoriteCategorySql;
     private final String saveUserRolesSql;
@@ -91,11 +95,19 @@ public class UserRepositoryImpl implements UserRepository {
         } else {
             Function<Category, Long> categoryIdFunction = Category::getCatId;
             saveUserAdditionalInfo(new UserAdditionalInfo<>(
-                    account.getFavoriteCategories(), saveFavoriteCategorySql, accountId, "catId", categoryIdFunction));
+                    account.getFavoriteCategories(),
+                    saveFavoriteCategorySql,
+                    accountId,
+                    "catId",
+                    categoryIdFunction));
 
             Function<UserOccupation, Long> occupationIdFunction = UserOccupation::getId;
             saveUserAdditionalInfo(new UserAdditionalInfo<>(
-                    account.getFavoriteCategories(), saveUserOccupationSql, accountId, "occupationId", occupationIdFunction));
+                    account.getFavoriteCategories(),
+                    saveUserOccupationSql,
+                    accountId,
+                    "occupationId",
+                    occupationIdFunction));
         }
 
         log.info("User with id: " + accountId + " successfully saved");
@@ -148,14 +160,9 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Optional<Account> findUserByEmail(String email) {
         return executeQueryForObject(email)
-                .map(this::setAccountRoles);
-    }
-
-    private Account setAccountRoles(final Account account) {
-        List<Role> roles = handleRoles(account);
-        log.info("Found roles: " + roles + " for user: " + account.getEmail());
-        account.setRoles(roles);
-        return account;
+                .map(this::setAccountRoles)
+                .map(this::setFavoriteCategories)
+                .map(this::setOccupation);
     }
 
     private Optional<Account> executeQueryForObject(String email) {
@@ -169,6 +176,13 @@ public class UserRepositoryImpl implements UserRepository {
             log.info("No user found with email: " + email);
             return Optional.empty();
         }
+    }
+
+    private Account setAccountRoles(final Account account) {
+        List<Role> roles = handleRoles(account);
+        log.info("Found roles: " + roles + " for user: " + account.getEmail());
+        account.setRoles(roles);
+        return account;
     }
 
     private List<Role> handleRoles(final Account account) {
@@ -187,6 +201,63 @@ public class UserRepositoryImpl implements UserRepository {
         return Role.builder()
                 .roleId(((BigDecimal) item.get("ROLE_ID")).longValue())
                 .name(UserRole.valueOf((String) item.get("NAME")))
+                .build();
+    }
+
+    private Account setFavoriteCategories(final Account account) {
+        Set<Category> favoriteCategories = handleFavoriteCategories(account);
+        account.setFavoriteCategories(favoriteCategories);
+
+        return account;
+    }
+
+    private Set<Category> handleFavoriteCategories(final Account account) {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource(ACCOUNT_ID, account.getAccountId());
+        List<Map<String, Object>> categories = namedJdbcTemplate.queryForList(
+                findUserFavoriteCategoriesSql, parameterSource);
+
+        return getFavoriteCategoriesList(categories);
+    }
+
+    private Set<Category> getFavoriteCategoriesList(List<Map<String, Object>> categories) {
+        return categories.stream()
+                .map(UserRepositoryImpl::mapCategory)
+                .collect(Collectors.toSet());
+    }
+
+    private static Category mapCategory(final Map<String, Object> item) {
+        return Category.builder()
+                .catId(((BigDecimal) item.get("CAT_ID")).longValue())
+                .name(((String) item.get("NAME")))
+                .build();
+    }
+
+    private Account setOccupation(final Account account) {
+        Set<UserOccupation> userOccupations = handleUserOccupations(account);
+        account.setOccupations(userOccupations);
+
+        return account;
+    }
+
+    private Set<UserOccupation> handleUserOccupations(final Account account) {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource(ACCOUNT_ID, account.getAccountId());
+        List<Map<String, Object>> occupations = namedJdbcTemplate.queryForList(findUserOccupationsSql, parameterSource);
+
+        return getUserOccupationList(occupations);
+    }
+
+    private Set<UserOccupation> getUserOccupationList(List<Map<String, Object>> occupations) {
+        return occupations.stream()
+                .map(UserRepositoryImpl::mapOccupations)
+                .collect(Collectors.toSet());
+    }
+
+    private static UserOccupation mapOccupations(final Map<String, Object> item) {
+        return UserOccupation.builder()
+                .id(((BigDecimal) item.get("ID")).longValue())
+                .name(((String) item.get("NAME")))
+                .domain((String)item.get("DOMAIN"))
+                .status((String)item.get("STATUS"))
                 .build();
     }
 

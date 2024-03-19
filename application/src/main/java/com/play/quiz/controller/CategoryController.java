@@ -1,12 +1,5 @@
 package com.play.quiz.controller;
 
-import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_CATEGORY;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.util.List;
-import java.util.Objects;
-
 import com.play.quiz.dto.CategoryDto;
 import com.play.quiz.service.CategoryService;
 import jakarta.validation.Valid;
@@ -22,6 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Objects;
+
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_CATEGORY;
 
 @RestController
 @RequestMapping(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_CATEGORY)
@@ -51,22 +49,11 @@ public class CategoryController {
 
     @GetMapping(value = "/all-categories", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CategoryDto>> getAllCategories() {
-        List<CategoryDto> categories = categoryService.getCategories();
-        return ResponseEntity.ok(addRefLinks(categories));
+        return ResponseEntity.ok(categoryService.getCategories());
     }
 
-    private List<CategoryDto> addRefLinks(List<CategoryDto> categories) {
-        categories.forEach(this::addRefLink);
-        return categories;
-    }
-
-    private void addRefLink(CategoryDto categoryDto) {
-        categoryDto
-                .add(linkTo(methodOn(this.getClass())
-                        .getCategory(categoryDto.getCatId(), categoryDto.getNaturalId()))
-                        .withSelfRel())
-                .add(linkTo(methodOn(this.getClass())
-                        .deleteCategory(categoryDto.getCatId()))
-                        .withRel("delete"));
+    @GetMapping(value = "/all-categories-short", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CategoryDto>> getAllCategoriesShort() {
+        return ResponseEntity.ok(categoryService.getCategoriesShort());
     }
 }

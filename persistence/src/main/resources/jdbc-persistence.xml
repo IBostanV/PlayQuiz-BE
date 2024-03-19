@@ -143,6 +143,38 @@
         </constructor-arg>
     </bean>
 
+    <bean id="findUserFavoriteCategoriesSql" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+                     SELECT
+                         c.cat_id
+                        ,c.name
+                     FROM Q_CATEGORY c
+                     LEFT JOIN Q_USER_CATEGORY uc ON c.cat_id = uc.cat_id
+                     WHERE uc.account_id = :accountId
+                ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="findUserOccupationsSql" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+                     SELECT
+                         o.id
+                        ,o.name
+                        ,o.domain
+                        ,o.status
+                     FROM Q_OCCUPATION o
+                     LEFT JOIN Q_USER_OCCUPATION uo ON o.id = uo.occupation_id
+                     WHERE uo.account_id = :accountId
+                ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
     <bean id="findAllSql" class="java.lang.String">
         <constructor-arg>
             <value>

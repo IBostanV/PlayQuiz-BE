@@ -47,6 +47,13 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.toDtoList(categories);
     }
 
+    @Override
+    public List<CategoryDto> getCategoriesShort() {
+        Sort sort = Sort.by(Sort.Direction.ASC, CAT_ID);
+        List<Category> categories = categoryRepository.findAllActive(sort);
+        return categoryMapper.toShortDtoList(categories);
+    }
+
     @NonNull
     @Override
     public CategoryDto getByNaturalId(String naturalId) {
