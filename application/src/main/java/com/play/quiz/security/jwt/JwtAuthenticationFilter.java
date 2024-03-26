@@ -1,6 +1,7 @@
 package com.play.quiz.security.jwt;
 
 import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_CATEGORY;
+import static com.play.quiz.controller.RestEndpoint.REQUEST_MAPPING_TRANSLATION;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -47,6 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(final HttpServletRequest request) {
         return (!request.getRequestURI().startsWith(RestEndpoint.CONTEXT_PATH)
                 || request.getRequestURI().startsWith(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_CATEGORY)
+                || request.getRequestURI().startsWith(RestEndpoint.CONTEXT_PATH + REQUEST_MAPPING_TRANSLATION)
                 || request.getRequestURI().endsWith(ACTIVATE_ACCOUNT_LINK))
                 && !request.getRequestURI().startsWith(ACTUATOR_PATH);
     }

@@ -14,6 +14,7 @@ public class RestEndpoint {
     public static final String REQUEST_MAPPING_AUTH = "/auth";
     public static final String REQUEST_MAPPING_USER = "/user";
     public static final String REQUEST_MAPPING_QUIZ = "/quiz";
+    public static final String REQUEST_MAPPING_TRANSLATION = "/translations";
     public static final String REQUEST_MAPPING_MESSAGE = "/message";
     public static final String REQUEST_MAPPING_GLOSSARY = "/glossary";
     public static final String REQUEST_MAPPING_CATEGORY = "/category";
